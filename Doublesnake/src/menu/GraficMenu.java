@@ -14,8 +14,6 @@ import javax.swing.border.EmptyBorder;
 import snake.GraficaSnake;
 
 public class GraficMenu extends JPanel implements ActionListener{
-
-
 	/**
 	 * 
 	 */
