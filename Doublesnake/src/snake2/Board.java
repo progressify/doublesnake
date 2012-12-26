@@ -1,6 +1,5 @@
 package snake2;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -11,50 +10,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
 public class Board extends JPanel implements ActionListener {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private final int WIDTH = 300;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private final int WIDTH = 300;
     private final int HEIGHT = 300;
     private final int DOT_SIZE = 10;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
     private final int DELAY = 140;
-
     private int x[] = new int[ALL_DOTS];
     private int y[] = new int[ALL_DOTS];
-
     private int dots;
     private int apple_x;
     private int apple_y;
-
     private boolean left = false;
     private boolean right = true;
     private boolean up = false;
     private boolean down = false;
     private boolean inGame = true;
-
     private Timer timer;
     private Image ball;
     private Image apple;
     private Image head;
-
 
     public Board() {
         addKeyListener(new TAdapter());
 
         setBackground(Color.black);
 
-        ImageIcon iid = new ImageIcon(this.getClass().getResource("mezzo.png")); 
+        ImageIcon iid = new ImageIcon(this.getClass().getResource("mezzo.png"));
         ball = iid.getImage();
 
         ImageIcon iia = new ImageIcon(this.getClass().getResource("pallino.png"));
@@ -67,13 +59,12 @@ public class Board extends JPanel implements ActionListener {
         initGame();
     }
 
-
     public void initGame() {
 
         dots = 3;
 
         for (int z = 0; z < dots; z++) {
-            x[z] = 50 - z*10;
+            x[z] = 50 - z * 10;
             y[z] = 50;
         }
 
@@ -83,7 +74,6 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
-
     public void paint(Graphics g) {
         super.paint(g);
 
@@ -92,9 +82,11 @@ public class Board extends JPanel implements ActionListener {
             g.drawImage(apple, apple_x, apple_y, this);
 
             for (int z = 0; z < dots; z++) {
-                if (z == 0)
+                if (z == 0) {
                     g.drawImage(head, x[z], y[z], this);
-                else g.drawImage(ball, x[z], y[z], this);
+                } else {
+                    g.drawImage(ball, x[z], y[z], this);
+                }
             }
 
             Toolkit.getDefaultToolkit().sync();
@@ -105,7 +97,6 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-
     public void gameOver(Graphics g) {
         String msg = "Game Over";
         Font small = new Font("Helvetica", Font.BOLD, 14);
@@ -114,9 +105,8 @@ public class Board extends JPanel implements ActionListener {
         g.setColor(Color.white);
         g.setFont(small);
         g.drawString(msg, (WIDTH - metr.stringWidth(msg)) / 2,
-                     HEIGHT / 2);
+                HEIGHT / 2);
     }
-
 
     public void checkApple() {
 
@@ -125,7 +115,6 @@ public class Board extends JPanel implements ActionListener {
             locateApple();
         }
     }
-
 
     public void move() {
 
@@ -151,15 +140,14 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-
     public void checkCollision() {
 
-          for (int z = dots; z > 0; z--) {
+        for (int z = dots; z > 0; z--) {
 
-              if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-                  inGame = false;
-              }
-          }
+            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+                inGame = false;
+            }
+        }
 
         if (y[0] > HEIGHT) {
             inGame = false;
@@ -195,7 +183,6 @@ public class Board extends JPanel implements ActionListener {
 
         repaint();
     }
-
 
     private class TAdapter extends KeyAdapter {
 

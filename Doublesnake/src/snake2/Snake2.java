@@ -2,17 +2,14 @@ package snake2;
 
 import javax.swing.JFrame;
 
-import menu.GraficMenu;
-
-
 public class Snake2 extends JFrame {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public Snake2() {
+    public Snake2() {
 
         add(new Board());
 
@@ -24,9 +21,9 @@ public class Snake2 extends JFrame {
         setResizable(false);
         setVisible(true);
     }
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Snake2 snake=new Snake2();
-	}
 
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        Snake2 snake = new Snake2();
+    }
 }
