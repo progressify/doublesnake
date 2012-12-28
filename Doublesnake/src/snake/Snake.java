@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
 import javax.swing.Timer;
 
 public class Snake extends Thread implements ActionListener {
@@ -108,6 +107,7 @@ public class Snake extends Thread implements ActionListener {
         }
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (inGame) {
             checkApple();
@@ -118,6 +118,7 @@ public class Snake extends Thread implements ActionListener {
 
     public class TAdapter extends KeyAdapter {
 
+        @Override
         public void keyPressed(KeyEvent e) {
 
             int key = e.getKeyCode();

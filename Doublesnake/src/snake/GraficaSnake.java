@@ -1,5 +1,6 @@
 package snake;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.util.Hashtable;
 import javax.swing.ImageIcon;

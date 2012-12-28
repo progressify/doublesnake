@@ -81,13 +81,6 @@ public class GraficMenu extends JPanel implements ActionListener {
 
         bGioca = new JButton();
         bGioca.addActionListener(this);
-        //***si può fare anche così pero credo sia può opportuno per chiarezza del codice fare tutto giù, vedi metodo actionPerformed***
-        //		bGioca.addActionListener(new ActionListener() {
-        //			
-        //			public void actionPerformed(ActionEvent arg0) {
-        //				new GraficaSnake();
-        //			}
-        //		});
 
         bCreaMappa = new JButton();
         bCreaMappa.addActionListener(this);
