@@ -20,14 +20,17 @@ public class Snake extends Thread implements ActionListener {
     public Apple apple;
     private int DELAY;
     private int dots;
-    public boolean right;
-    public boolean left;
-    public boolean down;
-    public boolean up;
-    public boolean inGame;
+    public boolean right=true;
+    public boolean left=false;
+    public boolean down=false;
+    public boolean up=false;
+    public boolean inGame=true;
+    
+    public TAdapter adapter;
     private Timer timer;
 
     public Snake(int intervallo) {
+        TAdapter adapter= new TAdapter();
         DELAY = intervallo;
     }
 
@@ -105,17 +108,15 @@ public class Snake extends Thread implements ActionListener {
         }
     }
 
-    @Override
-    public void run() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
-        
+        if (inGame) {
+            checkApple();
+            checkCollision();
+            move();
+        }
     }
 
-    private class TAdapter extends KeyAdapter {
+    public class TAdapter extends KeyAdapter {
 
         public void keyPressed(KeyEvent e) {
 

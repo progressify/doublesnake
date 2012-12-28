@@ -15,6 +15,10 @@ public class GraficaSnake extends JPanel {
     private Hashtable<String, Image> snake2;
 
     public GraficaSnake() {
+        Snake snake=new Snake(140);
+        snake.run();
+        addKeyListener(snake.adapter);
+        
         imageLoad(snake1);
     }
 
@@ -83,5 +87,27 @@ public class GraficaSnake extends JPanel {
         setFocusable(true);
     }
     
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        if (inGame) {
+
+            g.drawImage(apple, apple_x, apple_y, this);
+
+            for (int z = 0; z < dots; z++) {
+                if (z == 0) {
+                    g.drawImage(head, x[z], y[z], this);
+                } else {
+                    g.drawImage(ball, x[z], y[z], this);
+                }
+            }
+
+            Toolkit.getDefaultToolkit().sync();
+            g.dispose();
+
+        } else {
+            gameOver(g);
+        }
+    }
     
 }
