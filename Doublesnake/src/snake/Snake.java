@@ -97,6 +97,8 @@ public class Snake extends Thread implements ActionListener {
     }
 
     public void checkApple() {
+        
+        //controlla se mangia la mela
         if (coordinate[0].getX() == apple.getAppleX() && coordinate[0].getY() == apple.getAppleY()) {
             dots++;
             apple.locateApple();
@@ -110,6 +112,7 @@ public class Snake extends Thread implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
     }
 
     private class TAdapter extends KeyAdapter {

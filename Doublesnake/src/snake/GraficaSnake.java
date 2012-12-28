@@ -82,4 +82,6 @@ public class GraficaSnake extends JPanel {
 
         setFocusable(true);
     }
+    
+    
 }

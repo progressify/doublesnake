@@ -9,16 +9,15 @@ public class Apple extends Thread {
 
     public Apple() {
     }
-
+    
     public void locateApple() {
+            int r = (int) (Math.random() * RAND_POSX);
+            coordApple.setX(r * DOT_SIZE);
 
-        int r = (int) (Math.random() * RAND_POSX);
-        coordApple.setX(r * DOT_SIZE);
-
-        r = (int) (Math.random() % RAND_POSY);
-        coordApple.setY(r * DOT_SIZE);
+            r = (int) (Math.random() % RAND_POSY);
+            coordApple.setY(r * DOT_SIZE);
     }
-
+    
     public int getAppleX() {
         return coordApple.getX();
     }
