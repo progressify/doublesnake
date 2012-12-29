@@ -1,5 +1,6 @@
 package menu;
 
+import gestioneMappe.EditorMappe;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +38,9 @@ public class GraficMenu extends JPanel implements ActionListener {
         jPanelMenuSingol();
         jPanelMenuMulti();
         windows.setResizable(false);
+        windows.setLocationRelativeTo(null);
         windows.setVisible(true);
+        windows.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         windows.repaint();
     }
 
@@ -48,8 +51,7 @@ public class GraficMenu extends JPanel implements ActionListener {
         panelSfondo.setLayout(null);
 
         JLabel sfondo = new JLabel();
-        sfondo.setBounds(0, 0, 700, 600);
-
+        sfondo.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
         sfondo.setIcon(new ImageIcon("./Grafica/spazio.jpg"));
 
         JLabel titolo = new JLabel();
@@ -60,6 +62,7 @@ public class GraficMenu extends JPanel implements ActionListener {
         JLabel multi = new JLabel();
         multi.setBounds(450, 150, 194, 29);
         multi.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
+
         sfondo.add(multi);
 
         JLabel singolo = new JLabel();
@@ -166,10 +169,12 @@ public class GraficMenu extends JPanel implements ActionListener {
         Object source = e.getSource();
 
         if (source == bGioca) {
-            //TODO
             new GraficaSnake();
+            //TODO
         }
         if (source == bCreaMappa) {
+            windows.setVisible(false);
+            JFrame frameMappe = new EditorMappe();
             //TODO
         }
         if (source == bCaricaMappa) {
