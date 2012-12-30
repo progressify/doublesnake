@@ -5,6 +5,7 @@
 package gestioneMappe;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -22,44 +23,55 @@ public class EditorMappe extends JFrame implements ActionListener {
     private int WINDOWS_WHITH = 700;
     private int WINDOWS_HEIGH = 600;
     private JButton okButton;
+    private JButton annullaButton;
+    private JFrame mainWindow;
 
-    public EditorMappe() {
+    public EditorMappe(JFrame mainWindow) {
+        this.mainWindow=mainWindow;
         setName("DOUBLE SNAKE");
         setTitle("DOUBLE SNAKE");
         setSize(WINDOWS_WHITH, WINDOWS_HEIGH);
-        //setLayout(new BorderLayout());
-//        JPanel centerPanel = createCenterPanel();
-//        add(centerPanel,BorderLayout.CENTER);
-        JPanel southPanel = createsouthPanel();
-        add(southPanel);
+        JLabel label = new JLabel();
+        label.setIcon(new ImageIcon("./Grafica/spazio.jpg"));
+        label.setLayout(new BorderLayout());
+        label.add(createCenterPanel(), BorderLayout.CENTER);
+        label.add(createsouthPanel(), BorderLayout.SOUTH);
+        add(label);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
-        repaint();
     }
 
     private JPanel createCenterPanel() {
         JPanel panel = new JPanel();
-        JLabel sfondo = new JLabel();
-        sfondo.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
-        sfondo.setIcon(new ImageIcon("./Grafica/spazio.jpg"));
-        panel.add(sfondo);
+
+        panel.setOpaque(false);
         return panel;
     }
 
     private JPanel createsouthPanel() {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         okButton = new JButton();
+        okButton.setIcon(new ImageIcon("./Grafica/giocatoresingolo.png"));
+        okButton.setPressedIcon(new ImageIcon("./Grafica/multigiocatore.png"));
         okButton.setContentAreaFilled(false);
         okButton.setBorder(null);
-        okButton.setFocusPainted(false);
-        okButton.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
-        okButton.setPressedIcon(new ImageIcon("./Grafica/multigiocatore.png"));
+        //devo documentarmi sul significato di questi due metodi XD
+        //okButton.setFocusPainted(false);
+        //okButton.setBorderPainted(false);
         okButton.addActionListener(this);
-//        okButton.setBorderPainted(false);
-//        okButton.setContentAreaFilled(false);
-//        okButton.setOpaque(true);
+        
+        JLabel spazio=new JLabel("      ");
+        annullaButton = new JButton();
+        annullaButton.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
+        annullaButton.setPressedIcon(new ImageIcon("./Grafica/multigiocatore.png"));
+        annullaButton.setContentAreaFilled(false);
+        annullaButton.setBorder(null);
+        annullaButton.addActionListener(this);
         panel.add(okButton);
+        panel.add(spazio);
+        panel.add(annullaButton);
+        panel.setOpaque(false);
         return panel;
     }
 
@@ -69,6 +81,10 @@ public class EditorMappe extends JFrame implements ActionListener {
 
         if (source == okButton) {
             //TODO
+        }
+        if (source == annullaButton) {
+            setVisible(false);
+            mainWindow.setVisible(true);
         }
     }
 }

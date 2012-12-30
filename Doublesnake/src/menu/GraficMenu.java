@@ -84,7 +84,6 @@ public class GraficMenu extends JPanel implements ActionListener {
 
         bGioca = new JButton();
         bGioca.addActionListener(this);
-
         bCreaMappa = new JButton();
         bCreaMappa.addActionListener(this);
         bCaricaMappa = new JButton();
@@ -174,8 +173,7 @@ public class GraficMenu extends JPanel implements ActionListener {
         }
         if (source == bCreaMappa) {
             windows.setVisible(false);
-            JFrame frameMappe = new EditorMappe();
-            //TODO
+            JFrame frameMappe = new EditorMappe(windows);
         }
         if (source == bCaricaMappa) {
             //TODO
