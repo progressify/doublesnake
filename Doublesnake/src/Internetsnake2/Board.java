@@ -21,11 +21,11 @@ public class Board extends JPanel implements ActionListener {
      *
      */
     private static final long serialVersionUID = 1L;
-    private final int WIDTH = 700;
+    private final int WIDTH = 600;
     private final int HEIGHT = 600;
     private final int DOT_SIZE = 25;
     private final int ALL_DOTS = 900;
-    private final int RAND_POSX = 28;
+    private final int RAND_POSX = 24;
     private final int RAND_POSY = 24;
     private final int DELAY = 200;
     private int x[] = new int[ALL_DOTS];
@@ -39,10 +39,7 @@ public class Board extends JPanel implements ActionListener {
     private boolean down = false;
     private boolean inGame = true;
     private Timer timer;
-    private Image ball;
     private Image apple;
-    private Image head;
-    
     private Hashtable<String, Image> snake1;
 
     public Board() {
@@ -50,17 +47,6 @@ public class Board extends JPanel implements ActionListener {
         snake1=new Hashtable<String, Image>();
         setBackground(Color.black);
         imageLoad(snake1);
-        /*
-        ImageIcon iid = new ImageIcon(this.getClass().getResource("mezzo.png"));
-        ball = iid.getImage();
-
-        ImageIcon iia = new ImageIcon(this.getClass().getResource("pallino.png"));
-        apple = iia.getImage();
- 
-        ImageIcon iih = new ImageIcon(this.getClass().getResource("testa.png"));
-        head = iih.getImage();
-
-        setFocusable(true);*/
         initGame();
     }
     
@@ -129,28 +115,24 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void initGame() {
-
         dots = 2;
-
         for (int z = 0; z < dots; z++) {
             x[z] = 50 - z * DOT_SIZE;
             y[z] = 50;
         }
-
         locateApple();
-
         timer = new Timer(DELAY, this);
         timer.start();
     }
 
     public void paint(Graphics g) {
         super.paint(g);
-
         if (inGame) {
-
             g.drawImage(apple, apple_x, apple_y, this);
             int z;
+            boolean flag;
             for (z = 0; z < dots-1; z++){
+                flag=false;
                 if (z == 0) {
                     //TESTA
                     if(left){
@@ -165,27 +147,51 @@ public class Board extends JPanel implements ActionListener {
                     if(down){
                         g.drawImage(snake1.get("tg"), x[z], y[z], this);
                     }
-                    //g.drawImage(head, x[z], y[z], this);
                 } else{
-                    //CORPO
-                    if(y[z]==y[z-1])                
-                        g.drawImage(snake1.get("mo"), x[z], y[z], this);
-                    else
-                        g.drawImage(snake1.get("mv"), x[z], y[z], this); 
-                    
-                    if(x[z]==x[z-1])
-                      g.drawImage(snake1.get("mv"), x[z], y[z], this);
-                    else
-                      g.drawImage(snake1.get("mo"), x[z], y[z], this);
-                    //g.drawImage(ball, x[z], y[z], this);
-                    
-                    if( ( (y[z+1]==y[z]) && (y[z]<y[z-1]) && (x[z+1]<x[z]) && (x[z]==x[z-1]) ) || ( (y[z+1]>y[z]) && (y[z]==y[z-1]) && (x[z+1]==x[z]) && (x[z]>x[z-1]) ))
+                    //ANGOLI
+                    if( ( (y[z+1]==y[z]) && (y[z]<y[z-1]) && (x[z+1]<x[z]) && (x[z]==x[z-1]) ) || ( (y[z+1]>y[z]) && (y[z]==y[z-1]) && (x[z+1]==x[z]) && (x[z]>x[z-1]) )){
                         g.drawImage(snake1.get("aad"), x[z], y[z], this);
-                    
-                    if( (y[z+1]==y[z]) && (y[z]<y[z-1]) && (x[z+1]<x[z]) && (x[z]==x[z-1]) ) || ( (y[z+1]>y[z]) && (y[z]==y[z-1]) && (x[z+1]==x[z]) && (x[z]>x[z-1]) ) )
-                        g.drawImage(snake1.get("aad"), x[z], y[z], this);
+                        flag=true;
+                    }
+                    if(( (y[z+1]==y[z]) && (y[z]<y[z-1]) && (x[z+1]>x[z]) && (x[z]==x[z-1]) ) || ( (y[z+1]>y[z]) && (y[z]==y[z-1]) && (x[z+1]==x[z]) && (x[z]<x[z-1]) ) ){
+                        g.drawImage(snake1.get("aas"), x[z], y[z], this);
+                        flag=true;
+                    }
+                    if(( (y[z+1]<y[z]) && (y[z]==y[z-1]) && (x[z+1]==x[z]) && (x[z]>x[z-1]) ) || ( (y[z+1]==y[z]) && (y[z]>y[z-1]) && (x[z+1]<x[z]) && (x[z]==x[z-1]) ) ){
+                        g.drawImage(snake1.get("abd"), x[z], y[z], this);
+                        flag=true;
+                    }
+                    if(( (y[z+1]==y[z]) && (y[z]>y[z-1]) && (x[z+1]>x[z]) && (x[z]==x[z-1]) ) || ( (y[z+1]<y[z]) && (y[z]==y[z-1]) && (x[z+1]==x[z]) && (x[z]<x[z-1]) ) ){
+                        g.drawImage(snake1.get("abs"), x[z], y[z], this); 
+                        flag=true;
+                    }
+                     //CORPO
+                    if(flag==false){
+                        if(y[z]==y[z-1] && y[z]==y[z+1])                
+                            g.drawImage(snake1.get("mo"), x[z], y[z], this);
+                        else
+                            g.drawImage(snake1.get("mv"), x[z], y[z], this); 
+
+                        if(x[z]==x[z-1] && x[z]==x[z+1])
+                            g.drawImage(snake1.get("mv"), x[z], y[z], this);
+                        else
+                            g.drawImage(snake1.get("mo"), x[z], y[z], this);
+                    }
                 }
             } 
+            //CODA
+            if(x[z]>x[z-1]){
+                g.drawImage(snake1.get("cs"), x[z], y[z], this);
+            }
+            if(y[z]>y[z-1]){
+                g.drawImage(snake1.get("csu"), x[z], y[z], this);
+            }
+            if(x[z]<x[z-1]){
+                g.drawImage(snake1.get("cd"), x[z], y[z], this);
+            }
+            if(y[z]<y[z-1]){
+                g.drawImage(snake1.get("cg"), x[z], y[z], this);
+            }
             
             Toolkit.getDefaultToolkit().sync();
             g.dispose();
@@ -197,13 +203,14 @@ public class Board extends JPanel implements ActionListener {
 
     public void gameOver(Graphics g) {
         String msg = "Game Over";
+        
         Font small = new Font("Helvetica", Font.BOLD, 14);
+        
         FontMetrics metr = this.getFontMetrics(small);
-
+        
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(msg, (WIDTH - metr.stringWidth(msg)) / 2,
-                HEIGHT / 2);
+        g.drawString(msg, (WIDTH - metr.stringWidth(msg)) / 2, HEIGHT / 2);
     }
 
     public void checkApple() {
@@ -217,6 +224,15 @@ public class Board extends JPanel implements ActionListener {
     public void move() {
 
         for (int z = dots; z > 0; z--) {
+            /*if(x[z]==WIDTH)
+                x[z]=0;
+            if(x[z]==0)
+                x[z]=WIDTH;
+            if(y[z]==HEIGHT)
+                y[z]=0;
+            if(y[z]==0)
+                y[z]=HEIGHT;*/
+            
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
@@ -242,7 +258,7 @@ public class Board extends JPanel implements ActionListener {
 
         for (int z = dots; z > 0; z--) {
 
-            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
+            if ((x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
             }
         }
