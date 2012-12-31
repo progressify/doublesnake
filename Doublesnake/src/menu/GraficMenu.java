@@ -1,22 +1,26 @@
 package menu;
 
 import gestioneMappe.EditorMappe;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import snake.GraficaSnake;
 
+/**
+ * è la copia di GraficMenu2 solo che è stato sistemato il problema dei pulsanti
+ * con sfondo nero e ora vengono visualizzati normalmente non come prima che
+ * dovevi passarci sopra per farli vedere
+ *
+ * @author tonino
+ */
 public class GraficMenu extends JPanel implements ActionListener {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -6216250087094004378L;
     private JFrame windows;
     private int WINDOWS_WHITH = 700;
@@ -28,15 +32,17 @@ public class GraficMenu extends JPanel implements ActionListener {
     private JButton bStessoPc;
     private JButton bReteLocale;
     private JButton bOpzione;
+    private JLabel label;
 
     public GraficMenu() {
         windows = new JFrame();
         windows.setName("DOUBLE SNAKE");
         windows.setTitle("DOUBLE SNAKE");
         windows.setSize(WINDOWS_WHITH, WINDOWS_HEIGH);
-        jPanelSfondo();
-        jPanelMenuSingol();
-        jPanelMenuMulti();
+        label = jSfondo();
+        label.add(jPanelMenuSingol());
+        label.add(jPanelMenuMulti());
+        windows.add(label);
         windows.setResizable(false);
         windows.setLocationRelativeTo(null);
         windows.setVisible(true);
@@ -44,12 +50,7 @@ public class GraficMenu extends JPanel implements ActionListener {
         windows.repaint();
     }
 
-    private void jPanelSfondo() {
-        JPanel panelSfondo = new JPanel();
-        panelSfondo.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
-        panelSfondo.setBorder(new EmptyBorder(5, 5, 5, 5));
-        panelSfondo.setLayout(null);
-
+    private JLabel jSfondo() {
         JLabel sfondo = new JLabel();
         sfondo.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
         sfondo.setIcon(new ImageIcon("./Grafica/spazio.jpg"));
@@ -70,14 +71,11 @@ public class GraficMenu extends JPanel implements ActionListener {
         singolo.setIcon(new ImageIcon("./Grafica/giocatoresingolo.png"));
         sfondo.add(singolo);
 
-        panelSfondo.add(sfondo);
-
         sfondo.setVisible(true);
-        panelSfondo.setVisible(true);
-        windows.add(panelSfondo);
+        return sfondo;
     }
 
-    private void jPanelMenuSingol() {
+    private JPanel jPanelMenuSingol() {
         JPanel pannelMenu = new JPanel();
         pannelMenu.setLayout(null);
         pannelMenu.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
@@ -91,29 +89,33 @@ public class GraficMenu extends JPanel implements ActionListener {
         bRecord = new JButton();
         bRecord.addActionListener(this);
 
-        bGioca.setIcon(new ImageIcon("./Grafica/gioca.png"));
         bGioca.setBounds(500, 30, 66, 26);
-        bGioca.setVisible(true);
-        bGioca.setBackground(Color.BLACK);
+        bGioca.setIcon(new ImageIcon("./Grafica/gioca.png"));
+        bGioca.setPressedIcon(new ImageIcon("./Grafica/gioca.png")); //questo serve per fargli cambiare aspetto quando ci clicchi, ora sono la stessa immagine quindi non si nota differenza, sarebbe bello fare un immagine differente da poter applicare
+        bGioca.setContentAreaFilled(false);
         bGioca.setBorder(null);
+        bGioca.setVisible(true);
 
-        bCreaMappa.setIcon(new ImageIcon("./Grafica/creamappa.png"));
         bCreaMappa.setBounds(500, 60, 137, 26);
-        bCreaMappa.setVisible(true);
-        bCreaMappa.setBackground(Color.BLACK);
+        bCreaMappa.setIcon(new ImageIcon("./Grafica/creamappa.png"));
+        bCreaMappa.setPressedIcon(new ImageIcon("./Grafica/creamappa.png"));
+        bCreaMappa.setContentAreaFilled(false);
         bCreaMappa.setBorder(null);
+        bCreaMappa.setVisible(true);
 
-        bCaricaMappa.setIcon(new ImageIcon("./Grafica/caricamappa.png"));
         bCaricaMappa.setBounds(500, 90, 155, 26);
-        bCaricaMappa.setVisible(true);
-        bCaricaMappa.setBackground(Color.BLACK);
+        bCaricaMappa.setIcon(new ImageIcon("./Grafica/caricamappa.png"));
+        bCaricaMappa.setPressedIcon(new ImageIcon("./Grafica/caricamappa.png"));
+        bCaricaMappa.setContentAreaFilled(false);
         bCaricaMappa.setBorder(null);
+        bCaricaMappa.setVisible(true);
 
-        bRecord.setIcon(new ImageIcon("./Grafica/record.png"));
         bRecord.setBounds(500, 120, 78, 26);
-        bRecord.setVisible(true);
-        bRecord.setBackground(Color.BLACK);
+        bRecord.setIcon(new ImageIcon("./Grafica/record.png"));
+        bRecord.setPressedIcon(new ImageIcon("./Grafica/record.png"));
+        bRecord.setContentAreaFilled(false);
         bRecord.setBorder(null);
+        bRecord.setVisible(true);
 
         pannelMenu.add(bGioca);
         pannelMenu.add(bCreaMappa);
@@ -121,10 +123,11 @@ public class GraficMenu extends JPanel implements ActionListener {
         pannelMenu.add(bRecord);
 
         pannelMenu.setVisible(true);
-        windows.add(pannelMenu);
+        pannelMenu.setOpaque(false);
+        return (pannelMenu);
     }
 
-    private void jPanelMenuMulti() {
+    private JPanel jPanelMenuMulti() {
         JPanel pannelMenu = new JPanel();
         pannelMenu.setLayout(null);
         pannelMenu.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
@@ -136,23 +139,26 @@ public class GraficMenu extends JPanel implements ActionListener {
         bOpzione = new JButton();
         bOpzione.addActionListener(this);
 
-        bStessoPc.setIcon(new ImageIcon("./Grafica/stessopc.png"));
         bStessoPc.setBounds(500, 180, 124, 26);
-        bStessoPc.setVisible(true);
-        bStessoPc.setBackground(Color.BLACK);
+        bStessoPc.setIcon(new ImageIcon("./Grafica/stessopc.png"));
+        bStessoPc.setPressedIcon(new ImageIcon("./Grafica/stessopc.png"));
+        bStessoPc.setContentAreaFilled(false);
         bStessoPc.setBorder(null);
+        bStessoPc.setVisible(true);
 
-        bReteLocale.setIcon(new ImageIcon("./Grafica/retelocale.png"));
         bReteLocale.setBounds(500, 210, 149, 26);
-        bReteLocale.setVisible(true);
-        bReteLocale.setBackground(Color.BLACK);
+        bReteLocale.setIcon(new ImageIcon("./Grafica/retelocale.png"));
+        bReteLocale.setPressedIcon(new ImageIcon("./Grafica/retelocale.png"));
+        bReteLocale.setContentAreaFilled(false);
         bReteLocale.setBorder(null);
+        bReteLocale.setVisible(true);
 
-        bOpzione.setIcon(new ImageIcon("./Grafica/opzioniverde.png"));
         bOpzione.setBounds(450, 240, 101, 30);
-        bOpzione.setVisible(true);
-        bOpzione.setBackground(Color.BLACK);
+        bOpzione.setIcon(new ImageIcon("./Grafica/opzioniverde.png"));
+        bOpzione.setPressedIcon(new ImageIcon("./Grafica/opzioniverde.png"));
+        bOpzione.setContentAreaFilled(false);
         bOpzione.setBorder(null);
+        bOpzione.setVisible(true);
 
 
         pannelMenu.add(bStessoPc);
@@ -160,12 +166,19 @@ public class GraficMenu extends JPanel implements ActionListener {
         pannelMenu.add(bOpzione);
 
         pannelMenu.setVisible(true);
-        windows.add(pannelMenu);
+        pannelMenu.setOpaque(false);
+        return (pannelMenu);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(EditorMappe.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         if (source == bGioca) {
             new GraficaSnake();

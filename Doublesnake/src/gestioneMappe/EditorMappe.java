@@ -5,10 +5,11 @@
 package gestioneMappe;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -57,6 +58,9 @@ public class EditorMappe extends JFrame implements ActionListener {
     private JPanel createCenterPanel() {
         JPanel panel = new JPanel();
 
+//        Griglia grid=new Griglia();
+//        panel.add(grid);
+        
         panel.setOpaque(false);
         return panel;
     }
@@ -69,15 +73,12 @@ public class EditorMappe extends JFrame implements ActionListener {
         okButton.setContentAreaFilled(false);
         okButton.setBorder(null);
         okButton.setToolTipText("Memorizza la mappa appena creata");
-        //devo documentarmi sul significato di questi due metodi XD
-        //okButton.setFocusPainted(false);
-        //okButton.setBorderPainted(false);
         okButton.addActionListener(this);
 
         JLabel spazio = new JLabel("      ");
         annullaButton = new JButton();
         annullaButton.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
-        annullaButton.setPressedIcon(new ImageIcon("./Grafica/multigiocatore.png"));
+        annullaButton.setPressedIcon(new ImageIcon("./Grafica/retelocale.png"));
         annullaButton.setToolTipText("Indietro");
         annullaButton.setContentAreaFilled(false);
         annullaButton.setBorder(null);
@@ -124,7 +125,13 @@ public class EditorMappe extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-
+        
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(EditorMappe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         if (source == okButton) {
             //TODO
         }
