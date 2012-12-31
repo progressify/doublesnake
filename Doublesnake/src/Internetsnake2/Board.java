@@ -33,7 +33,7 @@ public class Board extends JPanel implements ActionListener {
     private int dots;
     private int apple_x;
     private int apple_y;
-    private boolean left = false;
+    private boolean left =false;
     private boolean right = true;
     private boolean up = false;
     private boolean down = false;
@@ -152,6 +152,7 @@ public class Board extends JPanel implements ActionListener {
             int z;
             for (z = 0; z < dots-1; z++){
                 if (z == 0) {
+                    //TESTA
                     if(left){
                         g.drawImage(snake1.get("ts"), x[z], y[z], this);
                     }
@@ -166,40 +167,23 @@ public class Board extends JPanel implements ActionListener {
                     }
                     //g.drawImage(head, x[z], y[z], this);
                 } else{
-                 
-                    if(y[z]==y[z-1]){                
+                    //CORPO
+                    if(y[z]==y[z-1])                
                         g.drawImage(snake1.get("mo"), x[z], y[z], this);
-                        if(left)
-                            g.drawImage(snake1.get("cs"), x[dots], y[dots], this);
-                        else if(right){
-                            g.drawImage(snake1.get("cd"), x[dots], y[dots], this);
-                        }
-                    }else{
-                        g.drawImage(snake1.get("mv"), x[z], y[z], this);
-                        if(up)
-                            g.drawImage(snake1.get("csu"), x[dots], y[dots], this);
-                        else if(down){
-                            g.drawImage(snake1.get("cg"), x[dots], y[dots], this);
-                        }
-                    }  
-                 
-                    if(x[z]==x[z-1]){
+                    else
+                        g.drawImage(snake1.get("mv"), x[z], y[z], this); 
+                    
+                    if(x[z]==x[z-1])
                       g.drawImage(snake1.get("mv"), x[z], y[z], this);
-                      if(up)
-                            g.drawImage(snake1.get("csu"), x[dots], y[dots], this);
-                        else if(down){
-                            g.drawImage(snake1.get("cg"), x[dots], y[dots], this);
-                        }
-                    }else{
+                    else
                       g.drawImage(snake1.get("mo"), x[z], y[z], this);
-                      if(left)
-                            g.drawImage(snake1.get("cs"), x[dots], y[dots], this);
-                        else if(right){
-                            g.drawImage(snake1.get("cd"), x[dots], y[dots], this);
-                        }
-                    }
                     //g.drawImage(ball, x[z], y[z], this);
                     
+                    if( ( (y[z+1]==y[z]) && (y[z]<y[z-1]) && (x[z+1]<x[z]) && (x[z]==x[z-1]) ) || ( (y[z+1]>y[z]) && (y[z]==y[z-1]) && (x[z+1]==x[z]) && (x[z]>x[z-1]) ))
+                        g.drawImage(snake1.get("aad"), x[z], y[z], this);
+                    
+                    if( (y[z+1]==y[z]) && (y[z]<y[z-1]) && (x[z+1]<x[z]) && (x[z]==x[z-1]) ) || ( (y[z+1]>y[z]) && (y[z]==y[z-1]) && (x[z+1]==x[z]) && (x[z]>x[z-1]) ) )
+                        g.drawImage(snake1.get("aad"), x[z], y[z], this);
                 }
             } 
             
@@ -306,30 +290,30 @@ public class Board extends JPanel implements ActionListener {
 
             if ((key == KeyEvent.VK_LEFT) && (!right)) {
                 left = true;
-                up = false;
-                down = false;
-                //right=false;
+                up=false;
+                down=false;
+                right=false;
             }
 
             if ((key == KeyEvent.VK_RIGHT) && (!left)) {
                 right = true;
-                up = false;
-                down = false;
-                //left=false;
+                up=false;
+                down=false;
+                left=false;
             }
 
             if ((key == KeyEvent.VK_UP) && (!down)) {
                 up = true;
-                right = false;
-                left = false;
-                //down=false;
+                right=false;
+                down=false;
+                left=false;
             }
 
             if ((key == KeyEvent.VK_DOWN) && (!up)) {
                 down = true;
-                right = false;
-                left = false;
-                //up = false;
+                right=false;
+                up=false;
+                left=false;
             }
         }
     }
