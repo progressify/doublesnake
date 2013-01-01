@@ -1,6 +1,7 @@
 package gestioneMappe;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -10,29 +11,30 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  *
  * @author tonino
  */
-public class EditorMappe extends JFrame implements ActionListener {
+public class SelezionaMappa extends JFrame implements ActionListener {
 
     private int WINDOWS_WHITH = 700;
     private int WINDOWS_HEIGH = 600;
     private JButton okButton;
+    private JButton dxButton;
+    private JButton sxButton;
     private JButton annullaButton;
     private JFrame mainWindow;
-    private static EditorMappe istanzaEditor;
+    private static SelezionaMappa istanzaSelection;
 
     public static JFrame getIstance(JFrame mainWindow) {
-        if (istanzaEditor == null) {
-            istanzaEditor = new EditorMappe(mainWindow);
+        if (istanzaSelection == null) {
+            istanzaSelection = new SelezionaMappa(mainWindow);
         }
-        return istanzaEditor;
+        return istanzaSelection;
     }
 
-    private EditorMappe(JFrame mainWindow) {
+    private SelezionaMappa(JFrame mainWindow) {
         this.mainWindow = mainWindow;
         setName("DOUBLE SNAKE");
         setTitle("DOUBLE SNAKE");
@@ -42,6 +44,8 @@ public class EditorMappe extends JFrame implements ActionListener {
         label.setLayout(new BorderLayout());
         label.add(createCenterPanel(), BorderLayout.CENTER);
         label.add(createsouthPanel(), BorderLayout.SOUTH);
+        label.add(createEastPanel(), BorderLayout.EAST);
+        label.add(createWestPanel(), BorderLayout.WEST);
         add(label);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -59,11 +63,7 @@ public class EditorMappe extends JFrame implements ActionListener {
 
     private JPanel createsouthPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
-        JLabel label = new JLabel();
-        label.setIcon(new ImageIcon("./Grafica/inseriscinomemappa.png"));
-        JTextField nomemappa = new JTextField(30);
-
+        
         okButton = new JButton();
         okButton.setIcon(new ImageIcon("./Grafica/creamappa.png"));
         okButton.setPressedIcon(new ImageIcon("./Grafica/creamappa.png"));
@@ -80,20 +80,45 @@ public class EditorMappe extends JFrame implements ActionListener {
         annullaButton.setContentAreaFilled(false);
         annullaButton.setBorder(null);
         annullaButton.addActionListener(this);
-        JPanel paneltemp1 = new JPanel();
-        paneltemp1.setOpaque(false);
-        paneltemp1.add(label);
-        panel.add(paneltemp1, BorderLayout.NORTH);
-        JPanel paneltemp2 = new JPanel();
-        paneltemp2.setOpaque(false);
-        paneltemp2.add(nomemappa);
-        panel.add(paneltemp2, BorderLayout.CENTER);
+        
         JPanel paneltemp3 = new JPanel();
         paneltemp3.setOpaque(false);
         paneltemp3.add(okButton);
         paneltemp3.add(spazio);
         paneltemp3.add(annullaButton);
         panel.add(paneltemp3, BorderLayout.SOUTH);
+        panel.setOpaque(false);
+        return panel;
+    }
+
+    private JPanel createEastPanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        dxButton = new JButton();
+        dxButton.setIcon(new ImageIcon("./Grafica/frecciabludx.png"));
+        dxButton.setPressedIcon(new ImageIcon("./Grafica/frecciabludx.png"));
+        dxButton.setToolTipText("Mappa successiva");
+        dxButton.setContentAreaFilled(false);
+        dxButton.setBorder(null);
+        dxButton.addActionListener(this);
+
+        panel.add(dxButton);
+        panel.setOpaque(false);
+        return panel;
+    }
+
+    private JPanel createWestPanel() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        sxButton = new JButton();
+        sxButton.setIcon(new ImageIcon("./Grafica/frecciaverdesx.png"));
+        sxButton.setPressedIcon(new ImageIcon("./Grafica/frecciaverdesx.png"));
+        sxButton.setToolTipText("Mappa precedente");
+        sxButton.setContentAreaFilled(false);
+        sxButton.setBorder(null);
+        sxButton.addActionListener(this);
+
+        panel.add(sxButton);
         panel.setOpaque(false);
         return panel;
     }
@@ -114,6 +139,12 @@ public class EditorMappe extends JFrame implements ActionListener {
         if (source == annullaButton) {
             setVisible(false);
             mainWindow.setVisible(true);
+        }
+        if (source == dxButton) {
+            //TODO
+        }
+        if (source == sxButton) {
+            //TODO
         }
     }
 }

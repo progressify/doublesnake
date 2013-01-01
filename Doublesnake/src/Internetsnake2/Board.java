@@ -125,6 +125,7 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         if (inGame) {
@@ -167,15 +168,19 @@ public class Board extends JPanel implements ActionListener {
                     }
                      //CORPO
                     if(flag==false){
-                        if(y[z]==y[z-1] && y[z]==y[z+1])                
+                        if(y[z]==y[z-1] && y[z]==y[z+1]) {                
                             g.drawImage(snake1.get("mo"), x[z], y[z], this);
-                        else
-                            g.drawImage(snake1.get("mv"), x[z], y[z], this); 
-
-                        if(x[z]==x[z-1] && x[z]==x[z+1])
+                        }
+                        else {
                             g.drawImage(snake1.get("mv"), x[z], y[z], this);
-                        else
+                        } 
+
+                        if(x[z]==x[z-1] && x[z]==x[z+1]) {
+                            g.drawImage(snake1.get("mv"), x[z], y[z], this);
+                        }
+                        else {
                             g.drawImage(snake1.get("mo"), x[z], y[z], this);
+                        }
                     }
                 }
             } 
@@ -287,6 +292,7 @@ public class Board extends JPanel implements ActionListener {
         apple_y = ((r * DOT_SIZE));
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
 
         if (inGame) {
@@ -300,6 +306,7 @@ public class Board extends JPanel implements ActionListener {
 
     private class TAdapter extends KeyAdapter {
 
+        @Override
         public void keyPressed(KeyEvent e) {
 
             int key = e.getKeyCode();

@@ -1,6 +1,7 @@
 package menu;
 
 import gestioneMappe.EditorMappe;
+import gestioneMappe.SelezionaMappa;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -9,15 +10,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import snake.GraficaSnake;
 
 /**
- * è la copia di GraficMenu2 solo che è stato sistemato il problema dei pulsanti
- * con sfondo nero e ora vengono visualizzati normalmente non come prima che
- * dovevi passarci sopra per farli vedere
  *
- * @author tonino
+ * @author Raffaela
  */
 public class GraficMenu extends JPanel implements ActionListener {
 
@@ -47,7 +47,12 @@ public class GraficMenu extends JPanel implements ActionListener {
         windows.setLocationRelativeTo(null);
         windows.setVisible(true);
         windows.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        windows.repaint();
+        //imposta il look&feel del sistema operativo ospitante, va impostato solo la prima volta, poi resta memorizzato per tutti i frame
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Impossibile impostare lo stile: " + e);
+        }
     }
 
     private JLabel jSfondo() {
@@ -186,11 +191,13 @@ public class GraficMenu extends JPanel implements ActionListener {
         }
         if (source == bCreaMappa) {
             windows.setVisible(false);
-            JFrame frameMappe = EditorMappe.getIstance(windows);
-            frameMappe.setVisible(true);
+            JFrame frameEditorMappe = EditorMappe.getIstance(windows);
+            frameEditorMappe.setVisible(true);
         }
         if (source == bCaricaMappa) {
-            //TODO
+            windows.setVisible(false);
+            JFrame frameSelectMappe = SelezionaMappa.getIstance(windows);
+            frameSelectMappe.setVisible(true);
         }
         if (source == bRecord) {
             //TODO
