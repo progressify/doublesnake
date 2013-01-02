@@ -1,5 +1,6 @@
 package menu;
 
+import doublesnake.Names;
 import gestioneMappe.EditorMappe;
 import gestioneMappe.SelezionaMappa;
 import java.awt.event.ActionEvent;
@@ -23,8 +24,6 @@ public class GraficMenu extends JPanel implements ActionListener {
 
     private static final long serialVersionUID = -6216250087094004378L;
     private JFrame windows;
-    private int WINDOWS_WHITH = 700;
-    private int WINDOWS_HEIGH = 600;
     private JButton bGioca;
     private JButton bCreaMappa;
     private JButton bCaricaMappa;
@@ -36,9 +35,9 @@ public class GraficMenu extends JPanel implements ActionListener {
 
     public GraficMenu() {
         windows = new JFrame();
-        windows.setName("DOUBLE SNAKE");
-        windows.setTitle("DOUBLE SNAKE");
-        windows.setSize(WINDOWS_WHITH, WINDOWS_HEIGH);
+        windows.setName(Names.NOME_FRAME);
+        windows.setTitle(Names.NOME_FRAME);
+        windows.setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
         label = jSfondo();
         label.add(jPanelMenuSingol());
         label.add(jPanelMenuMulti());
@@ -57,23 +56,23 @@ public class GraficMenu extends JPanel implements ActionListener {
 
     private JLabel jSfondo() {
         JLabel sfondo = new JLabel();
-        sfondo.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
-        sfondo.setIcon(new ImageIcon("./Grafica/spazio.jpg"));
+        sfondo.setBounds(0, 0, Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
+        sfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
 
         JLabel titolo = new JLabel();
         titolo.setBounds(0, 100, 263, 152);
-        titolo.setIcon(new ImageIcon("./Grafica/titolo.png"));
+        titolo.setIcon(new ImageIcon(Names.PATH_LABEL_TITOLOAPP));
         sfondo.add(titolo);
 
         JLabel multi = new JLabel();
         multi.setBounds(450, 150, 194, 29);
-        multi.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
+        multi.setIcon(new ImageIcon(Names.PATH_LABEL_MULTIGIOCATORE));
 
         sfondo.add(multi);
 
         JLabel singolo = new JLabel();
         singolo.setBounds(450, 0, 234, 29);
-        singolo.setIcon(new ImageIcon("./Grafica/giocatoresingolo.png"));
+        singolo.setIcon(new ImageIcon(Names.PATH_LABEL_GIOCATORESINGOLO));
         sfondo.add(singolo);
 
         sfondo.setVisible(true);
@@ -83,7 +82,7 @@ public class GraficMenu extends JPanel implements ActionListener {
     private JPanel jPanelMenuSingol() {
         JPanel pannelMenu = new JPanel();
         pannelMenu.setLayout(null);
-        pannelMenu.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
+        pannelMenu.setBounds(0, 0, Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
 
         bGioca = new JButton();
         bGioca.addActionListener(this);
@@ -95,29 +94,29 @@ public class GraficMenu extends JPanel implements ActionListener {
         bRecord.addActionListener(this);
 
         bGioca.setBounds(500, 30, 66, 26);
-        bGioca.setIcon(new ImageIcon("./Grafica/gioca.png"));
-        bGioca.setPressedIcon(new ImageIcon("./Grafica/gioca.png")); //questo serve per fargli cambiare aspetto quando ci clicchi, ora sono la stessa immagine quindi non si nota differenza, sarebbe bello fare un immagine differente da poter applicare
+        bGioca.setIcon(new ImageIcon(Names.PATH_BUTTON_GIOCA));
+        bGioca.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_GIOCA)); //questo serve per fargli cambiare aspetto quando ci clicchi, ora sono la stessa immagine quindi non si nota differenza, sarebbe bello fare un immagine differente da poter applicare
         bGioca.setContentAreaFilled(false);
         bGioca.setBorder(null);
         bGioca.setVisible(true);
 
         bCreaMappa.setBounds(500, 60, 137, 26);
-        bCreaMappa.setIcon(new ImageIcon("./Grafica/creamappa.png"));
-        bCreaMappa.setPressedIcon(new ImageIcon("./Grafica/creamappa.png"));
+        bCreaMappa.setIcon(new ImageIcon(Names.PATH_BUTTON_CREAMAPPA));
+        bCreaMappa.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_CREAMAPPA));
         bCreaMappa.setContentAreaFilled(false);
         bCreaMappa.setBorder(null);
         bCreaMappa.setVisible(true);
 
         bCaricaMappa.setBounds(500, 90, 155, 26);
-        bCaricaMappa.setIcon(new ImageIcon("./Grafica/caricamappa.png"));
-        bCaricaMappa.setPressedIcon(new ImageIcon("./Grafica/caricamappa.png"));
+        bCaricaMappa.setIcon(new ImageIcon(Names.PATH_BUTTON_CARICAMAPPA));
+        bCaricaMappa.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_CARICAMAPPA));
         bCaricaMappa.setContentAreaFilled(false);
         bCaricaMappa.setBorder(null);
         bCaricaMappa.setVisible(true);
 
         bRecord.setBounds(500, 120, 78, 26);
-        bRecord.setIcon(new ImageIcon("./Grafica/record.png"));
-        bRecord.setPressedIcon(new ImageIcon("./Grafica/record.png"));
+        bRecord.setIcon(new ImageIcon(Names.PATH_BUTTON_RECORD));
+        bRecord.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_RECORD));
         bRecord.setContentAreaFilled(false);
         bRecord.setBorder(null);
         bRecord.setVisible(true);
@@ -135,7 +134,7 @@ public class GraficMenu extends JPanel implements ActionListener {
     private JPanel jPanelMenuMulti() {
         JPanel pannelMenu = new JPanel();
         pannelMenu.setLayout(null);
-        pannelMenu.setBounds(0, 0, WINDOWS_WHITH, WINDOWS_HEIGH);
+        pannelMenu.setBounds(0, 0, Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
 
         bStessoPc = new JButton();
         bStessoPc.addActionListener(this);
@@ -145,22 +144,22 @@ public class GraficMenu extends JPanel implements ActionListener {
         bOpzione.addActionListener(this);
 
         bStessoPc.setBounds(500, 180, 124, 26);
-        bStessoPc.setIcon(new ImageIcon("./Grafica/stessopc.png"));
-        bStessoPc.setPressedIcon(new ImageIcon("./Grafica/stessopc.png"));
+        bStessoPc.setIcon(new ImageIcon(Names.PATH_BUTTON_STESSOPC));
+        bStessoPc.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_STESSOPC));
         bStessoPc.setContentAreaFilled(false);
         bStessoPc.setBorder(null);
         bStessoPc.setVisible(true);
 
         bReteLocale.setBounds(500, 210, 149, 26);
-        bReteLocale.setIcon(new ImageIcon("./Grafica/retelocale.png"));
-        bReteLocale.setPressedIcon(new ImageIcon("./Grafica/retelocale.png"));
+        bReteLocale.setIcon(new ImageIcon(Names.PATH_BUTTON_RETELOCALE));
+        bReteLocale.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_RETELOCALE));
         bReteLocale.setContentAreaFilled(false);
         bReteLocale.setBorder(null);
         bReteLocale.setVisible(true);
 
         bOpzione.setBounds(450, 240, 101, 30);
-        bOpzione.setIcon(new ImageIcon("./Grafica/opzioniverde.png"));
-        bOpzione.setPressedIcon(new ImageIcon("./Grafica/opzioniverde.png"));
+        bOpzione.setIcon(new ImageIcon(Names.PATH_BUTTON_OPZIONE));
+        bOpzione.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_OPZIONE));
         bOpzione.setContentAreaFilled(false);
         bOpzione.setBorder(null);
         bOpzione.setVisible(true);

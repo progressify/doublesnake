@@ -28,4 +28,16 @@ public class Coordinate {
     public void setX(int x) {
         this.x = x;
     }
+
+    @Override
+    public boolean equals(Object otherObject) {
+        if (otherObject == null) {
+            return false;
+        }
+        if (getClass() != otherObject.getClass()) {
+            return false;
+        }
+        Coordinate other = (Coordinate) otherObject;
+        return x == other.getX() && y == other.getY();
+    }
 }

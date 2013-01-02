@@ -1,5 +1,6 @@
 package gestioneMappe;
 
+import doublesnake.Names;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +19,6 @@ import javax.swing.JTextField;
  */
 public class EditorMappe extends JFrame implements ActionListener {
 
-    private int WINDOWS_WHITH = 700;
-    private int WINDOWS_HEIGH = 600;
     private JButton okButton;
     private JButton annullaButton;
     private JFrame mainWindow;
@@ -34,11 +33,11 @@ public class EditorMappe extends JFrame implements ActionListener {
 
     private EditorMappe(JFrame mainWindow) {
         this.mainWindow = mainWindow;
-        setName("DOUBLE SNAKE");
-        setTitle("DOUBLE SNAKE");
-        setSize(WINDOWS_WHITH, WINDOWS_HEIGH);
+        setName(Names.NOME_FRAME);
+        setTitle(Names.NOME_FRAME);
+        setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
         JLabel label = new JLabel();
-        label.setIcon(new ImageIcon("./Grafica/spazio.jpg"));
+        label.setIcon(new ImageIcon(Names.PATH_SFONDO));
         label.setLayout(new BorderLayout());
         label.add(createCenterPanel(), BorderLayout.CENTER);
         label.add(createsouthPanel(), BorderLayout.SOUTH);
@@ -48,11 +47,7 @@ public class EditorMappe extends JFrame implements ActionListener {
     }
 
     private JPanel createCenterPanel() {
-        JPanel panel = new JPanel();
-
-//        Griglia grid=new Griglia();
-//        panel.add(grid);
-
+        JPanel panel = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE);
         panel.setOpaque(false);
         return panel;
     }
@@ -61,7 +56,7 @@ public class EditorMappe extends JFrame implements ActionListener {
         JPanel panel = new JPanel(new BorderLayout());
 
         JLabel label = new JLabel();
-        label.setIcon(new ImageIcon("./Grafica/inseriscinomemappa.png"));
+        label.setIcon(new ImageIcon(Names.PATH_LABEL_INSERISCINOMEMAPPA));
         JTextField nomemappa = new JTextField(30);
 
         okButton = new JButton();
@@ -69,14 +64,14 @@ public class EditorMappe extends JFrame implements ActionListener {
         okButton.setPressedIcon(new ImageIcon("./Grafica/creamappa.png"));
         okButton.setContentAreaFilled(false);
         okButton.setBorder(null);
-        okButton.setToolTipText("Memorizza la mappa appena creata");
+        okButton.setToolTipText(Names.TOOLTIP_OKBUTTON_EDITOR);
         okButton.addActionListener(this);
 
-        JLabel spazio = new JLabel("      ");
+        JLabel spazio = new JLabel(Names.PATH_LABEL_SPAZIO);
         annullaButton = new JButton();
         annullaButton.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
         annullaButton.setPressedIcon(new ImageIcon("./Grafica/retelocale.png"));
-        annullaButton.setToolTipText("Indietro");
+        annullaButton.setToolTipText(Names.TOOLTIP_ANNULLABUTTON);
         annullaButton.setContentAreaFilled(false);
         annullaButton.setBorder(null);
         annullaButton.addActionListener(this);

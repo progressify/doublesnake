@@ -1,5 +1,6 @@
 package gestioneMappe;
 
+import doublesnake.Names;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -18,8 +19,6 @@ import javax.swing.JPanel;
  */
 public class SelezionaMappa extends JFrame implements ActionListener {
 
-    private int WINDOWS_WHITH = 700;
-    private int WINDOWS_HEIGH = 600;
     private JButton okButton;
     private JButton dxButton;
     private JButton sxButton;
@@ -36,11 +35,11 @@ public class SelezionaMappa extends JFrame implements ActionListener {
 
     private SelezionaMappa(JFrame mainWindow) {
         this.mainWindow = mainWindow;
-        setName("DOUBLE SNAKE");
-        setTitle("DOUBLE SNAKE");
-        setSize(WINDOWS_WHITH, WINDOWS_HEIGH);
+        setName(Names.NOME_FRAME);
+        setTitle(Names.NOME_FRAME);
+        setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
         JLabel label = new JLabel();
-        label.setIcon(new ImageIcon("./Grafica/spazio.jpg"));
+        label.setIcon(new ImageIcon(Names.PATH_SFONDO));
         label.setLayout(new BorderLayout());
         label.add(createCenterPanel(), BorderLayout.CENTER);
         label.add(createsouthPanel(), BorderLayout.SOUTH);
@@ -52,35 +51,31 @@ public class SelezionaMappa extends JFrame implements ActionListener {
     }
 
     private JPanel createCenterPanel() {
-        JPanel panel = new JPanel();
-
-//        Griglia grid=new Griglia();
-//        panel.add(grid);
-
+        JPanel panel = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE);
         panel.setOpaque(false);
         return panel;
     }
 
     private JPanel createsouthPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        
+
         okButton = new JButton();
         okButton.setIcon(new ImageIcon("./Grafica/creamappa.png"));
         okButton.setPressedIcon(new ImageIcon("./Grafica/creamappa.png"));
         okButton.setContentAreaFilled(false);
         okButton.setBorder(null);
-        okButton.setToolTipText("Memorizza la mappa appena creata");
+        okButton.setToolTipText(Names.TOOLTIP_OKBUTTON_SELECTOR);
         okButton.addActionListener(this);
 
-        JLabel spazio = new JLabel("      ");
+        JLabel spazio = new JLabel(Names.PATH_LABEL_SPAZIO);
         annullaButton = new JButton();
         annullaButton.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
         annullaButton.setPressedIcon(new ImageIcon("./Grafica/retelocale.png"));
-        annullaButton.setToolTipText("Indietro");
+        annullaButton.setToolTipText(Names.TOOLTIP_ANNULLABUTTON);
         annullaButton.setContentAreaFilled(false);
         annullaButton.setBorder(null);
         annullaButton.addActionListener(this);
-        
+
         JPanel paneltemp3 = new JPanel();
         paneltemp3.setOpaque(false);
         paneltemp3.add(okButton);
@@ -97,7 +92,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         dxButton = new JButton();
         dxButton.setIcon(new ImageIcon("./Grafica/frecciabludx.png"));
         dxButton.setPressedIcon(new ImageIcon("./Grafica/frecciabludx.png"));
-        dxButton.setToolTipText("Mappa successiva");
+        dxButton.setToolTipText(Names.TOOLTIP_DXBUTTON);
         dxButton.setContentAreaFilled(false);
         dxButton.setBorder(null);
         dxButton.addActionListener(this);
@@ -113,7 +108,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         sxButton = new JButton();
         sxButton.setIcon(new ImageIcon("./Grafica/frecciaverdesx.png"));
         sxButton.setPressedIcon(new ImageIcon("./Grafica/frecciaverdesx.png"));
-        sxButton.setToolTipText("Mappa precedente");
+        sxButton.setToolTipText(Names.TOOLTIP_SXBUTTON);
         sxButton.setContentAreaFilled(false);
         sxButton.setBorder(null);
         sxButton.addActionListener(this);
