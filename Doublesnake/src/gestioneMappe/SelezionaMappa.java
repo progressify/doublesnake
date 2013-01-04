@@ -79,8 +79,8 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         dxButton = new JButton();
-        dxButton.setIcon(new ImageIcon("./Grafica/frecciabludx.png"));
-        dxButton.setPressedIcon(new ImageIcon("./Grafica/frecciabludx.png"));
+        dxButton.setIcon(new ImageIcon(Names.PATH_FRECCIA_DESTRA));
+        dxButton.setPressedIcon(new ImageIcon(Names.PATH_FRECCIA_DESTRA));
         dxButton.setToolTipText(Names.TOOLTIP_DXBUTTON);
         dxButton.setContentAreaFilled(false);
         dxButton.setBorder(null);
@@ -95,8 +95,8 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         sxButton = new JButton();
-        sxButton.setIcon(new ImageIcon("./Grafica/frecciaverdesx.png"));
-        sxButton.setPressedIcon(new ImageIcon("./Grafica/frecciaverdesx.png"));
+        sxButton.setIcon(new ImageIcon(Names.PATH_FRECCIA_SINISTRA));
+        sxButton.setPressedIcon(new ImageIcon(Names.PATH_FRECCIA_SINISTRA));
         sxButton.setToolTipText(Names.TOOLTIP_SXBUTTON);
         sxButton.setContentAreaFilled(false);
         sxButton.setBorder(null);

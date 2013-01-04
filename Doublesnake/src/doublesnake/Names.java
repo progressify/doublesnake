@@ -32,8 +32,11 @@ public final class Names {
     public static final String PATH_BUTTON_STESSOPC = "./Grafica/stessopc.png";
     public static final String PATH_BUTTON_RETELOCALE = "./Grafica/retelocale.png";
     public static final String PATH_BUTTON_OPZIONE = "./Grafica/opzioniverde.png";
+    public static final String PATH_FRECCIA_DESTRA = "./Grafica/frecciaverdedx.png";
+    public static final String PATH_FRECCIA_SINISTRA = "./Grafica/frecciaverdesx.png";
     //tooltiptext
     public static final String TOOLTIP_ANNULLABUTTON = "Indietro";
+    public static final String TOOLTIP_ANNULLABUTTONEDITOR = "Resetta la griglia";
     public static final String TOOLTIP_OKBUTTON_EDITOR = "Memorizza la mappa appena creata";
     public static final String TOOLTIP_OKBUTTON_SELECTOR = "Seleziona la mappa";
     public static final String TOOLTIP_DXBUTTON = "Mappa successiva";
@@ -45,29 +48,27 @@ public final class Names {
     //Mela
     public static final String PATH_MELA = "./Grafica/pallino.png";
     //Snake Verde
-        //testa
+    //testa
     public static final String PATH_TESTA_SU = "./Grafica/snake/tsu.png";
     public static final String PATH_TESTA_GIU = "./Grafica/snake/tg.png";
     public static final String PATH_TESTA_DESTRA = "./Grafica/snake/td.png";
     public static final String PATH_TESTA_SINISTRA = "./Grafica/snake/ts.png";
-        //corpo
+    //corpo
     public static final String PATH_ALTO_ALTO_DESTRA = "./Grafica/snake/aad.png";
     public static final String PATH_ALTO_ALTO_SINISTRA = "./Grafica/snake/aas.png";
     public static final String PATH_ALTO_BASSO_DESTRA = "./Grafica/snake/abd.png";
     public static final String PATH_ALTO_BASSO_SINISTRA = "./Grafica/snake/abs.png";
-        //movimento
+    //movimento
     public static final String PATH_MOVIMETNO_VERTICALE = "./Grafica/snake/mv.png";
     public static final String PATH_MOVIMETNO_ORIZZONTALE = "./Grafica/snake/mo.png";
-        //coda
+    //coda
     public static final String PATH_CODA_SU = "./Grafica/snake/csu.png";
     public static final String PATH_CODA_GIU = "./Grafica/snake/cg.png";
     public static final String PATH_CODA_DESTRA = "./Grafica/snake/cd.png";
     public static final String PATH_CODA_SINISTRA = "./Grafica/snake/cs.png";
-    
     //pannello dove si muove lo snake
     public static final String PATH_CAMPO_COMETA = "./Grafica/cometa.jpg";
     public static final int PANNELLO_WIDTH = 500;
     public static final int PANNELLO_HEIGHT = 500;
     public static final int DOT_SIZE = 25;
-}   
-    
+}

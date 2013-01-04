@@ -154,10 +154,10 @@ public class Griglia extends JPanel {
      * @return true se la mappa è stata correttamente salvata, false se esiste
      * già una mappa con lo stesso nome
      */
-    public boolean salvaMappa(String nomeMappa, ArrayList<Coordinate> mattonciniMappa) {
+    public boolean salvaMappa(String nomeMappa) {
         boolean result = false;
         if (!mappe.containsKey(nomeMappa)) {
-            mappe.put(nomeMappa, mattonciniMappa);
+            mappe.put(nomeMappa, mattoncini);
             result = true;
         }
         return result;

@@ -1,16 +1,17 @@
 package snake;
 
-public class Coordinate {
+import java.io.Serializable;
+
+public class Coordinate implements Serializable{
 
     private int x;
     private int y;
 
-    public Coordinate() {
-    }
+    public Coordinate() {   }
 
-    public Coordinate(int x, int y) {
-        this.setX(x);
-        this.setY(y);
+    public Coordinate(int X, int Y) {
+        x=X;
+        y=Y;
     }
 
     public int getY() {
