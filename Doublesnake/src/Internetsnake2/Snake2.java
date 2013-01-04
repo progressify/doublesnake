@@ -14,7 +14,8 @@ public class Snake2 extends JFrame {
         add(new Board());
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 700);
+        setSize(600, 400);
+        
         setLocationRelativeTo(null);
         setTitle("Snake");
 

@@ -12,8 +12,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Hashtable;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
 
 public class Board extends JPanel implements ActionListener {
 
@@ -21,12 +26,12 @@ public class Board extends JPanel implements ActionListener {
      *
      */
     private static final long serialVersionUID = 1L;
-    private final int WIDTH = 600;
-    private final int HEIGHT = 600;
+    private final int WIDTH = 500;
+    private final int HEIGHT = 300;
     private final int DOT_SIZE = 25;
     private final int ALL_DOTS = 900;
-    private final int RAND_POSX = 24;
-    private final int RAND_POSY = 24;
+    private final int RAND_POSX = 20;
+    private final int RAND_POSY = 12;
     private final int DELAY = 200;
     private int x[] = new int[ALL_DOTS];
     private int y[] = new int[ALL_DOTS];
@@ -45,7 +50,16 @@ public class Board extends JPanel implements ActionListener {
     public Board() {
         addKeyListener(new TAdapter());
         snake1=new Hashtable<String, Image>();
-        setBackground(Color.black);
+        
+        JLabel sfondo=new JLabel();
+        sfondo.setBounds(0, 0, WIDTH, HEIGHT);
+        sfondo.setIcon(new ImageIcon("./Grafica/stella.jpg"));
+        sfondo.setVisible(true);
+        add(sfondo);
+        
+        setBounds(0, 0, WIDTH, HEIGHT);
+        
+        
         imageLoad(snake1);
         initGame();
     }
@@ -300,7 +314,6 @@ public class Board extends JPanel implements ActionListener {
             checkCollision();
             move();
         }
-
         repaint();
     }
 

@@ -58,7 +58,7 @@ public class GraficMenu extends JPanel implements ActionListener {
         JLabel sfondo = new JLabel();
         sfondo.setBounds(0, 0, Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
         sfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
-
+        
         JLabel titolo = new JLabel();
         titolo.setBounds(0, 100, 263, 152);
         titolo.setIcon(new ImageIcon(Names.PATH_LABEL_TITOLOAPP));
@@ -185,7 +185,8 @@ public class GraficMenu extends JPanel implements ActionListener {
         }
 
         if (source == bGioca) {
-            new GraficaSnake();
+            JFrame snake=new GraficaSnake();
+            snake.setVisible(true);
             //TODO
         }
         if (source == bCreaMappa) {
@@ -200,11 +201,11 @@ public class GraficMenu extends JPanel implements ActionListener {
             //TODO
         }
         if (source == bStessoPc) {
-            new GraficaSnake(true);
+            //new GraficaSnake(true);
             //TODO
         }
         if (source == bReteLocale) {
-            new GraficaSnake(true);
+            //new GraficaSnake(true);
             //TODO
         }
         if (source == bOpzione) {
