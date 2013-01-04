@@ -25,7 +25,7 @@ import snake.Coordinate;
  * @author tonino
  */
 public class Griglia extends JPanel {
-    
+
     private Map<String, ArrayList<Coordinate>> mappe;
     private ArrayList<Coordinate> mattoncini;
     private File flmappe = new File(Names.NOME_FILE_MAPPE);
@@ -33,19 +33,28 @@ public class Griglia extends JPanel {
     private Clicker clicker;
     private Cella[] celle;
     private boolean[] colora;
-    
-    public Griglia(int rows, int cols) {
+
+    public Griglia(int rows, int cols, boolean isEditable) {
         setLayout(new GridLayout(rows, cols));
         celle = new Cella[rows * cols];
         colora = new boolean[rows * cols];
         clicker = new Clicker();
-        
+        int r = 0;
+        int c = 0;
+
         for (int i = 0; i < rows * cols; i++) {
-            Cella c = new Cella();
-            c.addMouseListener(clicker);
-            add(c);
+            if (((i + 1) % Names.NUMERO_COLONNE) == 0) {
+                r++; 
+                c = 0; 
+            }
+            Cella tmpC = new Cella(r, c);
+            if (isEditable) {
+                tmpC.addMouseListener(clicker);
+            }
+            add(tmpC);
+            c++;
         }
-        
+
         mattoncini = new ArrayList();
         try {
             if (flmappe.exists()) {
@@ -59,43 +68,54 @@ public class Griglia extends JPanel {
             Logger.getLogger(Griglia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void coloraDecolora(Cella c) {
-        c.switchColore();
-    }
-    
+
     private class Cella extends JPanel {
-        
+
+        private final int riga;
+        private final int colonna;
         private boolean colorata;
         private Color bckColore;
-        
-        public Cella() {
+
+        public Cella(int row, int col) {
+            riga = row;
+            colonna = col;
             setOpaque(true);
             bckColore = getBackground();
             setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         }
-        
+
         public void switchColore() {
             setBackground(colorata ? bckColore : Color.GREEN);
             colorata = !colorata;
         }
-    }
-    
-    private class Clicker extends MouseAdapter {
         
+        public Coordinate restituisciCoordinate(){
+            return new Coordinate(riga, riga);
+        }
+    }
+
+    private void coloraDecolora(Cella c) {
+        c.switchColore();
+    }
+
+    private class Clicker extends MouseAdapter {
+
         @Override
         public void mouseClicked(MouseEvent me) {
-            coloraDecolora((Cella) me.getSource());
+            Cella obj = (Cella) me.getSource();
+            coloraDecolora(obj);
+            inserisci_CancellaMattoncino(obj.restituisciCoordinate());
         }
     }
 
     /**
-     * Inserisce un mattoncino nelle coordinate indicate, metodo utilizzato solo
-     * dalla classe EditorMappe
+     * Se le coordinate sono già contenute nell'ArrayList "mattoncini" lo
+     * rimuove altrimenti lo inserisce nelle coordinate indicate, metodo
+     * utilizzato solo dalla classe EditorMappe
      *
-     * @param coord coordinate del mattoncino da inserire
+     * @param coord coordinate del mattoncino da inserire/cancellare
      */
-    public void inserisciMattoncino(Coordinate coord) {
+    public void inserisci_CancellaMattoncino(Coordinate coord) {
         boolean flag = false;
         for (Coordinate tmpCoord : mattoncini) {
             if (tmpCoord.equals(coord)) {
@@ -104,20 +124,8 @@ public class Griglia extends JPanel {
         }
         if (flag == false) {
             mattoncini.add(coord);
-        }
-    }
-
-    /**
-     * Cancella un mattoncino dalle coordinate indicate, metodo utilizzato solo
-     * dalla classe EditorMappe
-     *
-     * @param coord coordinate del mattoncino da cancellare
-     */
-    public void cancellaMattoncino(Coordinate coord) {
-        for (Coordinate tmpCoord : mattoncini) {
-            if (tmpCoord.equals(coord)) {
-                mattoncini.remove(coord);
-            }
+        } else {
+            mattoncini.remove(coord);
         }
     }
 
@@ -127,7 +135,7 @@ public class Griglia extends JPanel {
      *
      * @param nomeMappa nome della mappa da visualizzare
      */
-    public void disegnaMattoncini(String nomeMappa) {
+    public void disegnaMappa(String nomeMappa) {
         mattoncini = mappe.get(nomeMappa);
         //TODO
     }

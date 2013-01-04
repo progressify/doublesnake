@@ -189,12 +189,10 @@ public class GraficMenu extends JPanel implements ActionListener {
             //TODO
         }
         if (source == bCreaMappa) {
-            windows.setVisible(false);
             JFrame frameEditorMappe = EditorMappe.getIstance(windows);
             frameEditorMappe.setVisible(true);
         }
         if (source == bCaricaMappa) {
-            windows.setVisible(false);
             JFrame frameSelectMappe = SelezionaMappa.getIstance(windows);
             frameSelectMappe.setVisible(true);
         }

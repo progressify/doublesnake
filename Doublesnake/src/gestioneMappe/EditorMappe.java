@@ -47,7 +47,7 @@ public class EditorMappe extends JFrame implements ActionListener {
     }
 
     private JPanel createCenterPanel() {
-        JPanel panel = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE);
+        JPanel panel = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE, true);
         panel.setOpaque(false);
         return panel;
     }
@@ -108,7 +108,6 @@ public class EditorMappe extends JFrame implements ActionListener {
         }
         if (source == annullaButton) {
             setVisible(false);
-            mainWindow.setVisible(true);
         }
     }
 }
