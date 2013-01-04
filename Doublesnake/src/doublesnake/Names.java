@@ -24,6 +24,7 @@ public final class Names {
     public static final String PATH_LABEL_GIOCATORESINGOLO = "./Grafica/giocatoresingolo.png";
     public static final String PATH_LABEL_TITOLOAPP = "./Grafica/titolo.png";
     //path dei bottoni
+    public static final String PATH_BUTTON_SALVA = "./Grafica/salva.png";
     public static final String PATH_BUTTON_GIOCA = "./Grafica/gioca.png";
     public static final String PATH_BUTTON_CREAMAPPA = "./Grafica/creamappa.png";
     public static final String PATH_BUTTON_CARICAMAPPA = "./Grafica/caricamappa.png";

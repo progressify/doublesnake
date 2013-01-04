@@ -60,8 +60,8 @@ public class EditorMappe extends JFrame implements ActionListener {
         JTextField nomemappa = new JTextField(30);
 
         okButton = new JButton();
-        okButton.setIcon(new ImageIcon("./Grafica/creamappa.png"));
-        okButton.setPressedIcon(new ImageIcon("./Grafica/creamappa.png"));
+        okButton.setIcon(new ImageIcon(Names.PATH_BUTTON_SALVA));
+        okButton.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_SALVA));
         okButton.setContentAreaFilled(false);
         okButton.setBorder(null);
         okButton.setToolTipText(Names.TOOLTIP_OKBUTTON_EDITOR);
@@ -104,6 +104,7 @@ public class EditorMappe extends JFrame implements ActionListener {
         }
 
         if (source == okButton) {
+            setVisible(false);
             //TODO
         }
         if (source == annullaButton) {

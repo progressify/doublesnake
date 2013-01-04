@@ -60,27 +60,16 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         JPanel panel = new JPanel(new BorderLayout());
 
         okButton = new JButton();
-        okButton.setIcon(new ImageIcon("./Grafica/creamappa.png"));
-        okButton.setPressedIcon(new ImageIcon("./Grafica/creamappa.png"));
+        okButton.setIcon(new ImageIcon(Names.PATH_BUTTON_SALVA));
+        okButton.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_SALVA));
         okButton.setContentAreaFilled(false);
         okButton.setBorder(null);
         okButton.setToolTipText(Names.TOOLTIP_OKBUTTON_SELECTOR);
         okButton.addActionListener(this);
 
-        JLabel spazio = new JLabel(Names.PATH_LABEL_SPAZIO);
-        annullaButton = new JButton();
-        annullaButton.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
-        annullaButton.setPressedIcon(new ImageIcon("./Grafica/retelocale.png"));
-        annullaButton.setToolTipText(Names.TOOLTIP_ANNULLABUTTON);
-        annullaButton.setContentAreaFilled(false);
-        annullaButton.setBorder(null);
-        annullaButton.addActionListener(this);
-
         JPanel paneltemp3 = new JPanel();
         paneltemp3.setOpaque(false);
         paneltemp3.add(okButton);
-        paneltemp3.add(spazio);
-        paneltemp3.add(annullaButton);
         panel.add(paneltemp3, BorderLayout.SOUTH);
         panel.setOpaque(false);
         return panel;
@@ -129,10 +118,8 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         }
 
         if (source == okButton) {
-            //TODO
-        }
-        if (source == annullaButton) {
             setVisible(false);
+            //TODO
         }
         if (source == dxButton) {
             //TODO

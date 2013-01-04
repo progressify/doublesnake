@@ -43,9 +43,11 @@ public class Griglia extends JPanel {
         int c = 0;
 
         for (int i = 0; i < rows * cols; i++) {
-            if (((i + 1) % Names.NUMERO_COLONNE) == 0) {
-                r++; 
-                c = 0; 
+            if ((i % Names.NUMERO_COLONNE) == 0) {
+                if (i != 0) {
+                    r++;
+                }
+                c = 0;
             }
             Cella tmpC = new Cella(r, c);
             if (isEditable) {
@@ -88,9 +90,9 @@ public class Griglia extends JPanel {
             setBackground(colorata ? bckColore : Color.GREEN);
             colorata = !colorata;
         }
-        
-        public Coordinate restituisciCoordinate(){
-            return new Coordinate(riga, riga);
+
+        public Coordinate restituisciCoordinate() {
+            return new Coordinate(colonna, riga);
         }
     }
 
@@ -104,7 +106,10 @@ public class Griglia extends JPanel {
         public void mouseClicked(MouseEvent me) {
             Cella obj = (Cella) me.getSource();
             coloraDecolora(obj);
-            inserisci_CancellaMattoncino(obj.restituisciCoordinate());
+            Coordinate cord = obj.restituisciCoordinate();
+            System.out.println("colonna: " + cord.getX());
+            System.out.println("righe: " + cord.getY());
+            inserisci_CancellaMattoncino(cord);
         }
     }
 
