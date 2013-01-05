@@ -52,7 +52,7 @@ public class EditorMappe extends JFrame implements ActionListener {
     }
 
     private JPanel createCenterPanel() {
-        grigliaPanel = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE, true);
+        grigliaPanel = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE);
         grigliaPanel.setOpaque(false);
         return grigliaPanel;
     }

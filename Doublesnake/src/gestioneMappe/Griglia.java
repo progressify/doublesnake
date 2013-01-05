@@ -14,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -34,7 +35,7 @@ public class Griglia extends JPanel {
     private Cella[] celle;
     private boolean[] colora;
 
-    public Griglia(int rows, int cols, boolean isEditable) {
+    public Griglia(int rows, int cols) {
         setLayout(new GridLayout(rows, cols));
         celle = new Cella[rows * cols];
         colora = new boolean[rows * cols];
@@ -50,9 +51,7 @@ public class Griglia extends JPanel {
                 c = 0;
             }
             Cella tmpC = new Cella(r, c);
-            if (isEditable) {
-                tmpC.addMouseListener(clicker);
-            }
+            tmpC.addMouseListener(clicker);
             add(tmpC);
             c++;
         }
@@ -68,6 +67,65 @@ public class Griglia extends JPanel {
             Logger.getLogger(Griglia.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Griglia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Griglia(int rows, int cols, String name) {
+        mattoncini = new ArrayList();
+        try {
+            if (flmappe.exists()) {
+                mappe = deserializzaMappe();
+            } else {
+                mappe = new HashMap<String, ArrayList<Coordinate>>();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Griglia.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Griglia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (name.equals("")) {
+            setLayout(new GridLayout(rows, cols));
+            celle = new Cella[rows * cols];
+            colora = new boolean[rows * cols];
+            clicker = new Clicker();
+            int r = 0;
+            int c = 0;
+
+            for (int i = 0; i < rows * cols; i++) {
+                if ((i % Names.NUMERO_COLONNE) == 0) {
+                    if (i != 0) {
+                        r++;
+                    }
+                    c = 0;
+                }
+                Cella tmpC = new Cella(r, c);
+                add(tmpC);
+                c++;
+            }
+        } else {
+            setLayout(new GridLayout(rows, cols));
+            celle = new Cella[rows * cols];
+            colora = new boolean[rows * cols];
+            int r = 0;
+            int c = 0;
+
+            ArrayList<Coordinate> get = mappe.get(name);
+
+            for (int i = 0; i < rows * cols; i++) {
+                if ((i % Names.NUMERO_COLONNE) == 0) {
+                    if (i != 0) {
+                        r++;
+                    }
+                    c = 0;
+                }
+                Cella tmpC = new Cella(r, c);
+                if (get.contains(new Coordinate(c, r))) {
+                    coloraDecolora(tmpC);
+                }
+                add(tmpC);
+                c++;
+            }
         }
     }
 
@@ -100,6 +158,9 @@ public class Griglia extends JPanel {
         c.switchColore();
     }
 
+    /**
+     * Classe che implementa il MouseListener
+     */
     private class Clicker extends MouseAdapter {
 
         @Override
@@ -121,28 +182,20 @@ public class Griglia extends JPanel {
      * @param coord coordinate del mattoncino da inserire/cancellare
      */
     public void inserisci_CancellaMattoncino(Coordinate coord) {
-        boolean flag = false;
-        for (Coordinate tmpCoord : mattoncini) {
-            if (tmpCoord.equals(coord)) {
-                flag = true;
-            }
-        }
-        if (flag == false) {
-            mattoncini.add(coord);
-        } else {
+        if (mattoncini.contains(coord)) {
             mattoncini.remove(coord);
+        } else {
+            mattoncini.add(coord);
         }
     }
 
     /**
-     * Metodo utilizzato solo dalla classe SelezionaMappa, dato un nome della
-     * mappa restituisce i mattoncini da disegnare al suo interno
+     * restituisce il nome di tutte le mappe presenti sotto forma di Set
      *
-     * @param nomeMappa nome della mappa da visualizzare
+     * @return struttura Set contenente i nomi
      */
-    public void disegnaMappa(String nomeMappa) {
-        mattoncini = mappe.get(nomeMappa);
-        //TODO
+    public Set mappePresenti() {
+        return mappe.keySet();
     }
 
     /**

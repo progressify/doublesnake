@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -12,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -22,8 +25,11 @@ public class SelezionaMappa extends JFrame implements ActionListener {
     private JButton okButton;
     private JButton dxButton;
     private JButton sxButton;
-    private JButton annullaButton;
+    private Iterator<String> itr;
     private JFrame mainWindow;
+    private JLabel labelSfondo;
+    private JPanel panelGriglia;
+    private JTextField nomemappa;
     private static SelezionaMappa istanzaSelection;
 
     public static JFrame getIstance(JFrame mainWindow) {
@@ -34,29 +40,43 @@ public class SelezionaMappa extends JFrame implements ActionListener {
     }
 
     private SelezionaMappa(JFrame mainWindow) {
-        this.mainWindow = mainWindow;
+        this.mainWindow = mainWindow;        
         setName(Names.NOME_FRAME);
         setTitle(Names.NOME_FRAME);
         setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
-        JLabel label = new JLabel();
-        label.setIcon(new ImageIcon(Names.PATH_SFONDO));
-        label.setLayout(new BorderLayout());
-        label.add(createCenterPanel(), BorderLayout.CENTER);
-        label.add(createsouthPanel(), BorderLayout.SOUTH);
-        label.add(createEastPanel(), BorderLayout.EAST);
-        label.add(createWestPanel(), BorderLayout.WEST);
-        add(label);
+        labelSfondo = new JLabel();
+        labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
+        labelSfondo.setLayout(new BorderLayout());
+        labelSfondo.add(createCenterPanel(""), BorderLayout.CENTER);
+        itr = ((Griglia) panelGriglia).mappePresenti().iterator();
+        labelSfondo.add(createNorthPanel(), BorderLayout.NORTH);
+        labelSfondo.add(createSouthPanel(), BorderLayout.SOUTH);
+        labelSfondo.add(createEastPanel(), BorderLayout.EAST);
+        labelSfondo.add(createWestPanel(), BorderLayout.WEST);
+        add(labelSfondo);
         setLocationRelativeTo(null);
         setResizable(false);
     }
 
-    private JPanel createCenterPanel() {
-        JPanel panel = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE, false);
+    private JPanel createCenterPanel(String name) {
+        panelGriglia = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE, name);
+        panelGriglia.setOpaque(false);
+        return panelGriglia;
+    }
+
+    private JPanel createNorthPanel() {
+        JPanel panel = new JPanel();
+        JLabel labelNomeMapp = new JLabel();
+        labelNomeMapp.setIcon(new ImageIcon(Names.PATH_LABEL_NOMEMAPPA));
+        nomemappa = new JTextField(30);
+        nomemappa.setEditable(false);
+        panel.add(labelNomeMapp);
+        panel.add(nomemappa);
         panel.setOpaque(false);
         return panel;
     }
 
-    private JPanel createsouthPanel() {
+    private JPanel createSouthPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
         okButton = new JButton();
@@ -118,14 +138,31 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         }
 
         if (source == okButton) {
+            if (nomemappa.getText().equals("")) {
+                //TODO nel caso non è stata selezionata nessuna mappa
+            } else {
+                //TODO nel caso viene selezionata una mappa
+            }
             setVisible(false);
-            //TODO
         }
         if (source == dxButton) {
-            //TODO
+            String str = "";
+            labelSfondo.remove(panelGriglia);
+            validate();
+            if (itr.hasNext()) {
+                str = itr.next();
+            } else {
+                itr = ((Griglia) panelGriglia).mappePresenti().iterator();
+            }
+            nomemappa.setText(str);
+            labelSfondo.add(createCenterPanel(str), BorderLayout.CENTER);
+            validate();
         }
         if (source == sxButton) {
-            //TODO
+            labelSfondo.remove(panelGriglia);
+            validate();
+            labelSfondo.add(createCenterPanel("sx"), BorderLayout.CENTER);
+            validate();
         }
     }
 }

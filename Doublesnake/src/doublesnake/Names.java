@@ -20,6 +20,7 @@ public final class Names {
     //path delle label
     public static final String PATH_LABEL_SPAZIO = "      ";
     public static final String PATH_LABEL_INSERISCINOMEMAPPA = "./Grafica/inseriscinomemappa.png";
+    public static final String PATH_LABEL_NOMEMAPPA = "./Grafica/nomemappa.png";
     public static final String PATH_LABEL_MULTIGIOCATORE = "./Grafica/multigiocatore.png";
     public static final String PATH_LABEL_GIOCATORESINGOLO = "./Grafica/giocatoresingolo.png";
     public static final String PATH_LABEL_TITOLOAPP = "./Grafica/titolo.png";
