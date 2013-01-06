@@ -5,8 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -25,12 +23,13 @@ public class SelezionaMappa extends JFrame implements ActionListener {
     private JButton okButton;
     private JButton dxButton;
     private JButton sxButton;
-    private Iterator<String> itr;
+    private String[] itr;
     private JFrame mainWindow;
     private JLabel labelSfondo;
     private JPanel panelGriglia;
     private JTextField nomemappa;
     private static SelezionaMappa istanzaSelection;
+    private int i = 0;
 
     public static JFrame getIstance(JFrame mainWindow) {
         if (istanzaSelection == null) {
@@ -40,7 +39,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
     }
 
     private SelezionaMappa(JFrame mainWindow) {
-        this.mainWindow = mainWindow;        
+        this.mainWindow = mainWindow;
         setName(Names.NOME_FRAME);
         setTitle(Names.NOME_FRAME);
         setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
@@ -48,7 +47,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
         labelSfondo.setLayout(new BorderLayout());
         labelSfondo.add(createCenterPanel(""), BorderLayout.CENTER);
-        itr = ((Griglia) panelGriglia).mappePresenti().iterator();
+        itr = ((Griglia) panelGriglia).mappePresenti();
         labelSfondo.add(createNorthPanel(), BorderLayout.NORTH);
         labelSfondo.add(createSouthPanel(), BorderLayout.SOUTH);
         labelSfondo.add(createEastPanel(), BorderLayout.EAST);
@@ -129,6 +128,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        boolean flag = true;
         Object source = e.getSource();
 
         try {
@@ -139,29 +139,42 @@ public class SelezionaMappa extends JFrame implements ActionListener {
 
         if (source == okButton) {
             if (nomemappa.getText().equals("")) {
-                //TODO nel caso non è stata selezionata nessuna mappa
+                //TODO nel caso non è stata selezionata nessuna mappa (deve selezionare il layout di default senza mattoncini)
             } else {
-                //TODO nel caso viene selezionata una mappa
+                //TODO nel caso viene selezionata una mappa (deve impostare il layout della mappa scelta)
             }
             setVisible(false);
         }
         if (source == dxButton) {
+            flag = true;
             String str = "";
             labelSfondo.remove(panelGriglia);
             validate();
-            if (itr.hasNext()) {
-                str = itr.next();
+            if (i < itr.length) {
+                str = itr[i];
+                i++;
             } else {
-                itr = ((Griglia) panelGriglia).mappePresenti().iterator();
+                i = 0;
             }
+            System.out.println(str);
             nomemappa.setText(str);
             labelSfondo.add(createCenterPanel(str), BorderLayout.CENTER);
             validate();
         }
         if (source == sxButton) {
+            flag = false;
+            String str = "";
             labelSfondo.remove(panelGriglia);
             validate();
-            labelSfondo.add(createCenterPanel("sx"), BorderLayout.CENTER);
+            if (i > 0) {
+                i--;
+                str = itr[i];
+            } else {
+                i = itr.length;
+            }
+            System.out.println(str);
+            nomemappa.setText(str);
+            labelSfondo.add(createCenterPanel(str), BorderLayout.CENTER);
             validate();
         }
     }

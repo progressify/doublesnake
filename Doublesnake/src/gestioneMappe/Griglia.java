@@ -190,12 +190,12 @@ public class Griglia extends JPanel {
     }
 
     /**
-     * restituisce il nome di tutte le mappe presenti sotto forma di Set
+     * restituisce il nome di tutte le mappe presenti sotto forma di Array
      *
-     * @return struttura Set contenente i nomi
+     * @return Array contenente i nomi
      */
-    public Set mappePresenti() {
-        return mappe.keySet();
+    public String[] mappePresenti() {
+        return mappe.keySet().toArray(new String[mappe.keySet().size()]);
     }
 
     /**
