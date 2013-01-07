@@ -38,8 +38,8 @@ public class EditorMappe extends JFrame implements ActionListener {
 
     private EditorMappe(JFrame mainWindow) {
         this.mainWindow = mainWindow;
-        setName(Names.NOME_FRAME);
-        setTitle(Names.NOME_FRAME);
+        setName(Names.NOME_FRAME_CREAMAPPA);
+        setTitle(Names.NOME_FRAME_CREAMAPPA);
         setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));

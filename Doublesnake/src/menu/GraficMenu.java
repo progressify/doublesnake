@@ -198,7 +198,8 @@ public class GraficMenu extends JPanel implements ActionListener {
             frameSelectMappe.setVisible(true);
         }
         if (source == bRecord) {
-            //TODO
+            JFrame frameOpzioni = Record.getIstance(windows);
+            frameOpzioni.setVisible(true);
         }
         if (source == bStessoPc) {
             //new GraficaSnake(true);

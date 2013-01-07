@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package menu;
 
 import doublesnake.Names;
@@ -50,8 +46,8 @@ public class Opzioni extends JFrame implements ActionListener {
 
     private Opzioni(JFrame mainWindow) {
         this.mainWindow = mainWindow;
-        setName(Names.NOME_FRAME);
-        setTitle(Names.NOME_FRAME);
+        setName(Names.NOME_FRAME_OPZIONI);
+        setTitle(Names.NOME_FRAME_OPZIONI);
         setSize(Names.OPZIONI_WHITH, Names.OPZIONI_HEIGH);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package doublesnake;
 
 /**
@@ -14,11 +10,19 @@ public final class Names {
     }
     //proprietà del frame
     public static final String NOME_FRAME = "DOUBLE SNAKE";
+    public static final String NOME_FRAME_RECORD = "DOUBLE SNAKE - Record";
+    public static final String NOME_FRAME_OPZIONI = "DOUBLE SNAKE - Opzioni";
+    public static final String NOME_FRAME_CREAMAPPA = "DOUBLE SNAKE - Crea Mappa";
+    public static final String NOME_FRAME_SELEZIONAMAPPA = "DOUBLE SNAKE - Seleziona Mappa";
     public static final int WINDOWS_WHITH = 700;
     public static final int WINDOWS_HEIGH = 600;
     public static final int OPZIONI_WHITH = 460;
     public static final int OPZIONI_HEIGH = 230;
+    public static final int RECORD_WHITH = 300;
+    public static final int RECORD_HEIGH = 330;
     public static final String PATH_SFONDO = "./Grafica/spazio.jpg";
+    //classe record
+    public static final String NOME_FILE_RECORD = "record.dat";
     //path delle label
     public static final String PATH_LABEL_SPAZIO = "      ";
     public static final String PATH_LABEL_INSERISCINOMEMAPPA = "./Grafica/inseriscinomemappa.png";
