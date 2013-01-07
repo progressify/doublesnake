@@ -14,7 +14,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -84,7 +83,7 @@ public class Griglia extends JPanel {
             Logger.getLogger(Griglia.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (name.equals("")) {
+        if (name.equals("LayoutStandard")) {
             setLayout(new GridLayout(rows, cols));
             celle = new Cella[rows * cols];
             colora = new boolean[rows * cols];

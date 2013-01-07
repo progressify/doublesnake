@@ -209,7 +209,8 @@ public class GraficMenu extends JPanel implements ActionListener {
             //TODO
         }
         if (source == bOpzione) {
-            //TODO
+            JFrame frameOpzioni = Opzioni.getIstance(windows);
+            frameOpzioni.setVisible(true);
         }
     }
 }
