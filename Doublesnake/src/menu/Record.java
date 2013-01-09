@@ -31,7 +31,7 @@ public class Record extends JFrame implements ActionListener {
     private JFrame mainWindow;
     private JLabel labelSfondo;
     private JButton okButton;
-    private Map<String, Double> punteggi;
+    private Map<String, Integer> punteggi;
     private File flrecord = new File(Names.NOME_FILE_RECORD);
 
     public static JFrame getIstance(JFrame mainWindow) {
@@ -47,7 +47,7 @@ public class Record extends JFrame implements ActionListener {
             if (flrecord.exists()) {
                 punteggi = deserializzaRecord();
             } else {
-                punteggi = new HashMap<String, Double>();
+                punteggi = new HashMap<String, Integer>();
             }
         } catch (IOException ex) {
             Logger.getLogger(Record.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,8 +69,8 @@ public class Record extends JFrame implements ActionListener {
         setResizable(false);
     }
 
-    public void aggiornaPunteggio(String nomeMappa, Double punti) {
-        Double tmp = punteggi.get(nomeMappa);
+    public void aggiornaPunteggio(String nomeMappa, int punti) {
+        int tmp = punteggi.get(nomeMappa);
         if (tmp < punti) {
             punteggi.put(nomeMappa, tmp);
 
@@ -114,9 +114,9 @@ public class Record extends JFrame implements ActionListener {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private Map<String, Double> deserializzaRecord() throws IOException, ClassNotFoundException {
+    private Map<String, Integer> deserializzaRecord() throws IOException, ClassNotFoundException {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(flrecord));
-        Map<String, Double> temp = (Map<String, Double>) in.readObject();
+        Map<String, Integer> temp = (Map<String, Integer>) in.readObject();
         in.close();
         return temp;
     }
@@ -136,12 +136,7 @@ public class Record extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Record.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Names.wwait();
 
         if (source == okButton) {
             setVisible(false);

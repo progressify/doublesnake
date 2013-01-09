@@ -5,8 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -180,13 +178,8 @@ public class Opzioni extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Opzioni.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         if (source == okButton) {
+            Names.wwait();
             if (!textFieldPlayer1.getText().equals("")) {
                 nomePlayer1 = textFieldPlayer1.getText();
             }

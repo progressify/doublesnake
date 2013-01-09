@@ -5,8 +5,6 @@ import gestioneMappe.EditorMappe;
 import gestioneMappe.SelezionaMappa;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -177,12 +175,7 @@ public class GraficMenu extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(EditorMappe.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Names.wwait();
 
         if (source == bGioca) {
             JFrame snake = new GraficaSnake();

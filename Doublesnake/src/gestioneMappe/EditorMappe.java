@@ -101,12 +101,7 @@ public class EditorMappe extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(EditorMappe.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Names.wwait();
 
         if (source == okButton) {
             Griglia grid = (Griglia) grigliaPanel;

@@ -8,6 +8,13 @@ public final class Names {
 
     private Names() {
     }
+    
+    public static void wwait(){
+         try {
+            Thread.sleep(300);
+        } catch (InterruptedException ex) {
+        }
+    }
     //proprietà del frame
     public static final String NOME_FRAME = "DOUBLE SNAKE";
     public static final String NOME_FRAME_RECORD = "DOUBLE SNAKE - Record";

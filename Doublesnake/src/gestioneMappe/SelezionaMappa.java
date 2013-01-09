@@ -5,8 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -127,12 +125,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(SelezionaMappa.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Names.wwait();
 
         if (source == okButton) {
             nomemappa.getText();
