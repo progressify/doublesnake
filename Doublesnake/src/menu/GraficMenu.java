@@ -180,7 +180,6 @@ public class GraficMenu extends JPanel implements ActionListener {
         if (source == bGioca) {
             JFrame snake = new GraficaSnake();
             snake.setVisible(true);
-            //TODO
         }
         if (source == bCreaMappa) {
             JFrame frameEditorMappe = EditorMappe.getIstance(windows);
@@ -188,6 +187,7 @@ public class GraficMenu extends JPanel implements ActionListener {
         }
         if (source == bCaricaMappa) {
             JFrame frameSelectMappe = SelezionaMappa.getIstance(windows);
+            ((SelezionaMappa) frameSelectMappe).ricarica();
             frameSelectMappe.setVisible(true);
         }
         if (source == bRecord) {

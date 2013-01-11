@@ -5,12 +5,17 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import snake.Coordinate;
 
 /**
  *
@@ -25,7 +30,8 @@ public class SelezionaMappa extends JFrame implements ActionListener {
     private JFrame mainWindow;
     private JLabel labelSfondo;
     private JPanel panelGriglia;
-    private JTextField nomemappa;
+    private JTextField nomeMappaFieldText;
+    private static String nomeMappa = "LayoutStandard";
     private static SelezionaMappa istanzaSelection;
     private int i = 0;
 
@@ -65,11 +71,11 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         JPanel panel = new JPanel();
         JLabel labelNomeMapp = new JLabel();
         labelNomeMapp.setIcon(new ImageIcon(Names.PATH_LABEL_NOMEMAPPA));
-        nomemappa = new JTextField(20);
-        nomemappa.setText("LayoutStandard");
-        nomemappa.setEditable(false);
+        nomeMappaFieldText = new JTextField(20);
+        nomeMappaFieldText.setText("LayoutStandard");
+        nomeMappaFieldText.setEditable(false);
         panel.add(labelNomeMapp);
-        panel.add(nomemappa);
+        panel.add(nomeMappaFieldText);
         panel.setOpaque(false);
         return panel;
     }
@@ -122,14 +128,27 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         return panel;
     }
 
+    public ArrayList<Coordinate> restituisciCoordinateMappa() {
+        return ((Griglia) panelGriglia).restituisciCoordinateMappa(nomeMappa);
+    }
+
+    public void ricarica() {
+        try {
+            itr = ((Griglia) panelGriglia).ricarica();
+        } catch (IOException ex) {
+            Logger.getLogger(SelezionaMappa.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SelezionaMappa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         Names.wwait();
 
         if (source == okButton) {
-            nomemappa.getText();
-            //TODO
+            nomeMappa = nomeMappaFieldText.getText();
             setVisible(false);
         }
         if (source == dxButton) {
@@ -142,7 +161,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
                 i = 0;
             }
             System.out.println(str);
-            nomemappa.setText(str);
+            nomeMappaFieldText.setText(str);
             labelSfondo.add(createCenterPanel(str), BorderLayout.CENTER);
             validate();
         }
@@ -156,7 +175,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
                 i = itr.length;
             }
             System.out.println(str);
-            nomemappa.setText(str);
+            nomeMappaFieldText.setText(str);
             labelSfondo.add(createCenterPanel(str), BorderLayout.CENTER);
             validate();
         }

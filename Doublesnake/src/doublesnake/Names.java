@@ -8,9 +8,9 @@ public final class Names {
 
     private Names() {
     }
-    
-    public static void wwait(){
-         try {
+
+    public static void wwait() {
+        try {
             Thread.sleep(300);
         } catch (InterruptedException ex) {
         }
@@ -18,6 +18,7 @@ public final class Names {
     //proprietà del frame
     public static final String NOME_FRAME = "DOUBLE SNAKE";
     public static final String NOME_FRAME_RECORD = "DOUBLE SNAKE - Record";
+    public static final String NOME_FRAME_GIOCA = "DOUBLE SNAKE - Gioco";
     public static final String NOME_FRAME_OPZIONI = "DOUBLE SNAKE - Opzioni";
     public static final String NOME_FRAME_CREAMAPPA = "DOUBLE SNAKE - Crea Mappa";
     public static final String NOME_FRAME_SELEZIONAMAPPA = "DOUBLE SNAKE - Seleziona Mappa";
@@ -55,6 +56,7 @@ public final class Names {
     public static final String PATH_BUTTON_LIVELLOVUOTO = "./Grafica/vuoto.png";
     public static final String PATH_FRECCIA_DESTRA = "./Grafica/frecciaverdedx.png";
     public static final String PATH_FRECCIA_SINISTRA = "./Grafica/frecciaverdesx.png";
+    public static final String PATH_BUTTON_AGGIORNA = "./Grafica/pulsantereset2.png";
     //tooltiptext
     public static final String TOOLTIP_ANNULLABUTTON = "Indietro";
     public static final String TOOLTIP_ANNULLABUTTONEDITOR = "Resetta la griglia";
@@ -67,6 +69,7 @@ public final class Names {
     public static final String TOOLTIP_LIVELLO3 = "Livello 3";
     public static final String TOOLTIP_LIVELLO4 = "Livello 4";
     public static final String TOOLTIP_LIVELLO5 = "Livello 5";
+    public static final String TOOLTIP_NEWGAMEBUTTON = "Nuovo Gioco";
     //tutto quello che mi serve per la griglia
     public static final String NOME_FILE_MAPPE = "mappe.dat";
     public static final int NUMERO_RIGHE = 20;
@@ -94,6 +97,7 @@ public final class Names {
     public static final String PATH_CODA_SINISTRA = "./Grafica/snake/cs.png";
     //pannello dove si muove lo snake
     public static final String PATH_CAMPO_COMETA = "./Grafica/cometa.jpg";
+    public static final String PATH_MATTONCINO = "./Grafica/mattoncino.png";
     public static final int PANNELLO_WIDTH = 500;
     public static final int PANNELLO_HEIGHT = 500;
     public static final int DOT_SIZE = 25;

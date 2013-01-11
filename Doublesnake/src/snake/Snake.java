@@ -1,6 +1,7 @@
 package snake;
 
 import doublesnake.Names;
+import gestioneMappe.SelezionaMappa;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -11,12 +12,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import menu.Opzioni;
+import sun.misc.Queue;
 
 public class Snake extends JPanel implements ActionListener, Runnable {
 
@@ -39,21 +42,20 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private Timer timer;
     private Image apple;
     private Hashtable<String, Image> snake;
+    private Thread th;
+    private ArrayList<Coordinate> coordMap;
+    private Queue direzioni = new Queue();
 
     public Snake() {
-
         addKeyListener(new TAdapter());
         snake = new Hashtable<String, Image>();
-
-        //JLabel sfondo=new JLabel();
-        //sfondo.setBounds(0, 0, Names.PANNELLO_WIDTH, Names.PANNELLO_HEIGHT);
-        //sfondo.setIcon(new ImageIcon(Names.PATH_CAMPO_COMETA));
-        //sfondo.setVisible(true);
-        //add(sfondo);
-        //setBounds(0, 0, Names.PANNELLO_WIDTH, Names.PANNELLO_HEIGHT);
-
+        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
+        if (sel.restituisciCoordinateMappa() != null) {
+            coordMap = sel.restituisciCoordinateMappa();
+        } else {
+            coordMap = new ArrayList<Coordinate>();
+        }
         imageLoad(snake);
-        //initGame();
     }
 
     private void imageLoad(Hashtable<String, Image> snake) {
@@ -116,6 +118,11 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         //corpo verticale
         ImageIcon idmv = new ImageIcon(Names.PATH_MOVIMETNO_VERTICALE);
         snake.put("mv", idmv.getImage());
+
+        //mattoncino
+        ImageIcon mattoncino = new ImageIcon(Names.PATH_MATTONCINO);
+        snake.put("mattoncino", mattoncino.getImage());
+
         setDelay();
         setFocusable(true);
     }
@@ -151,10 +158,19 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         timer.start();
     }
 
+    public void drawMattoncini(Graphics g) {
+        if (coordMap != null) {
+            for (int i = 0; i < coordMap.size(); i++) {
+                g.drawImage(snake.get("mattoncino"), (coordMap.get(i).getX()) * 25, (coordMap.get(i).getY()) * 25, this);
+            }
+        }
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (inGame) {
+        drawMattoncini(g);
+        if (inGame && !checkCollisionWithMap()) { //per non fargli effettuare il repaint quando incontra il muro
             g.drawImage(apple, apple_x, apple_y, this);
             int z;
             boolean flag;
@@ -243,86 +259,78 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     }
 
     public void checkApple() {
-
         if ((x[0] == apple_x) && (y[0] == apple_y)) {
             dots++;
             locateApple();
         }
     }
 
+    public boolean checkCollisionWithMap() {
+        boolean flag = false;
+        if (coordMap.contains(new Coordinate((x[0] / 25), (y[0] / 25)))) {
+            flag = true;
+            inGame = false;
+        }
+        return flag;
+    }
+
     public void move() {
-
         for (int z = dots; z > 0; z--) {
-            /*if(x[z]==WIDTH)
-             x[z]=0;
-             if(x[z]==0)
-             x[z]=WIDTH;
-             if(y[z]==HEIGHT)
-             y[z]=0;
-             if(y[z]==0)
-             y[z]=HEIGHT;*/
-
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
-
         if (left) {
             x[0] -= Names.DOT_SIZE;
         }
-
         if (right) {
             x[0] += Names.DOT_SIZE;
         }
-
         if (up) {
             y[0] -= Names.DOT_SIZE;
         }
-
         if (down) {
             y[0] += Names.DOT_SIZE;
+        }
+        //controllo per andare a capo
+        if (y[0] >= Names.PANNELLO_HEIGHT) {
+            y[0] = 0;
+        }
+        if (y[0] < 0) {
+            y[0] = Names.PANNELLO_HEIGHT;
+        }
+        if (x[0] >= Names.PANNELLO_WIDTH) {
+            x[0] = 0;
+        }
+        if (x[0] < 0) {
+            x[0] = Names.PANNELLO_WIDTH;
         }
     }
 
     public void checkCollision() {
 
         for (int z = dots; z > 0; z--) {
-
             if ((x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
             }
-        }
 
-        if (y[0] > Names.PANNELLO_HEIGHT) {
-            inGame = false;
-        }
-
-        if (y[0] < 1) {
-            inGame = false;
-        }
-
-        if (x[0] > Names.PANNELLO_WIDTH) {
-            inGame = false;
-        }
-
-        if (x[0] < 1) {
-            inGame = false;
         }
     }
 
     public void locateApple() {
-        do{
-            int r = (int) (Math.random() * Names.NUMERO_RIGHE);
+        do {
+            int r = (int) (Math.random() * (Names.NUMERO_RIGHE - 1));
             apple_x = ((r * Names.DOT_SIZE));
-            r = (int) (Math.random() * Names.NUMERO_COLONNE);
+            r = (int) (Math.random() * (Names.NUMERO_COLONNE - 1));
             apple_y = ((r * Names.DOT_SIZE));
-        }while(controlApple());
+        } while (controlApple() && checkCollisionWithMap());
     }
-    
-    public boolean controlApple(){
-        boolean flag=false;
+
+    public boolean controlApple() {
+        boolean flag = false;
         for (int i = 0; i < x.length; i++) {
-            if(x[i]==apple_x && y[i]==apple_y)
-                flag=true;
+            if (x[i] == apple_x && y[i] == apple_y) {
+                flag = true;
+            }
             return flag;
         }
         return flag;
@@ -330,7 +338,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (inGame) {
             checkApple();
             checkCollision();
@@ -343,11 +350,54 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     public void run() {
         initGame();
     }
-    
+
     public void start() {
         //Creating thread
-        Thread th = new Thread(this);
+        th = new Thread(this);
         th.start();
+    }
+
+    private class Directions {
+
+        private boolean left = false;
+        private boolean right = true;
+        private boolean up = false;
+        private boolean down = false;
+
+        public Directions() {
+        }
+
+        public void setLeft(boolean left) {
+            this.left = left;
+        }
+
+        public void setRight(boolean right) {
+            this.right = right;
+        }
+
+        public void setUp(boolean up) {
+            this.up = up;
+        }
+
+        public void setDown(boolean down) {
+            this.down = down;
+        }
+
+        public boolean isLeft() {
+            return left;
+        }
+
+        public boolean isRight() {
+            return right;
+        }
+
+        public boolean isUp() {
+            return up;
+        }
+
+        public boolean isDown() {
+            return down;
+        }
     }
 
     private class TAdapter extends KeyAdapter {
@@ -358,10 +408,11 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             int key = e.getKeyCode();
 
             if ((key == KeyEvent.VK_LEFT) && (!right)) {
-                left = true;
-                up = false;
-                down = false;
-                right = false;
+                Directions dir = new Directions();
+                dir.setLeft(true);
+                dir.setUp(false);
+                dir.setDown(false);
+                dir.setRight(false);
             }
 
             if ((key == KeyEvent.VK_RIGHT) && (!left)) {
@@ -384,6 +435,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                 up = false;
                 left = false;
             }
+
         }
     }
 }

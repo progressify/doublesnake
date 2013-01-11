@@ -188,6 +188,10 @@ public class Griglia extends JPanel {
         }
     }
 
+    public ArrayList<Coordinate> restituisciCoordinateMappa(String nomeMappa) {
+        return mappe.get(nomeMappa);
+    }
+
     /**
      * restituisce il nome di tutte le mappe presenti sotto forma di Array
      *
@@ -213,6 +217,11 @@ public class Griglia extends JPanel {
             result = true;
         }
         return result;
+    }
+
+    public String[] ricarica() throws IOException, ClassNotFoundException {
+        mappe = deserializzaMappe();
+        return mappePresenti();
     }
 
     /**
