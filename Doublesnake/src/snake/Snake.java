@@ -14,18 +14,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.Queue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import menu.Opzioni;
-import sun.misc.Queue;
 
 public class Snake extends JPanel implements ActionListener, Runnable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private final int ALL_DOTS = 672;
     private int DELAY;
@@ -34,17 +32,18 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private int dots;
     private int apple_x;
     private int apple_y;
-    private boolean left = false;
-    private boolean right = true;
-    private boolean up = false;
-    private boolean down = false;
+//    private boolean left = false;
+//    private boolean right = true;
+//    private boolean up = false;
+//    private boolean down = false;
     private boolean inGame = true;
     private Timer timer;
     private Image apple;
     private Hashtable<String, Image> snake;
     private Thread th;
     private ArrayList<Coordinate> coordMap;
-    private Queue direzioni = new Queue();
+    private Queue<Directions> coda;
+    private Directions direction;
 
     public Snake() {
         addKeyListener(new TAdapter());
@@ -55,6 +54,8 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         } else {
             coordMap = new ArrayList<Coordinate>();
         }
+        coda = new LinkedList<Directions>();
+        direction = new Directions(false, false, false, true);
         imageLoad(snake);
     }
 
@@ -178,16 +179,21 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                 flag = false;
                 if (z == 0) {
                     //TESTA
-                    if (left) {
+                    Directions tmp = direction;
+                    if (coda.size() != 0) {
+                        tmp = coda.remove();
+                    }
+
+                    if (tmp.isLeft()) {
                         g.drawImage(snake.get("ts"), x[z], y[z], this);
                     }
-                    if (up) {
+                    if (tmp.isUp()) {
                         g.drawImage(snake.get("tsu"), x[z], y[z], this);
                     }
-                    if (right) {
+                    if (tmp.isRight()) {
                         g.drawImage(snake.get("td"), x[z], y[z], this);
                     }
-                    if (down) {
+                    if (tmp.isDown()) {
                         g.drawImage(snake.get("tg"), x[z], y[z], this);
                     }
                 } else {
@@ -279,16 +285,21 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
-        if (left) {
+        Directions tmp = direction;
+        if (coda.size() != 0) {
+            tmp = coda.remove();
+        }
+
+        if (tmp.isLeft()) {
             x[0] -= Names.DOT_SIZE;
         }
-        if (right) {
+        if (tmp.isRight()) {
             x[0] += Names.DOT_SIZE;
         }
-        if (up) {
+        if (tmp.isUp()) {
             y[0] -= Names.DOT_SIZE;
         }
-        if (down) {
+        if (tmp.isDown()) {
             y[0] += Names.DOT_SIZE;
         }
         //controllo per andare a capo
@@ -351,8 +362,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         initGame();
     }
 
-    public void start() {
-        //Creating thread
+    public void start() {       //Creating thread
         th = new Thread(this);
         th.start();
     }
@@ -365,6 +375,13 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         private boolean down = false;
 
         public Directions() {
+        }
+
+        public Directions(boolean up, boolean down, boolean left, boolean right) {
+            this.up = up;
+            this.down = down;
+            this.left = left;
+            this.right = right;
         }
 
         public void setLeft(boolean left) {
@@ -407,33 +424,28 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
             int key = e.getKeyCode();
 
-            if ((key == KeyEvent.VK_LEFT) && (!right)) {
-                Directions dir = new Directions();
-                dir.setLeft(true);
-                dir.setUp(false);
-                dir.setDown(false);
-                dir.setRight(false);
+            if ((key == KeyEvent.VK_LEFT) && (!direction.isRight())) {
+                Directions dir = new Directions(false, false, true, false);
+                coda.offer(dir);
+                direction = dir;
             }
 
-            if ((key == KeyEvent.VK_RIGHT) && (!left)) {
-                right = true;
-                up = false;
-                down = false;
-                left = false;
+            if ((key == KeyEvent.VK_RIGHT) && (!direction.isLeft())) {
+                Directions dir = new Directions(false, false, false, true);
+                coda.offer(dir);
+                direction = dir;
             }
 
-            if ((key == KeyEvent.VK_UP) && (!down)) {
-                up = true;
-                right = false;
-                down = false;
-                left = false;
+            if ((key == KeyEvent.VK_UP) && (!direction.isDown())) {
+                Directions dir = new Directions(true, false, false, false);
+                coda.offer(dir);
+                direction = dir;
             }
 
-            if ((key == KeyEvent.VK_DOWN) && (!up)) {
-                down = true;
-                right = false;
-                up = false;
-                left = false;
+            if ((key == KeyEvent.VK_DOWN) && (!direction.isUp())) {
+                Directions dir = new Directions(false, true, false, false);
+                coda.offer(dir);
+                direction = dir;
             }
 
         }

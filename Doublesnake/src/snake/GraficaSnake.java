@@ -91,7 +91,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
         Object source = e.getSource();
 
         if (source == newGameButton) {
-            //this.setVisible(false);
+            this.setVisible(false);
             GraficaSnake graficaSnake = new GraficaSnake();
             graficaSnake.setVisible(true);
         }
