@@ -171,7 +171,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     public void paint(Graphics g) {
         super.paint(g);
         drawMattoncini(g);
-        if (inGame && !checkCollisionWithMap()) { //per non fargli effettuare il repaint quando incontra il muro
+        if (inGame && !checkCollisionWithMap(x[0], y[0], "snake")) { //per non fargli effettuare il repaint quando incontra il muro
             g.drawImage(apple, apple_x, apple_y, this);
             int z;
             boolean flag;
@@ -271,11 +271,13 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
-    public boolean checkCollisionWithMap() {
+    public boolean checkCollisionWithMap(int X, int Y, String chiamante) {
         boolean flag = false;
-        if (coordMap.contains(new Coordinate((x[0] / 25), (y[0] / 25)))) {
+        if (coordMap.contains(new Coordinate((X / 25), (Y / 25)))) {
             flag = true;
-            inGame = false;
+            if (chiamante.equals("snake")) {
+                inGame = false;
+            }
         }
         return flag;
     }
@@ -333,7 +335,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             apple_x = ((r * Names.DOT_SIZE));
             r = (int) (Math.random() * (Names.NUMERO_COLONNE - 1));
             apple_y = ((r * Names.DOT_SIZE));
-        } while (controlApple() && checkCollisionWithMap());
+        } while (controlApple() || checkCollisionWithMap(apple_x, apple_y, "apple"));
     }
 
     public boolean controlApple() {
