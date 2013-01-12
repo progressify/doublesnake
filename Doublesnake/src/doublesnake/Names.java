@@ -57,6 +57,7 @@ public final class Names {
     public static final String PATH_FRECCIA_DESTRA = "./Grafica/frecciaverdedx.png";
     public static final String PATH_FRECCIA_SINISTRA = "./Grafica/frecciaverdesx.png";
     public static final String PATH_BUTTON_AGGIORNA = "./Grafica/pulsantereset2.png";
+    public static final String PATH_BUTTON_ANNULLA = "./Grafica/Annulla.png";
     //tooltiptext
     public static final String TOOLTIP_ANNULLABUTTON = "Indietro";
     public static final String TOOLTIP_ANNULLABUTTONEDITOR = "Resetta la griglia";

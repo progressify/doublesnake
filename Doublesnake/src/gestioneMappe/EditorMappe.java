@@ -74,8 +74,8 @@ public class EditorMappe extends JFrame implements ActionListener {
 
         JLabel spazio = new JLabel(Names.PATH_LABEL_SPAZIO);
         annullaButton = new JButton();
-        annullaButton.setIcon(new ImageIcon("./Grafica/multigiocatore.png"));
-        annullaButton.setPressedIcon(new ImageIcon("./Grafica/retelocale.png"));
+        annullaButton.setIcon(new ImageIcon(Names.PATH_BUTTON_ANNULLA));
+        annullaButton.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_ANNULLA));
         annullaButton.setToolTipText(Names.TOOLTIP_ANNULLABUTTONEDITOR);
         annullaButton.setContentAreaFilled(false);
         annullaButton.setBorder(null);
