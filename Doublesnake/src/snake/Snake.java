@@ -32,10 +32,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private int dots;
     private int apple_x;
     private int apple_y;
-//    private boolean left = false;
-//    private boolean right = true;
-//    private boolean up = false;
-//    private boolean down = false;
     private boolean inGame = true;
     private Timer timer;
     private Image apple;
@@ -43,7 +39,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private Thread th;
     private ArrayList<Coordinate> coordMap;
     private Queue<Directions> coda;
-    private Directions direction;
+    private Directions lastDirection;
 
     public Snake() {
         addKeyListener(new TAdapter());
@@ -55,7 +51,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             coordMap = new ArrayList<Coordinate>();
         }
         coda = new LinkedList<Directions>();
-        direction = new Directions(false, false, false, true);
+        lastDirection = new Directions(false, false, false, true);
         imageLoad(snake);
     }
 
@@ -179,7 +175,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                 flag = false;
                 if (z == 0) {
                     //TESTA
-                    Directions tmp = direction;
+                    Directions tmp = lastDirection;
                     if (coda.size() != 0) {
                         tmp = coda.remove();
                     }
@@ -287,7 +283,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
-        Directions tmp = direction;
+        Directions tmp = lastDirection;
         if (coda.size() != 0) {
             tmp = coda.remove();
         }
@@ -419,6 +415,17 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
+    /**
+     * Questo metodo permette di inserire nella coda solo 2 direzioni per volta, questo serve per evitare che 
+     * @param dir direzione inserita
+     */
+    private void insertInTheQueue(Directions dir) {
+        if (coda.size() < 2) {
+            coda.offer(dir);
+            lastDirection = dir;
+        }
+    }
+
     private class TAdapter extends KeyAdapter {
 
         @Override
@@ -426,28 +433,24 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
             int key = e.getKeyCode();
 
-            if ((key == KeyEvent.VK_LEFT) && (!direction.isRight())) {
+            if ((key == KeyEvent.VK_LEFT) && (!lastDirection.isRight())) {
                 Directions dir = new Directions(false, false, true, false);
-                coda.offer(dir);
-                direction = dir;
+                insertInTheQueue(dir);
             }
 
-            if ((key == KeyEvent.VK_RIGHT) && (!direction.isLeft())) {
+            if ((key == KeyEvent.VK_RIGHT) && (!lastDirection.isLeft())) {
                 Directions dir = new Directions(false, false, false, true);
-                coda.offer(dir);
-                direction = dir;
+                insertInTheQueue(dir);
             }
 
-            if ((key == KeyEvent.VK_UP) && (!direction.isDown())) {
+            if ((key == KeyEvent.VK_UP) && (!lastDirection.isDown())) {
                 Directions dir = new Directions(true, false, false, false);
-                coda.offer(dir);
-                direction = dir;
+                insertInTheQueue(dir);
             }
 
-            if ((key == KeyEvent.VK_DOWN) && (!direction.isUp())) {
+            if ((key == KeyEvent.VK_DOWN) && (!lastDirection.isUp())) {
                 Directions dir = new Directions(false, true, false, false);
-                coda.offer(dir);
-                direction = dir;
+                insertInTheQueue(dir);
             }
 
         }

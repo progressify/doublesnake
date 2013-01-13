@@ -2,7 +2,6 @@ package menu;
 
 import doublesnake.Names;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -20,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -33,6 +34,8 @@ public class Record extends JFrame implements ActionListener {
     private JButton okButton;
     private Map<String, Integer> punteggi;
     private File flrecord = new File(Names.NOME_FILE_RECORD);
+    private JTextArea area;
+    private JScrollPane scroll;
 
     public static JFrame getIstance(JFrame mainWindow) {
         if (istanzaRecord == null) {
@@ -69,7 +72,7 @@ public class Record extends JFrame implements ActionListener {
         setResizable(false);
     }
 
-    public void aggiornaPunteggio(String nomeMappa, int punti) {
+    public void aggiornaPunteggio(String nomeMappa, int punti) { //da rivedere, i record verranno assegnati per nome giocatore non per mappe
         int tmp = punteggi.get(nomeMappa);
         if (tmp < punti) {
             punteggi.put(nomeMappa, tmp);
@@ -82,11 +85,15 @@ public class Record extends JFrame implements ActionListener {
         }
     }
 
-    private Component createCenterPanel() {
+    private JPanel createCenterPanel() {
         JPanel panel = new JPanel();
 
-
-
+        JLabel labelSpazio = new JLabel(new ImageIcon(Names.PATH_LABEL_SPAZIOVUOTO));
+        area = new JTextArea(12, 32);
+        area.setEditable(false);
+        scroll = new JScrollPane(area);
+        panel.add(labelSpazio);
+        panel.add(scroll);
         panel.setOpaque(false);
         return panel;
     }
