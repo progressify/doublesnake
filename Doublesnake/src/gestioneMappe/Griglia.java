@@ -220,7 +220,11 @@ public class Griglia extends JPanel {
     }
 
     public String[] ricarica() throws IOException, ClassNotFoundException {
-        mappe = deserializzaMappe();
+        if (flmappe.exists()) {
+            mappe = deserializzaMappe();
+        } else {
+            mappe = new HashMap<String, ArrayList<Coordinate>>();
+        }
         return mappePresenti();
     }
 

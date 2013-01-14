@@ -35,7 +35,7 @@ public class GraficMenu extends JPanel implements ActionListener {
         windows = new JFrame();
         windows.setName(Names.NOME_FRAME);
         windows.setTitle(Names.NOME_FRAME);
-        windows.setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
+        windows.setSize(Names.WINDOWS_WIDTH, Names.WINDOWS_HEIGH);
         label = jSfondo();
         label.add(jPanelMenuSingol());
         label.add(jPanelMenuMulti());
@@ -54,7 +54,7 @@ public class GraficMenu extends JPanel implements ActionListener {
 
     private JLabel jSfondo() {
         JLabel sfondo = new JLabel();
-        sfondo.setBounds(0, 0, Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
+        sfondo.setBounds(0, 0, Names.WINDOWS_WIDTH, Names.WINDOWS_HEIGH);
         sfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
 
         JLabel titolo = new JLabel();
@@ -80,7 +80,7 @@ public class GraficMenu extends JPanel implements ActionListener {
     private JPanel jPanelMenuSingol() {
         JPanel pannelMenu = new JPanel();
         pannelMenu.setLayout(null);
-        pannelMenu.setBounds(0, 0, Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
+        pannelMenu.setBounds(0, 0, Names.WINDOWS_WIDTH, Names.WINDOWS_HEIGH);
 
         bGioca = new JButton();
         bGioca.addActionListener(this);
@@ -132,7 +132,7 @@ public class GraficMenu extends JPanel implements ActionListener {
     private JPanel jPanelMenuMulti() {
         JPanel pannelMenu = new JPanel();
         pannelMenu.setLayout(null);
-        pannelMenu.setBounds(0, 0, Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
+        pannelMenu.setBounds(0, 0, Names.WINDOWS_WIDTH, Names.WINDOWS_HEIGH);
 
         bStessoPc = new JButton();
         bStessoPc.addActionListener(this);

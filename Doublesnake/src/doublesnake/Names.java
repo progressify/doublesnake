@@ -17,31 +17,6 @@ public final class Names {
 
     private Names() {
     }
-
-    public static Font caricaFont() {
-        Font font = null;
-        try {
-            File fl = new File(PATH_FONT);
-            FileInputStream fis = new FileInputStream(fl);
-            font = Font.createFont(Font.TRUETYPE_FONT, fis);
-            font = font.deriveFont(25f);
-            System.out.println(font.getSize());
-        } catch (FontFormatException ex) {
-            Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return font;
-    }
-
-    public static void wwait() {
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException ex) {
-        }
-    }
     //proprietà del frame
     public static final String NOME_FRAME = "DOUBLE SNAKE";
     public static final String NOME_FRAME_RECORD = "DOUBLE SNAKE - Record";
@@ -49,11 +24,11 @@ public final class Names {
     public static final String NOME_FRAME_OPZIONI = "DOUBLE SNAKE - Opzioni";
     public static final String NOME_FRAME_CREAMAPPA = "DOUBLE SNAKE - Crea Mappa";
     public static final String NOME_FRAME_SELEZIONAMAPPA = "DOUBLE SNAKE - Seleziona Mappa";
-    public static final int WINDOWS_WHITH = 700;
+    public static final int WINDOWS_WIDTH = 700;
     public static final int WINDOWS_HEIGH = 600;
-    public static final int OPZIONI_WHITH = 460;
+    public static final int OPZIONI_WIDTH = 460;
     public static final int OPZIONI_HEIGH = 230;
-    public static final int RECORD_WHITH = 300;
+    public static final int RECORD_WIDTH = 300;
     public static final int RECORD_HEIGH = 330;
     public static final String PATH_SFONDO = "./Grafica/spazio.jpg";
     public static final String PATH_FONT = "./Grafica/digital.ttf";
@@ -102,7 +77,7 @@ public final class Names {
     //tutto quello che mi serve per la griglia
     public static final String NOME_FILE_MAPPE = "mappe.dat";
     public static final int NUMERO_RIGHE = 20;
-    public static final int NUMERO_COLONNE = 20;
+    public static final int NUMERO_COLONNE = 28;
     //Mela
     public static final String PATH_MELA = "./Grafica/pallino.png";
     //Snake Verde
@@ -127,7 +102,31 @@ public final class Names {
     //pannello dove si muove lo snake
     public static final String PATH_CAMPO_COMETA = "./Grafica/cometa.jpg";
     public static final String PATH_MATTONCINO = "./Grafica/mattoncino.png";
-    public static final int PANNELLO_WIDTH = 500;
+    public static final int PANNELLO_WIDTH = 700;
     public static final int PANNELLO_HEIGHT = 500;
     public static final int DOT_SIZE = 25;
+
+    public static Font caricaFont() {
+        Font font = null;
+        try {
+            File fl = new File(PATH_FONT);
+            FileInputStream fis = new FileInputStream(fl);
+            font = Font.createFont(Font.TRUETYPE_FONT, fis);
+            font = font.deriveFont(38f);
+            System.out.println(font.getSize());
+        } catch (FontFormatException ex) {
+            font = new Font("Helvetica", Font.BOLD, 14);
+            Logger.getLogger(Names.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return font;
+    }
+
+    public static void wwait() {
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException ex) {
+        }
+    }
 }

@@ -59,6 +59,21 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         this.start();
     }
 
+    @Override
+    public void run() {
+        initGame();
+    }
+
+    private void start() {       //Creating thread
+        th = new Thread(this);
+        th.start();
+        System.out.println(th.isAlive());
+    }
+
+    public void stop() {
+        th.interrupt();
+    }
+
     private void imageLoad(Hashtable<String, Image> snake) {
         //PALLINO
         ImageIcon iia = new ImageIcon(Names.PATH_MELA);
@@ -125,7 +140,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         snake.put("mattoncino", mattoncino.getImage());
     }
 
-    public void setDelay() {
+    public final void setDelay() {
         Opzioni opz = (Opzioni) Opzioni.getIstance(new JFrame());
         DELAY = opz.getLivello();
     }
@@ -154,7 +169,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         super.paint(g);
         drawMattoncini(g);
         if (inGame && !checkCollisionWithMap(x[0], y[0], "snake")) { //per non fargli effettuare il repaint quando incontra il muro
-            g.drawImage(apple, apple_x, apple_y, this);
+            g.drawImage(apple, apple_x, apple_y, null);
             int z;
             boolean flag;
             for (z = 0; z < dots - 1; z++) {
@@ -235,14 +250,12 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     public void gameOver(Graphics g) {
         String msg = "Game Over";
-
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-
-        FontMetrics metr = this.getFontMetrics(small);
-
-        g.setColor(Color.white);
-        g.setFont(small);
+        Font font = Names.caricaFont();
+        FontMetrics metr = this.getFontMetrics(font);
+        g.setColor(Color.RED);
+        g.setFont(font);
         g.drawString(msg, (Names.PANNELLO_WIDTH - metr.stringWidth(msg)) / 2, Names.PANNELLO_HEIGHT / 2);
+        timer.stop();
     }
 
     public void checkApple() {
@@ -290,7 +303,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             y[0] = 0;
         }
         if (y[0] < 0) {
-            y[0] = Names.PANNELLO_HEIGHT;
+            y[0] = Names.PANNELLO_HEIGHT - 25;
         }
         if (x[0] >= Names.PANNELLO_WIDTH) {
             x[0] = 0;
@@ -314,15 +327,25 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         do {
             int r = (int) (Math.random() * (Names.NUMERO_RIGHE - 1));
             apple_x = ((r * Names.DOT_SIZE));
+            System.out.println("coord riga " + r + " " + apple_x);
             r = (int) (Math.random() * (Names.NUMERO_COLONNE - 1));
             apple_y = ((r * Names.DOT_SIZE));
+            System.out.println("coord colonna " + r + " " + apple_y);
         } while (controlApple() || checkCollisionWithMap(apple_x, apple_y, "apple"));
     }
 
+    /**
+     * Controlla se la mela viene collocata sul corpo del serpente
+     *
+     * @return true o false a seconda del caso
+     */
     public boolean controlApple() {
         boolean flag = false;
         for (int i = 0; i < x.length; i++) {
             if (x[i] == apple_x && y[i] == apple_y) {
+                flag = true;
+            }
+            if (apple_y == Names.PANNELLO_HEIGHT) {
                 flag = true;
             }
             return flag;
@@ -338,21 +361,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             move();
         }
         repaint();
-    }
-
-    @Override
-    public void run() {
-        initGame();
-    }
-
-    public void start() {       //Creating thread
-        th = new Thread(this);
-        th.start();
-        System.out.println(th.isAlive());
-    }
-
-    public void stop() {
-        th.interrupt();
     }
 
     private class Directions {

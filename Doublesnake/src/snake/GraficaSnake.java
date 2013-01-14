@@ -26,22 +26,26 @@ public class GraficaSnake extends JFrame implements ActionListener {
 
         setName(Names.NOME_FRAME_GIOCA);
         setTitle(Names.NOME_FRAME_GIOCA);
-        setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
+        setSize(Names.WINDOWS_WIDTH, Names.WINDOWS_HEIGH);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
         labelSfondo.setLayout(new BorderLayout());
-        labelSfondo.add(createCenterPanel(), BorderLayout.CENTER);
+        labelSfondo.add(createNorthPanel(), BorderLayout.NORTH);
         labelSfondo.add(createSouthPanel(), BorderLayout.SOUTH);
         add(labelSfondo);
         setLocationRelativeTo(null);
         setResizable(false);
     }
 
-    private JPanel createCenterPanel() {
+    private JLabel createNorthPanel() {
+        JLabel labelSfondoPanel = new JLabel();
+        labelSfondoPanel.setSize(Names.PANNELLO_HEIGHT, Names.PANNELLO_WIDTH);
+        labelSfondoPanel.setIcon(new ImageIcon(Names.PATH_CAMPO_COMETA));
         snake = new Snake();
-        add(snake);
+        labelSfondoPanel.setLayout(new BorderLayout());
+        labelSfondoPanel.add(snake, BorderLayout.CENTER);
         snake.setOpaque(false);
-        return snake;
+        return labelSfondoPanel;
     }
 
     private JPanel createSouthPanel() {

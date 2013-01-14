@@ -46,7 +46,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         this.mainWindow = mainWindow;
         setName(Names.NOME_FRAME_SELEZIONAMAPPA);
         setTitle(Names.NOME_FRAME_SELEZIONAMAPPA);
-        setSize(Names.WINDOWS_WHITH, Names.WINDOWS_HEIGH);
+        setSize(Names.WINDOWS_WIDTH, Names.WINDOWS_HEIGH);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
         labelSfondo.setLayout(new BorderLayout());
