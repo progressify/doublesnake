@@ -194,19 +194,19 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                     }
                 } else {
                     //ANGOLI
-                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ( (x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z]) ) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]) ))) {
+                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
                         g.drawImage(snake.get("aad"), x[z], y[z], this);
                         flag = true;
                     }
-                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z]) ) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z]) ) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
+                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
                         g.drawImage(snake.get("aas"), x[z], y[z], this);
                         flag = true;
                     }
-                    if ((((y[z + 1] < y[z]) ) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]) )) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1] ) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
+                    if ((((y[z + 1] < y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
                         g.drawImage(snake.get("abd"), x[z], y[z], this);
                         flag = true;
                     }
-                    if (((y[z + 1] == y[z]) && (y[z] > y[z - 1] ) && (x[z + 1] > x[z] ) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z] ) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1] ))) {
+                    if (((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] > x[z]) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z]) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1]))) {
                         g.drawImage(snake.get("abs"), x[z], y[z], this);
                         flag = true;
                     }
@@ -217,7 +217,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                         } else {
                             g.drawImage(snake.get("mv"), x[z], y[z], this);
                         }
-
                         if (x[z] == x[z - 1] && x[z] == x[z + 1]) {
                             g.drawImage(snake.get("mv"), x[z], y[z], this);
                         } else {
@@ -227,22 +226,18 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                 }
             }
             //CODA
-            if (x[z] > x[z - 1] || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
-                g.drawImage(snake.get("cs"), x[z], y[z], this);
-            } else if (y[z] > y[z - 1] || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
-                g.drawImage(snake.get("csu"), x[z], y[z], this);
-                
-                //non vanno bene
-            } else if ((x[z - 1] == 0 && x[z] == Names.PANNELLO_WIDTH - Names.DOT_SIZE)) {
-                g.drawImage(snake.get("cd"), x[z], y[z], this);
-            } else if ((y[z - 1] == 0 && y[z] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
-                g.drawImage(snake.get("cg"), x[z], y[z], this);
-            } else if (x[z] < x[z - 1]) {
-                g.drawImage(snake.get("cd"), x[z], y[z], this);
-            } else if (y[z] < y[z - 1]) {
-                g.drawImage(snake.get("cg"), x[z], y[z], this);
+            String drawCoda = ""; //ho preferito adottare questa soluzione così sono sicuro che alla fine disegnerà sempre un unica immagine e non immagini sovrapposte
+            if (x[z - 1] - x[z] == -25 || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
+                drawCoda = "cs";
+            } else if (x[z] == (Names.PANNELLO_WIDTH - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
+                drawCoda = "cd";
             }
-
+            if (y[z - 1] - y[z] == -25 || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
+                drawCoda = "csu";
+            } else if ((y[z - 1] == 0) && (y[z] == (Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) || y[z] < y[z - 1]) {
+                drawCoda = "cg";
+            }
+            g.drawImage(snake.get(drawCoda), x[z], y[z], null);
             Toolkit.getDefaultToolkit().sync();
             g.dispose();
 
