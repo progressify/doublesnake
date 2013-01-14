@@ -4,13 +4,8 @@ import doublesnake.Names;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -22,9 +17,6 @@ import menu.Opzioni;
 
 public class GraficaSnake extends JFrame implements ActionListener {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private JLabel labelSfondo;
     private JButton newGameButton;
@@ -48,29 +40,19 @@ public class GraficaSnake extends JFrame implements ActionListener {
     private JPanel createCenterPanel() {
         snake = new Snake();
         add(snake);
-        snake.start();
         snake.setOpaque(false);
         return snake;
     }
 
     private JPanel createSouthPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        Font font = null;
+        Font font;
 
         Opzioni opz = (Opzioni) Opzioni.getIstance(this);
         JLabel labelNomePlayer = new JLabel(opz.getNomePlayer1());
         labelNomePlayer.setForeground(Color.WHITE);
-        /*try {
-         FileInputStream in = new FileInputStream(new File("./Grafica/digital.ttf"));
-         font = Font.createFont(Font.TRUETYPE_FONT, in);
-         } catch (FontFormatException ex) {
-         Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (IOException ex) {
-         Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
-         } catch (Exception ex) {
-         Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         labelNomePlayer.setFont(font);*/
+        font = Names.caricaFont();
+        labelNomePlayer.setFont(font);
 
         newGameButton = new JButton();
         newGameButton.setIcon(new ImageIcon(Names.PATH_BUTTON_AGGIORNA));
@@ -92,6 +74,12 @@ public class GraficaSnake extends JFrame implements ActionListener {
 
         if (source == newGameButton) {
             this.setVisible(false);
+            try {
+                this.finalize();
+            } catch (Throwable ex) {
+                Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            snake.stop();
             GraficaSnake graficaSnake = new GraficaSnake();
             graficaSnake.setVisible(true);
         }

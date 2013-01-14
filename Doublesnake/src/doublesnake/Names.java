@@ -1,5 +1,14 @@
 package doublesnake;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import snake.GraficaSnake;
+
 /**
  *
  * @author tonino
@@ -7,6 +16,24 @@ package doublesnake;
 public final class Names {
 
     private Names() {
+    }
+
+    public static Font caricaFont() {
+        Font font = null;
+        try {
+            File fl = new File(PATH_FONT);
+            FileInputStream fis = new FileInputStream(fl);
+            font = Font.createFont(Font.TRUETYPE_FONT, fis);
+            font = font.deriveFont(25f);
+            System.out.println(font.getSize());
+        } catch (FontFormatException ex) {
+            Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return font;
     }
 
     public static void wwait() {
@@ -29,6 +56,7 @@ public final class Names {
     public static final int RECORD_WHITH = 300;
     public static final int RECORD_HEIGH = 330;
     public static final String PATH_SFONDO = "./Grafica/spazio.jpg";
+    public static final String PATH_FONT = "./Grafica/digital.ttf";
     //classe record
     public static final String NOME_FILE_RECORD = "record.dat";
     //path delle label

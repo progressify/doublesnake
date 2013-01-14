@@ -53,6 +53,9 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         coda = new LinkedList<Directions>();
         lastDirection = new Directions(false, false, false, true);
         imageLoad(snake);
+        setFocusable(true);
+        setDelay();
+        this.start();
     }
 
     private void imageLoad(Hashtable<String, Image> snake) {
@@ -119,29 +122,11 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         //mattoncino
         ImageIcon mattoncino = new ImageIcon(Names.PATH_MATTONCINO);
         snake.put("mattoncino", mattoncino.getImage());
-
-        setDelay();
-        setFocusable(true);
     }
 
     public void setDelay() {
         Opzioni opz = (Opzioni) Opzioni.getIstance(new JFrame());
-        int temp = opz.getLivello();
-        if (temp == 1) {
-            DELAY = 300;
-        }
-        if (temp == 2) {
-            DELAY = 250;
-        }
-        if (temp == 3) {
-            DELAY = 200;
-        }
-        if (temp == 4) {
-            DELAY = 125;
-        }
-        if (temp == 5) {
-            DELAY = 50;
-        }
+        DELAY = opz.getLivello();
     }
 
     public void initGame() {
@@ -278,14 +263,14 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         return flag;
     }
 
-    public void move() {
+    public synchronized void move() {
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
         Directions tmp = lastDirection;
         if (coda.size() != 0) {
-            tmp = coda.remove();
+            tmp = coda.peek();
         }
 
         if (tmp.isLeft()) {
@@ -363,6 +348,11 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     public void start() {       //Creating thread
         th = new Thread(this);
         th.start();
+        System.out.println(th.isAlive());
+    }
+
+    public void stop() {
+        th.interrupt();
     }
 
     private class Directions {
@@ -416,10 +406,12 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     }
 
     /**
-     * Questo metodo permette di inserire nella coda solo 2 direzioni per volta, questo serve per evitare che 
+     * Questo metodo permette di inserire nella coda solo 2 direzioni per volta,
+     * questo serve per evitare che
+     *
      * @param dir direzione inserita
      */
-    private void insertInTheQueue(Directions dir) {
+    private synchronized void insertInTheQueue(Directions dir) {
         if (coda.size() < 2) {
             coda.offer(dir);
             lastDirection = dir;
@@ -430,29 +422,23 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
         @Override
         public void keyPressed(KeyEvent e) {
-
             int key = e.getKeyCode();
-
             if ((key == KeyEvent.VK_LEFT) && (!lastDirection.isRight())) {
                 Directions dir = new Directions(false, false, true, false);
                 insertInTheQueue(dir);
             }
-
             if ((key == KeyEvent.VK_RIGHT) && (!lastDirection.isLeft())) {
                 Directions dir = new Directions(false, false, false, true);
                 insertInTheQueue(dir);
             }
-
             if ((key == KeyEvent.VK_UP) && (!lastDirection.isDown())) {
                 Directions dir = new Directions(true, false, false, false);
                 insertInTheQueue(dir);
             }
-
             if ((key == KeyEvent.VK_DOWN) && (!lastDirection.isUp())) {
                 Directions dir = new Directions(false, true, false, false);
                 insertInTheQueue(dir);
             }
-
         }
     }
 }

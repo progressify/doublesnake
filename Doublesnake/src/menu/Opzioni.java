@@ -22,7 +22,7 @@ public class Opzioni extends JFrame implements ActionListener {
     private static Opzioni istanzaOpzioni;
     private JLabel labelSfondo;
     private JButton okButton;
-    private int livello = 1;
+    private int livello = 300;
     private JButton livello1;
     private JButton livello2;
     private JButton livello3;
@@ -199,7 +199,7 @@ public class Opzioni extends JFrame implements ActionListener {
             livello3.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
             livello4.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
             livello5.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
-            livello = 1;
+            livello = 300;
         }
         if (source == livello2) {
             livello1.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
@@ -207,7 +207,7 @@ public class Opzioni extends JFrame implements ActionListener {
             livello3.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
             livello4.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
             livello5.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
-            livello = 2;
+            livello = 250;
         }
         if (source == livello3) {
             livello1.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
@@ -215,7 +215,7 @@ public class Opzioni extends JFrame implements ActionListener {
             livello3.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
             livello4.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
             livello5.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
-            livello = 3;
+            livello = 200;
         }
         if (source == livello4) {
             livello1.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
@@ -223,7 +223,7 @@ public class Opzioni extends JFrame implements ActionListener {
             livello3.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
             livello4.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
             livello5.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOVUOTO));
-            livello = 4;
+            livello = 125;
         }
         if (source == livello5) {
             livello1.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
@@ -231,7 +231,7 @@ public class Opzioni extends JFrame implements ActionListener {
             livello3.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
             livello4.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
             livello5.setIcon(new ImageIcon(Names.PATH_BUTTON_LIVELLOPIENO));
-            livello = 5;
+            livello = 50;
         }
     }
 }
