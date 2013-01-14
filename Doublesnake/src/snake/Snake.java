@@ -21,7 +21,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import menu.Opzioni;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class Snake extends JPanel implements ActionListener, Runnable {
 
@@ -195,19 +194,19 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                     }
                 } else {
                     //ANGOLI
-                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1]) || (y[z] - y[z - 1] > 1)) && ((x[z] - x[z + 1] > 1) || (x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z]) || (y[z] - y[z + 1] > 1)) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]) || (x[z - 1] - x[z] > 1)))) {
+                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ( (x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z]) ) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]) ))) {
                         g.drawImage(snake.get("aad"), x[z], y[z], this);
                         flag = true;
                     }
-                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1]) || (y[z] - y[z - 1] > 1)) && ((x[z + 1] > x[z]) || (x[z] - x[z + 1] > 1)) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z]) || (y[z] - y[z + 1] > 1)) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1]) || (x[z] - x[z - 1] > 1)))) {
+                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z]) ) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z]) ) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
                         g.drawImage(snake.get("aas"), x[z], y[z], this);
                         flag = true;
                     }
-                    if ((((y[z + 1] < y[z]) || (y[z + 1] - y[z] > 1)) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]) || (x[z - 1] - x[z] > 1))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1] || y[z - 1] - y[z] > 1) && (x[z + 1] < x[z] || x[z + 1] - x[z] > 1) && (x[z] == x[z - 1]))) {
+                    if ((((y[z + 1] < y[z]) ) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]) )) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1] ) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
                         g.drawImage(snake.get("abd"), x[z], y[z], this);
                         flag = true;
                     }
-                    if (((y[z + 1] == y[z]) && (y[z] > y[z - 1] || y[z - 1] - y[z] > 1) && (x[z + 1] > x[z] || x[z] - x[z + 1] > 1) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z] || y[z + 1] - y[z] > 1) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1] || x[z] - x[z - 1] > 1))) {
+                    if (((y[z + 1] == y[z]) && (y[z] > y[z - 1] ) && (x[z + 1] > x[z] ) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z] ) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1] ))) {
                         g.drawImage(snake.get("abs"), x[z], y[z], this);
                         flag = true;
                     }
@@ -228,16 +227,20 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                 }
             }
             //CODA
-            if (x[z] > x[z - 1]) {
+            if (x[z] > x[z - 1] || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
                 g.drawImage(snake.get("cs"), x[z], y[z], this);
-            } else if (y[z] > y[z - 1]) {
+            } else if (y[z] > y[z - 1] || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
                 g.drawImage(snake.get("csu"), x[z], y[z], this);
+                
+                //non vanno bene
+            } else if ((x[z - 1] == 0 && x[z] == Names.PANNELLO_WIDTH - Names.DOT_SIZE)) {
+                g.drawImage(snake.get("cd"), x[z], y[z], this);
+            } else if ((y[z - 1] == 0 && y[z] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
+                g.drawImage(snake.get("cg"), x[z], y[z], this);
             } else if (x[z] < x[z - 1]) {
                 g.drawImage(snake.get("cd"), x[z], y[z], this);
-                System.out.println("x=" + x[z]);
             } else if (y[z] < y[z - 1]) {
                 g.drawImage(snake.get("cg"), x[z], y[z], this);
-                System.out.println("y" + y[z]);
             }
 
             Toolkit.getDefaultToolkit().sync();
