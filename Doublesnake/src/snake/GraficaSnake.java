@@ -84,4 +84,9 @@ public class GraficaSnake extends JFrame implements ActionListener {
             graficaSnake.setVisible(true);
         }
     }
+    
+        public static void main(String[] args) {
+        GraficaSnake prova = new GraficaSnake();
+        prova.setVisible(true);
+    }
 }
