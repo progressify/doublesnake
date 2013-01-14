@@ -34,7 +34,7 @@ public class Griglia extends JPanel {
     private Cella[] celle;
     private boolean[] colora;
 
-    public Griglia(int rows, int cols) {
+    public Griglia(int cols, int rows) {
         setLayout(new GridLayout(rows, cols));
         celle = new Cella[rows * cols];
         colora = new boolean[rows * cols];
@@ -69,7 +69,7 @@ public class Griglia extends JPanel {
         }
     }
 
-    public Griglia(int rows, int cols, String name) {
+    public Griglia(int cols, int rows, String name) {
         mattoncini = new ArrayList();
         try {
             if (flmappe.exists()) {

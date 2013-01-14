@@ -61,7 +61,7 @@ public class Record extends JFrame implements ActionListener {
         this.mainWindow = mainWindow;
         setName(Names.NOME_FRAME_RECORD);
         setTitle(Names.NOME_FRAME_RECORD);
-        setSize(Names.RECORD_WIDTH, Names.RECORD_HEIGH);
+        setSize(Names.LARGHEZZA_RECORD, Names.ALTEZZA_RECORD);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
         labelSfondo.setLayout(new BorderLayout());

@@ -325,32 +325,30 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     public void locateApple() {
         do {
-            int r = (int) (Math.random() * (Names.NUMERO_RIGHE - 1));
+            int r = (int) (Math.random() * (Names.NUMERO_COLONNE - 1));
             apple_x = ((r * Names.DOT_SIZE));
-            System.out.println("coord riga " + r + " " + apple_x);
-            r = (int) (Math.random() * (Names.NUMERO_COLONNE - 1));
+            System.out.println("coord colonna " + r + " " + apple_x);
+            r = (int) (Math.random() * (Names.NUMERO_RIGHE - 1));
             apple_y = ((r * Names.DOT_SIZE));
-            System.out.println("coord colonna " + r + " " + apple_y);
+            System.out.println("coord riga " + r + " " + apple_y);
         } while (controlApple() || checkCollisionWithMap(apple_x, apple_y, "apple"));
     }
 
     /**
-     * Controlla se la mela viene collocata sul corpo del serpente
+     * Controlla se la mela viene collocata sotto il corpo del serpente
      *
      * @return true o false a seconda del caso
      */
     public boolean controlApple() {
-        boolean flag = false;
         for (int i = 0; i < x.length; i++) {
             if (x[i] == apple_x && y[i] == apple_y) {
-                flag = true;
+                return true;
             }
-            if (apple_y == Names.PANNELLO_HEIGHT) {
-                flag = true;
-            }
-            return flag;
+//            if (apple_y == Names.PANNELLO_HEIGHT) { //condizione forse non necessaria, testo ancora il gioco e vedrò se è il caso di cancellarla definitivamente
+//                flag = true;
+//            }
         }
-        return flag;
+        return false;
     }
 
     @Override

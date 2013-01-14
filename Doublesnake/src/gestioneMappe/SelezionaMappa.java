@@ -46,7 +46,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
         this.mainWindow = mainWindow;
         setName(Names.NOME_FRAME_SELEZIONAMAPPA);
         setTitle(Names.NOME_FRAME_SELEZIONAMAPPA);
-        setSize(Names.WINDOWS_WIDTH, Names.WINDOWS_HEIGH);
+        setSize(Names.LARGHEZZA_FRAME, Names.ALTEZZA_FRAME);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
         labelSfondo.setLayout(new BorderLayout());
@@ -62,7 +62,7 @@ public class SelezionaMappa extends JFrame implements ActionListener {
     }
 
     private JPanel createCenterPanel(String name) {
-        panelGriglia = new Griglia(Names.NUMERO_RIGHE, Names.NUMERO_COLONNE, name);
+        panelGriglia = new Griglia(Names.NUMERO_COLONNE, Names.NUMERO_RIGHE, name);
         panelGriglia.setOpaque(false);
         return panelGriglia;
     }

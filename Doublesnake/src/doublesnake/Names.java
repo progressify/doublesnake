@@ -24,12 +24,12 @@ public final class Names {
     public static final String NOME_FRAME_OPZIONI = "DOUBLE SNAKE - Opzioni";
     public static final String NOME_FRAME_CREAMAPPA = "DOUBLE SNAKE - Crea Mappa";
     public static final String NOME_FRAME_SELEZIONAMAPPA = "DOUBLE SNAKE - Seleziona Mappa";
-    public static final int WINDOWS_WIDTH = 700;
-    public static final int WINDOWS_HEIGH = 600;
-    public static final int OPZIONI_WIDTH = 460;
-    public static final int OPZIONI_HEIGH = 230;
-    public static final int RECORD_WIDTH = 300;
-    public static final int RECORD_HEIGH = 330;
+    public static final int LARGHEZZA_FRAME = 700;
+    public static final int ALTEZZA_FRAME = 600;
+    public static final int LARGHEZZA_OPZIONI = 460;
+    public static final int ALTEZZA_OPZIONI = 230;
+    public static final int LARGHEZZA_RECORD = 300;
+    public static final int ALTEZZA_RECORD = 330;
     public static final String PATH_SFONDO = "./Grafica/spazio.jpg";
     public static final String PATH_FONT = "./Grafica/digital.ttf";
     //classe record
@@ -76,8 +76,8 @@ public final class Names {
     public static final String TOOLTIP_NEWGAMEBUTTON = "Nuovo Gioco";
     //tutto quello che mi serve per la griglia
     public static final String NOME_FILE_MAPPE = "mappe.dat";
-    public static final int NUMERO_RIGHE = 20;
     public static final int NUMERO_COLONNE = 28;
+    public static final int NUMERO_RIGHE = 20;
     //Mela
     public static final String PATH_MELA = "./Grafica/pallino.png";
     //Snake Verde

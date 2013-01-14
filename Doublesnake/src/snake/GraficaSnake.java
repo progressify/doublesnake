@@ -26,7 +26,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
 
         setName(Names.NOME_FRAME_GIOCA);
         setTitle(Names.NOME_FRAME_GIOCA);
-        setSize(Names.WINDOWS_WIDTH, Names.WINDOWS_HEIGH);
+        setSize(Names.LARGHEZZA_FRAME, Names.ALTEZZA_FRAME);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
         labelSfondo.setLayout(new BorderLayout());
