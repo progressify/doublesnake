@@ -19,11 +19,13 @@ public class GraficaSnake extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
     private JLabel labelSfondo;
+    private static JLabel labelPunteggio;
     private JButton newGameButton;
     private Snake snake;
+    private Font font;
 
     public GraficaSnake() {
-
+        font = Names.caricaFont();
         setName(Names.NOME_FRAME_GIOCA);
         setTitle(Names.NOME_FRAME_GIOCA);
         setSize(Names.LARGHEZZA_FRAME, Names.ALTEZZA_FRAME);
@@ -31,7 +33,8 @@ public class GraficaSnake extends JFrame implements ActionListener {
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
         labelSfondo.setLayout(new BorderLayout());
         labelSfondo.add(createNorthPanel(), BorderLayout.NORTH);
-        labelSfondo.add(createSouthPanel(), BorderLayout.SOUTH);
+        labelSfondo.add(createCenterPanel(), BorderLayout.CENTER);
+        labelSfondo.add(createPanelSouth(), BorderLayout.SOUTH); //crea solo un JButton ma per chiarezza del codice ho fatto ugualmente un metodo
         add(labelSfondo);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -48,16 +51,26 @@ public class GraficaSnake extends JFrame implements ActionListener {
         return labelSfondoPanel;
     }
 
-    private JPanel createSouthPanel() {
+    private JPanel createCenterPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        Font font;
-
         Opzioni opz = (Opzioni) Opzioni.getIstance(this);
         JLabel labelNomePlayer = new JLabel(opz.getNomePlayer1());
         labelNomePlayer.setForeground(Color.WHITE);
-        font = Names.caricaFont();
         labelNomePlayer.setFont(font);
+        labelPunteggio = new JLabel("0");
+        labelPunteggio.setForeground(Color.WHITE);
+        labelPunteggio.setFont(font);
+        panel.add(labelNomePlayer, BorderLayout.WEST);
+        panel.add(labelPunteggio, BorderLayout.EAST);
+        panel.setOpaque(false);
+        return panel;
+    }
 
+    public static void aggiornaLabelPunteggio(Punteggio punti) {
+        labelPunteggio.setText("" + punti.getPunti());
+    }
+
+    private JButton createPanelSouth() {
         newGameButton = new JButton();
         newGameButton.setIcon(new ImageIcon(Names.PATH_BUTTON_AGGIORNA));
         newGameButton.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_AGGIORNA));
@@ -65,11 +78,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
         newGameButton.setBorder(null);
         newGameButton.setToolTipText(Names.TOOLTIP_NEWGAMEBUTTON);
         newGameButton.addActionListener(this);
-
-        panel.add(labelNomePlayer, BorderLayout.WEST);
-        panel.add(newGameButton, BorderLayout.CENTER);
-        panel.setOpaque(false);
-        return panel;
+        return newGameButton;
     }
 
     @Override
@@ -83,13 +92,12 @@ public class GraficaSnake extends JFrame implements ActionListener {
             } catch (Throwable ex) {
                 Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
             }
-            snake.stop();
             GraficaSnake graficaSnake = new GraficaSnake();
             graficaSnake.setVisible(true);
         }
     }
-    
-        public static void main(String[] args) {
+
+    public static void main(String[] args) {
         GraficaSnake prova = new GraficaSnake();
         prova.setVisible(true);
     }

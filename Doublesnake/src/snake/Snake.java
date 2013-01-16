@@ -30,8 +30,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private int x[] = new int[ALL_DOTS];
     private int y[] = new int[ALL_DOTS];
     private int dots;
-    private int apple_x;
-    private int apple_y;
     private boolean inGame = true;
     private Timer timer;
     private Image apple;
@@ -40,6 +38,8 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private ArrayList<Coordinate> coordMap;
     private Queue<Directions> coda;
     private Directions lastDirection;
+    private Punteggio punti;
+    private Apple apples;
 
     public Snake() {
         addKeyListener(new TAdapter());
@@ -47,9 +47,11 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
         if (sel.restituisciCoordinateMappa() != null) {
             coordMap = sel.restituisciCoordinateMappa();
+
         } else {
             coordMap = new ArrayList<Coordinate>();
         }
+        apples = new Apple(coordMap);
         coda = new LinkedList<Directions>();
         lastDirection = new Directions(false, false, false, true);
         imageLoad(snake);
@@ -58,19 +60,14 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         this.start();
     }
 
+    private void start() {
+        th = new Thread(this);
+        th.start();
+    }
+
     @Override
     public void run() {
         initGame();
-    }
-
-    private void start() {       //Creating thread
-        th = new Thread(this);
-        th.start();
-        System.out.println(th.isAlive());
-    }
-
-    public void stop() {
-        th.interrupt();
     }
 
     private void imageLoad(Hashtable<String, Image> snake) {
@@ -150,7 +147,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             x[z] = 50 - z * Names.DOT_SIZE;
             y[z] = 50;
         }
-        locateApple();
         timer = new Timer(DELAY, this);
         timer.start();
     }
@@ -167,8 +163,8 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     public void paint(Graphics g) {
         super.paint(g);
         drawMattoncini(g);
-        if (inGame && !checkCollisionWithMap(x[0], y[0], "snake")) { //per non fargli effettuare il repaint quando incontra il muro
-            g.drawImage(apple, apple_x, apple_y, null);
+        if (inGame && !checkCollisionWithMap(x[0], y[0])) { //per non fargli effettuare il repaint quando incontra il muro
+            g.drawImage(apple, apples.getApple_x(), apples.getApple_y(), null);
             int z;
             boolean flag;
             for (z = 0; z < dots - 1; z++) {
@@ -232,12 +228,12 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             }
             //CODA
             String drawCoda = ""; //ho preferito adottare questa soluzione così sono sicuro che alla fine disegnerà sempre un unica immagine e non immagini sovrapposte
-            if (x[z - 1] - x[z] == -25 || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
+            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
                 drawCoda = "cs";
             } else if (x[z] == (Names.PANNELLO_WIDTH - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
                 drawCoda = "cd";
             }
-            if (y[z - 1] - y[z] == -25 || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
+            if (y[z - 1] - y[z] == -Names.DOT_SIZE || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
                 drawCoda = "csu";
             } else if ((y[z - 1] == 0) && (y[z] == (Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) || y[z] < y[z - 1]) {
                 drawCoda = "cg";
@@ -245,7 +241,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             g.drawImage(snake.get(drawCoda), x[z], y[z], null);
             Toolkit.getDefaultToolkit().sync();
             g.dispose();
-
         } else {
             gameOver(g);
         }
@@ -259,22 +254,14 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         g.setFont(font);
         g.drawString(msg, (Names.PANNELLO_WIDTH - metr.stringWidth(msg)) / 2, Names.PANNELLO_HEIGHT / 2);
         timer.stop();
+        //qui si deve passare il punteggio al record!!
     }
 
-    public void checkApple() {
-        if ((x[0] == apple_x) && (y[0] == apple_y)) {
-            dots++;
-            locateApple();
-        }
-    }
-
-    public boolean checkCollisionWithMap(int X, int Y, String chiamante) {
+    public boolean checkCollisionWithMap(int X, int Y) {
         boolean flag = false;
         if (coordMap.contains(new Coordinate((X / 25), (Y / 25)))) {
             flag = true;
-            if (chiamante.equals("snake")) {
-                inGame = false;
-            }
+            inGame = false;
         }
         return flag;
     }
@@ -316,6 +303,9 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
+    /**
+     * Per controllare se il serpente si mangia da solo
+     */
     public void checkCollision() {
 
         for (int z = dots; z > 0; z--) {
@@ -326,42 +316,27 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
-    public void locateApple() {
-        do {
-            int r = (int) (Math.random() * (Names.NUMERO_COLONNE - 1));
-            apple_x = ((r * Names.DOT_SIZE));
-            System.out.println("coord colonna " + r + " " + apple_x);
-            r = (int) (Math.random() * (Names.NUMERO_RIGHE - 1));
-            apple_y = ((r * Names.DOT_SIZE));
-            System.out.println("coord riga " + r + " " + apple_y);
-        } while (controlApple() || checkCollisionWithMap(apple_x, apple_y, "apple"));
-    }
-
-    /**
-     * Controlla se la mela viene collocata sotto il corpo del serpente
-     *
-     * @return true o false a seconda del caso
-     */
-    public boolean controlApple() {
-        for (int i = 0; i < x.length; i++) {
-            if (x[i] == apple_x && y[i] == apple_y) {
-                return true;
-            }
-//            if (apple_y == Names.PANNELLO_HEIGHT) { //condizione forse non necessaria, testo ancora il gioco e vedrò se è il caso di cancellarla definitivamente
-//                flag = true;
-//            }
-        }
-        return false;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (inGame) {
-            checkApple();
+            manageApple();
             move();
             checkCollision();
         }
         repaint();
+    }
+
+    /**
+     * Metodo di servizio, creato unicamente al fine di non appesantire la lettura di actionPerformed
+     */
+    private void manageApple() {    
+        apples.setVariables(x, y);
+        apples.start();
+        int tmpDots = dots;
+        dots = apples.getDots();
+        if (dots > tmpDots) {
+            System.out.println("dots: " + dots);
+        }
     }
 
     private class Directions {
