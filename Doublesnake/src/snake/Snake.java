@@ -179,49 +179,54 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                     if (coda.size() != 0) {
                         tmp = coda.remove();
                     }
-
+                    String drawTesta = "";
                     if (tmp.isLeft()) {
-                        g.drawImage(snake.get("ts"), x[z], y[z], this);
+                        drawTesta = "ts";
                     }
                     if (tmp.isUp()) {
-                        g.drawImage(snake.get("tsu"), x[z], y[z], this);
+                        drawTesta = "tsu";
                     }
                     if (tmp.isRight()) {
-                        g.drawImage(snake.get("td"), x[z], y[z], this);
+                        drawTesta = "td";
                     }
                     if (tmp.isDown()) {
-                        g.drawImage(snake.get("tg"), x[z], y[z], this);
+                        drawTesta = "tg";
                     }
+                    g.drawImage(snake.get(drawTesta), x[z], y[z], this);
                 } else {
                     //ANGOLI
+                    String drawAngoli = "";
                     if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
-                        g.drawImage(snake.get("aad"), x[z], y[z], this);
+                        drawAngoli = "aad";
                         flag = true;
                     }
                     if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
-                        g.drawImage(snake.get("aas"), x[z], y[z], this);
+                        drawAngoli = "aas";
                         flag = true;
                     }
                     if ((((y[z + 1] < y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
-                        g.drawImage(snake.get("abd"), x[z], y[z], this);
+                        drawAngoli = "abd";
                         flag = true;
                     }
                     if (((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] > x[z]) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z]) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1]))) {
-                        g.drawImage(snake.get("abs"), x[z], y[z], this);
+                        drawAngoli = "abs";
                         flag = true;
                     }
+                    g.drawImage(snake.get(drawAngoli), x[z], y[z], this);
                     //CORPO
                     if (flag == false) {
+                        String drawCorpo = "";
                         if (y[z] == y[z - 1] && y[z] == y[z + 1]) {
-                            g.drawImage(snake.get("mo"), x[z], y[z], this);
+                            drawCorpo = "mo";
                         } else {
-                            g.drawImage(snake.get("mv"), x[z], y[z], this);
+                            drawCorpo = "mv";
                         }
                         if (x[z] == x[z - 1] && x[z] == x[z + 1]) {
-                            g.drawImage(snake.get("mv"), x[z], y[z], this);
+                            drawCorpo = "mv";
                         } else {
-                            g.drawImage(snake.get("mo"), x[z], y[z], this);
+                            drawCorpo = "mo";
                         }
+                        g.drawImage(snake.get(drawCorpo), x[z], y[z], this);
                     }
                 }
             }
@@ -353,8 +358,8 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     public void actionPerformed(ActionEvent e) {
         if (inGame) {
             checkApple();
-            checkCollision();
             move();
+            checkCollision();
         }
         repaint();
     }
