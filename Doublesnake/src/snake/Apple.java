@@ -44,7 +44,7 @@ public final class Apple implements Runnable {
         th.interrupt();
     }
 
-    public void setVariables(int[] aBodyX, int[] aBodyY) {
+    public synchronized void setVariables(int[] aBodyX, int[] aBodyY) {
         bodyX = aBodyX;
         bodyY = aBodyY;
     }
@@ -107,15 +107,15 @@ public final class Apple implements Runnable {
         return false;
     }
 
-    public int getApple_x() {
+    public synchronized int getApple_x() {
         return apple_x;
     }
 
-    public int getApple_y() {
+    public synchronized int getApple_y() {
         return apple_y;
     }
 
-    public int getDots() {
+    public synchronized int getDots() {
         return dots;
     }
 }

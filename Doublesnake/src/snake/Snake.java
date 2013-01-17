@@ -349,7 +349,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
 //        lo avevo usato per contollare l'incremento del serpente
 //        int tmpDots = dots;
-//        dots = apples.getDots();
+        dots = apples.getDots();
 //        if (dots > tmpDots) {
 //            System.out.println("dots: " + dots);
 //        }
