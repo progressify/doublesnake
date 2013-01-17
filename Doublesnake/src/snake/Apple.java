@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public final class Apple implements Runnable {
 
     private int apple_x, apple_y, dots = 2;
-    private int[] bodyX, bodyY; //coordinate della testa dello snake
+    private int[] bodyX = new int[Names.ALL_DOTS], bodyY = new int[Names.ALL_DOTS]; //coordinate della testa dello snake
     private Thread th;
     private ArrayList<Coordinate> coordMap;
     private Punteggio punti;
@@ -20,7 +20,9 @@ public final class Apple implements Runnable {
 
     @Override
     public void run() {
-        checkApple();
+        while (true) {
+            checkApple();
+        }
     }
 
     public void start() {
@@ -28,41 +30,52 @@ public final class Apple implements Runnable {
         th.start();
     }
 
+    public void stop() {
+        th.interrupt();
+    }
+
     public void setVariables(int[] aBodyX, int[] aBodyY) {
         bodyX = aBodyX;
         bodyY = aBodyY;
     }
 
+    /**
+     * Posiziona la prima mela
+     */
     private void locateFirstApple() {
         do {
             int r = (int) (Math.random() * (Names.NUMERO_COLONNE - 1));
             apple_x = ((r * Names.DOT_SIZE));
             r = (int) (Math.random() * (Names.NUMERO_RIGHE - 1));
             apple_y = ((r * Names.DOT_SIZE));
-        } while (checkCollisionWithMap(apple_x, apple_y));
+        } while (checkCollisionWithMap());
     }
 
+    /**
+     * Genera le coordinate di una nuova mela
+     */
     public void locateApple() {
         do {
             int r = (int) (Math.random() * (Names.NUMERO_COLONNE - 1));
             apple_x = ((r * Names.DOT_SIZE));
-            //System.out.println("coord colonna " + r + " " + apple_x);
             r = (int) (Math.random() * (Names.NUMERO_RIGHE - 1));
             apple_y = ((r * Names.DOT_SIZE));
-            //System.out.println("coord riga " + r + " " + apple_y);
-        } while (controlApple() || checkCollisionWithMap(apple_x, apple_y));
+        } while (controlApple() || checkCollisionWithMap());
     }
 
-    public boolean checkCollisionWithMap(int xx, int yy) {
-        if (coordMap.contains(new Coordinate((xx / 25), (yy / 25)))) {
-            System.out.println(true);
+    public boolean checkCollisionWithMap() {
+        if (coordMap.contains(new Coordinate((apple_x / 25), (apple_y / 25)))) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Controlla che se mela viene mangiata
+     */
     public synchronized void checkApple() {
         if ((bodyX[0] == apple_x) && (bodyY[0] == apple_y)) {
+            System.out.println("Gnam X:" + bodyX[0] + " Y:" + bodyY[0]);
             dots++;
             punti.aggiungiMela(dots);
             GraficaSnake.aggiornaLabelPunteggio(punti);

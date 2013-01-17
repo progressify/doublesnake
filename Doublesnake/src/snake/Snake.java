@@ -25,10 +25,9 @@ import menu.Opzioni;
 public class Snake extends JPanel implements ActionListener, Runnable {
 
     private static final long serialVersionUID = 1L;
-    private final int ALL_DOTS = 672;
     private int DELAY;
-    private int x[] = new int[ALL_DOTS];
-    private int y[] = new int[ALL_DOTS];
+    private int x[] = new int[Names.ALL_DOTS];
+    private int y[] = new int[Names.ALL_DOTS];
     private int dots;
     private boolean inGame = true;
     private Timer timer;
@@ -52,6 +51,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             coordMap = new ArrayList<Coordinate>();
         }
         apples = new Apple(coordMap);
+        apples.start();
         coda = new LinkedList<Directions>();
         lastDirection = new Directions(false, false, false, true);
         imageLoad(snake);
@@ -163,7 +163,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     public void paint(Graphics g) {
         super.paint(g);
         drawMattoncini(g);
-        if (inGame && !checkCollisionWithMap(x[0], y[0])) { //per non fargli effettuare il repaint quando incontra il muro
+        if (inGame && !checkCollisionWithMap()) { //per non fargli effettuare il repaint quando incontra il muro
             g.drawImage(apple, apples.getApple_x(), apples.getApple_y(), null);
             int z;
             boolean flag;
@@ -254,18 +254,30 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         g.setFont(font);
         g.drawString(msg, (Names.PANNELLO_WIDTH - metr.stringWidth(msg)) / 2, Names.PANNELLO_HEIGHT / 2);
         timer.stop();
+        apples.stop();
         //qui si deve passare il punteggio al record!!
     }
 
-    public boolean checkCollisionWithMap(int X, int Y) {
+    /**
+     * Contralla se il serpente si è scontrato con i mattoncini della mappa
+     * attualmente selezionata
+     *
+     * @param X testa del serpente
+     * @param Y
+     * @return true se si è verificata una collisione false altrimenti
+     */
+    public boolean checkCollisionWithMap() {
         boolean flag = false;
-        if (coordMap.contains(new Coordinate((X / 25), (Y / 25)))) {
+        if (coordMap.contains(new Coordinate((x[0] / 25), (x[0] / 25)))) {
             flag = true;
             inGame = false;
         }
         return flag;
     }
 
+    /**
+     * Muove il serpente, sposta le coordinate negli ArrayList x e y
+     */
     public synchronized void move() {
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
@@ -332,7 +344,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      */
     private void manageApple() {
         apples.setVariables(x, y);
-        apples.start();
+
         int tmpDots = dots;
         dots = apples.getDots();
         if (dots > tmpDots) {
@@ -340,6 +352,9 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
+    /**
+     * Classe interna per gestire il movimento (le direzioni) del serpente
+     */
     private class Directions {
 
         private boolean left = false;
@@ -403,6 +418,9 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
+    /**
+     * Metodo per mettere in pausa / riprendere il gioco
+     */
     public void pauseGame() {
         if (timer.isRunning()) {
             timer.stop();
@@ -411,6 +429,9 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
+    /**
+     * Listener per i tasti
+     */
     private class TAdapter extends KeyAdapter {
 
         @Override

@@ -83,6 +83,7 @@ public final class Names {
     //Mela
     public static final String PATH_MELA = "./Grafica/pallino.png";
     //Snake Verde
+    public static final int ALL_DOTS = 672;
     //testa
     public static final String PATH_TESTA_SU = "./Grafica/snake/tsu.png";
     public static final String PATH_TESTA_GIU = "./Grafica/snake/tg.png";
