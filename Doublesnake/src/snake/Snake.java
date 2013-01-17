@@ -327,9 +327,10 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     }
 
     /**
-     * Metodo di servizio, creato unicamente al fine di non appesantire la lettura di actionPerformed
+     * Metodo di servizio, creato unicamente al fine di non appesantire la
+     * lettura di actionPerformed
      */
-    private void manageApple() {    
+    private void manageApple() {
         apples.setVariables(x, y);
         apples.start();
         int tmpDots = dots;
@@ -402,26 +403,37 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
+    public void pauseGame() {
+        if (timer.isRunning()) {
+            timer.stop();
+        } else {
+            timer.start();
+        }
+    }
+
     private class TAdapter extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
-            if ((key == KeyEvent.VK_LEFT) && (!lastDirection.isRight())) {
+            if ((key == KeyEvent.VK_LEFT) && (!lastDirection.isRight()) && timer.isRunning()) {
                 Directions dir = new Directions(false, false, true, false);
                 insertInTheQueue(dir);
             }
-            if ((key == KeyEvent.VK_RIGHT) && (!lastDirection.isLeft())) {
+            if ((key == KeyEvent.VK_RIGHT) && (!lastDirection.isLeft()) && timer.isRunning()) {
                 Directions dir = new Directions(false, false, false, true);
                 insertInTheQueue(dir);
             }
-            if ((key == KeyEvent.VK_UP) && (!lastDirection.isDown())) {
+            if ((key == KeyEvent.VK_UP) && (!lastDirection.isDown()) && timer.isRunning()) {
                 Directions dir = new Directions(true, false, false, false);
                 insertInTheQueue(dir);
             }
-            if ((key == KeyEvent.VK_DOWN) && (!lastDirection.isUp())) {
+            if ((key == KeyEvent.VK_DOWN) && (!lastDirection.isUp()) && timer.isRunning()) {
                 Directions dir = new Directions(false, true, false, false);
                 insertInTheQueue(dir);
+            }
+            if ((key == KeyEvent.VK_SPACE)) {
+                pauseGame();
             }
         }
     }

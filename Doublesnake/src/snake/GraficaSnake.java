@@ -21,6 +21,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
     private JLabel labelSfondo;
     private static JLabel labelPunteggio;
     private JButton newGameButton;
+    private JButton pauseButton;
     private Snake snake;
     private Font font;
 
@@ -34,7 +35,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
         labelSfondo.setLayout(new BorderLayout());
         labelSfondo.add(createNorthPanel(), BorderLayout.NORTH);
         labelSfondo.add(createCenterPanel(), BorderLayout.CENTER);
-        labelSfondo.add(createPanelSouth(), BorderLayout.SOUTH); //crea solo un JButton ma per chiarezza del codice ho fatto ugualmente un metodo
+        //labelSfondo.add(createPanelSouth(), BorderLayout.SOUTH); //crea solo un JButton ma per chiarezza del codice ho fatto ugualmente un metodo
         add(labelSfondo);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -60,8 +61,9 @@ public class GraficaSnake extends JFrame implements ActionListener {
         labelPunteggio = new JLabel("0");
         labelPunteggio.setForeground(Color.WHITE);
         labelPunteggio.setFont(font);
-        panel.add(labelNomePlayer, BorderLayout.WEST);
-        panel.add(labelPunteggio, BorderLayout.EAST);
+        panel.add(labelNomePlayer, BorderLayout.LINE_START);
+        panel.add(labelPunteggio, BorderLayout.LINE_END);
+        panel.add(createSouthPanel(), BorderLayout.SOUTH);
         panel.setOpaque(false);
         return panel;
     }
@@ -70,7 +72,8 @@ public class GraficaSnake extends JFrame implements ActionListener {
         labelPunteggio.setText("" + punti.getPunti());
     }
 
-    private JButton createPanelSouth() {
+    private JPanel createSouthPanel() {
+        JPanel panel = new JPanel();
         newGameButton = new JButton();
         newGameButton.setIcon(new ImageIcon(Names.PATH_BUTTON_AGGIORNA));
         newGameButton.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_AGGIORNA));
@@ -78,7 +81,17 @@ public class GraficaSnake extends JFrame implements ActionListener {
         newGameButton.setBorder(null);
         newGameButton.setToolTipText(Names.TOOLTIP_NEWGAMEBUTTON);
         newGameButton.addActionListener(this);
-        return newGameButton;
+        pauseButton = new JButton();
+        pauseButton.setIcon(new ImageIcon(Names.PATH_BUTTON_PLAY));
+        pauseButton.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_PLAY));
+        pauseButton.setContentAreaFilled(false);
+        pauseButton.setBorder(null);
+        pauseButton.setToolTipText(Names.TOOLTIP_PAUSA);
+        pauseButton.addActionListener(this);
+        panel.add(pauseButton);
+        panel.add(newGameButton);
+        panel.setOpaque(false);
+        return panel;
     }
 
     @Override
@@ -94,6 +107,9 @@ public class GraficaSnake extends JFrame implements ActionListener {
             }
             GraficaSnake graficaSnake = new GraficaSnake();
             graficaSnake.setVisible(true);
+        }
+        if (source == pauseButton) {
+            snake.pauseGame();
         }
     }
 

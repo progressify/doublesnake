@@ -47,6 +47,7 @@ public final class Names {
     public static final String PATH_LABEL_SPAZIOVUOTO = "./Grafica/spaziovuoto.png";
     //path dei bottoni
     public static final String PATH_BUTTON_SALVA = "./Grafica/salva.png";
+    public static final String PATH_BUTTON_PLAY = "./Grafica/play.png";
     public static final String PATH_BUTTON_CONFERMA = "./Grafica/conferma.png";
     public static final String PATH_BUTTON_GIOCA = "./Grafica/gioca.png";
     public static final String PATH_BUTTON_CREAMAPPA = "./Grafica/creamappa.png";
@@ -63,6 +64,7 @@ public final class Names {
     public static final String PATH_BUTTON_ANNULLA = "./Grafica/Annulla.png";
     //tooltiptext
     public static final String TOOLTIP_ANNULLABUTTON = "Indietro";
+    public static final String TOOLTIP_PAUSA = "Pausa";
     public static final String TOOLTIP_ANNULLABUTTONEDITOR = "Resetta la griglia";
     public static final String TOOLTIP_OKBUTTON_EDITOR = "Memorizza la mappa appena creata";
     public static final String TOOLTIP_OKBUTTON_SELECTOR = "Seleziona la mappa";
@@ -112,7 +114,7 @@ public final class Names {
             File fl = new File(PATH_FONT);
             FileInputStream fis = new FileInputStream(fl);
             font = Font.createFont(Font.TRUETYPE_FONT, fis);
-            font = font.deriveFont(38f);
+            font = font.deriveFont(27f);
             System.out.println(font.getSize());
         } catch (FontFormatException ex) {
             font = new Font("Helvetica", Font.BOLD, 14);
