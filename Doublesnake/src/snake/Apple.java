@@ -2,6 +2,8 @@ package snake;
 
 import doublesnake.Names;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class Apple implements Runnable {
 
@@ -21,6 +23,14 @@ public final class Apple implements Runnable {
     @Override
     public void run() {
         while (true) {
+            System.out.println("Ciao");
+            synchronized (this) {
+                try {
+                    wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Apple.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             checkApple();
         }
     }

@@ -344,12 +344,15 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      */
     private void manageApple() {
         apples.setVariables(x, y);
-
-        int tmpDots = dots;
-        dots = apples.getDots();
-        if (dots > tmpDots) {
-            System.out.println("dots: " + dots);
+        synchronized (this.apples) {
+            this.apples.notify();
         }
+//        lo avevo usato per contollare l'incremento del serpente
+//        int tmpDots = dots;
+//        dots = apples.getDots();
+//        if (dots > tmpDots) {
+//            System.out.println("dots: " + dots);
+//        }
     }
 
     /**
@@ -407,7 +410,8 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     /**
      * Questo metodo permette di inserire nella coda solo 2 direzioni per volta,
-     * questo serve per evitare che
+     * questo serve per evitare appunto che vengano passate più di 2 direzioni
+     * erroneamente, e quindi il serpente si scontri da solo
      *
      * @param dir direzione inserita
      */
