@@ -23,7 +23,6 @@ public final class Apple implements Runnable {
     @Override
     public void run() {
         while (true) {
-            System.out.println("Ciao");
             synchronized (this) {
                 try {
                     wait();
@@ -81,11 +80,10 @@ public final class Apple implements Runnable {
     }
 
     /**
-     * Controlla che se mela viene mangiata
+     * Controlla se mela viene mangiata
      */
     public synchronized void checkApple() {
         if ((bodyX[0] == apple_x) && (bodyY[0] == apple_y)) {
-            System.out.println("Gnam X:" + bodyX[0] + " Y:" + bodyY[0]);
             dots++;
             punti.aggiungiMela(dots);
             GraficaSnake.aggiornaLabelPunteggio(punti);

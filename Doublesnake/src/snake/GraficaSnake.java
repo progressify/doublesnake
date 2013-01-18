@@ -75,6 +75,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
     private JPanel createSouthPanel() {
         JPanel panel = new JPanel();
         newGameButton = new JButton();
+        newGameButton.setFocusable(false);
         newGameButton.setIcon(new ImageIcon(Names.PATH_BUTTON_AGGIORNA));
         newGameButton.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_AGGIORNA));
         newGameButton.setContentAreaFilled(false);
@@ -82,6 +83,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
         newGameButton.setToolTipText(Names.TOOLTIP_NEWGAMEBUTTON);
         newGameButton.addActionListener(this);
         pauseButton = new JButton();
+        pauseButton.setFocusable(false);
         pauseButton.setIcon(new ImageIcon(Names.PATH_BUTTON_PLAY));
         pauseButton.setPressedIcon(new ImageIcon(Names.PATH_BUTTON_PLAY));
         pauseButton.setContentAreaFilled(false);
