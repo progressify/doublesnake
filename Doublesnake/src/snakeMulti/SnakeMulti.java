@@ -59,12 +59,13 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
     
     private Timer timer;
     private Image apple;
-    
+   
     private Hashtable<String, Image> snake;
     private Hashtable<String, Image> snakeEnemy;
     
     private Thread th;
     private ArrayList<Coordinate> coordMap;
+    private ArrayList<Coordinate> coordMapE;
     
     private Queue<Directions> coda;
     private Queue<Directions> codaEnemy;
@@ -88,9 +89,11 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
         SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
         if (sel.restituisciCoordinateMappa() != null) {
             coordMap = sel.restituisciCoordinateMappa();
+            coordMapE = sel.restituisciCoordinateMappa();
 
         } else {
             coordMap = new ArrayList<Coordinate>();
+            coordMapE = coordMapE;
         }
         apples = new Apple(coordMap);
         apples.start();
@@ -104,6 +107,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
         
         imageLoad(snake);
         imageLoad(snakeEnemy);
+        
         setFocusable(true);
         setDelay();
         this.start();
@@ -118,19 +122,207 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
         DELAY = opz.getLivello();
     }
   
-     public void paint(Graphics g) {
+      public void paint(Graphics g) {
         super.paint(g);
-        drawMattoncini(g);
+        //drawMattoncini(g);
         if (inGame && !checkCollisionWithMap()) { //per non fargli effettuare il repaint quando incontra il muro
             g.drawImage(apple, apples.getApple_x(), apples.getApple_y(), null);
-            drawingSnake(g, dots, lastDirection, coda, snake, x, y);
-            drawingSnake(g, dotsE, lastDirectionE, codaEnemy, snakeEnemy, k, j);
+            int i=0;
+            SnakeMulti.Directions tmp ;
+            Queue<Directions> coda;
+            Directions lastDirection;
+            int x[];
+            int y[];
+            int dots; 
+            Hashtable<String, Image> snake;
+            int z=0;
             
+            for(i=0; i<2; i++){
+            if(i==0){
+             tmp = this.lastDirection;   
+             coda=this.coda;
+              x=this.x;
+              y=this.y;
+              dots=this.dots;
+              snake=this.snake;
+              z=0;
+                
+            }
+            else{
+              tmp = this.lastDirectionE;
+              coda=this.codaEnemy;
+              x=this.k;
+              y=this.j;
+              dots=this.dotsE;
+              snake=this.snakeEnemy;
+              z=0;
+            }
+            
+            boolean flag=false;
+            for (z = 0; z < dots - 1; z++) {
+                flag = false;
+                if (z == 0) {
+                    //TESTA
+                    
+                    if (coda.size() != 0) {
+                        tmp = coda.remove();
+                    }
+                    String drawTesta = "";
+                    if (tmp.isLeft()) {
+                        drawTesta = "ts";
+                    }
+                    if (tmp.isUp()) {
+                        drawTesta = "tsu";
+                    }
+                    if (tmp.isRight()) {
+                        drawTesta = "td";
+                    }
+                    if (tmp.isDown()) {
+                        drawTesta = "tg";
+                    }
+                    g.drawImage(snake.get(drawTesta), x[z], y[z], this);
+                } else {
+                    //ANGOLI
+                    String drawAngoli = "";
+                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
+                        drawAngoli = "aad";
+                        flag = true;
+                    }
+                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
+                        drawAngoli = "aas";
+                        flag = true;
+                    }
+                    if ((((y[z + 1] < y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
+                        drawAngoli = "abd";
+                        flag = true;
+                    }
+                    if (((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] > x[z]) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z]) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1]))) {
+                        drawAngoli = "abs";
+                        flag = true;
+                    }
+                    g.drawImage(snake.get(drawAngoli), x[z], y[z], this);
+                    //CORPO
+                    if (flag == false) {
+                        String drawCorpo = "";
+                        if (y[z] == y[z - 1] && y[z] == y[z + 1]) {
+                            drawCorpo = "mo";
+                        } else {
+                            drawCorpo = "mv";
+                        }
+                        if (x[z] == x[z - 1] && x[z] == x[z + 1]) {
+                            drawCorpo = "mv";
+                        } else {
+                            drawCorpo = "mo";
+                        }
+                        g.drawImage(snake.get(drawCorpo), x[z], y[z], this);
+                    }
+                }
+            }
+            //CODA
+            String drawCoda = ""; //ho preferito adottare questa soluzione così sono sicuro che alla fine disegnerà sempre un unica immagine e non immagini sovrapposte
+            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
+                drawCoda = "cs";
+            } else if (x[z] == (Names.PANNELLO_WIDTH - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
+                drawCoda = "cd";
+            }
+            if (y[z - 1] - y[z] == -Names.DOT_SIZE || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
+                drawCoda = "csu";
+            } else if ((y[z - 1] == 0) && (y[z] == (Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) || y[z] < y[z - 1]) {
+                drawCoda = "cg";
+            }
+            g.drawImage(snake.get(drawCoda), x[z], y[z], null);
+            Toolkit.getDefaultToolkit().sync();
+            }
+            g.dispose();
         } else {
             gameOver(g);
         }
     }
+     
+     
+     
+    public void drawingSnake (Graphics g, int dots, Directions lastDirection, Queue<Directions> coda, Hashtable <String, Image> snake 
+                                , int x[], int y[]) {
+            int z;
+            boolean flag;
+            for (z = 0; z < dots - 1; z++) {
+                flag = false;
+                if (z == 0) {
+                    //TESTA
+                    SnakeMulti.Directions tmp = lastDirection;
+                    if (coda.size() != 0) {
+                        tmp = coda.remove();
+                    }
+                    String drawTesta = "";
+                    if (tmp.isLeft()) {
+                        drawTesta = "ts";
+                    }
+                    if (tmp.isUp()) {
+                        drawTesta = "tsu";
+                    }
+                    if (tmp.isRight()) {
+                        drawTesta = "td";
+                    }
+                    if (tmp.isDown()) {
+                        drawTesta = "tg";
+                    }
+                    g.drawImage(snake.get(drawTesta), x[z], y[z], this);
+                } else {
+                    //ANGOLI
+                    String drawAngoli = "";
+                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
+                        drawAngoli = "aad";
+                        flag = true;
+                    }
+                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
+                        drawAngoli = "aas";
+                        flag = true;
+                    }
+                    if ((((y[z + 1] < y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
+                        drawAngoli = "abd";
+                        flag = true;
+                    }
+                    if (((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] > x[z]) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z]) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1]))) {
+                        drawAngoli = "abs";
+                        flag = true;
+                    }
+                    g.drawImage(snake.get(drawAngoli), x[z], y[z], this);
+                    //CORPO
+                    if (flag == false) {
+                        String drawCorpo = "";
+                        if (y[z] == y[z - 1] && y[z] == y[z + 1]) {
+                            drawCorpo = "mo";
+                        } else {
+                            drawCorpo = "mv";
+                        }
+                        if (x[z] == x[z - 1] && x[z] == x[z + 1]) {
+                            drawCorpo = "mv";
+                        } else {
+                            drawCorpo = "mo";
+                        }
+                        g.drawImage(snake.get(drawCorpo), x[z], y[z], this);
+                    }
+                }
+            }
+            //CODA
+            String drawCoda = ""; //ho preferito adottare questa soluzione così sono sicuro che alla fine disegnerà sempre un unica immagine e non immagini sovrapposte
+            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
+                drawCoda = "cs";
+            } else if (x[z] == (Names.PANNELLO_WIDTH - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
+                drawCoda = "cd";
+            }
+            if (y[z - 1] - y[z] == -Names.DOT_SIZE || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
+                drawCoda = "csu";
+            } else if ((y[z - 1] == 0) && (y[z] == (Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) || y[z] < y[z - 1]) {
+                drawCoda = "cg";
+            }
+            g.drawImage(snake.get(drawCoda), x[z], y[z], null);
+            Toolkit.getDefaultToolkit().sync();
+            g.dispose();
+        
+    }
     
+     /**
     public void drawMattoncini(Graphics g) {
         if (coordMap != null) {
             for (int i = 0; i < coordMap.size(); i++) {
@@ -138,7 +330,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
                 g.drawImage(snakeEnemy.get("mattoncino"), (coordMap.get(i).getX()) * 25, (coordMap.get(i).getY()) * 25, this);
             }
         }
-    }
+    }**/
         
     public void gameOver(Graphics g) {
         String msg = "Game Over";
@@ -154,10 +346,17 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
     
     public boolean checkCollisionWithMap() {
         boolean flag = false;
-        if (coordMap.contains(new Coordinate((x[0] / 25), (x[0] / 25)))) {
+        if (coordMap.contains(new Coordinate((x[0] / 25), (x[0] / 25))) ) {
+            flag = true;
+            inGame = false;
+             
+        }
+        
+        else if(coordMap.contains(new Coordinate((k[0] / 25), (k[0] / 25)))){
             flag = true;
             inGame = false;
         }
+        
         return flag;
     }
         
@@ -252,88 +451,6 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
         }
     }
    
-    private void drawingSnake (Graphics g, int dots, Directions lastDirection, Queue<Directions> coda, Hashtable <String, Image> snake 
-                                , int x[], int y[]) {
-        boolean flag=false;
-        int z=0;
-        
-        for (z = 0; z < dots - 1; z++) {
-            flag = false;
-            if (z == 0) {
-                //TESTA
-                Directions tmp = lastDirection;
-                if (coda.size() != 0) {
-                    tmp = coda.remove();
-                }
-                String drawTesta = "";
-                if (tmp.isLeft()) {
-                    drawTesta = "ts";
-                }
-                if (tmp.isUp()) {
-                    drawTesta = "tsu";
-                }
-                if (tmp.isRight()) {
-                    drawTesta = "td";
-                }
-                if (tmp.isDown()) {
-                    drawTesta = "tg";
-                }
-                g.drawImage(snake.get(drawTesta), x[z], y[z], this);
-            } else {
-                //ANGOLI
-                String drawAngoli = "";
-                if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
-                    drawAngoli = "aad";
-                    flag = true;
-                }
-                if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
-                    drawAngoli = "aas";
-                    flag = true;
-                }
-                if ((((y[z + 1] < y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
-                    drawAngoli = "abd";
-                    flag = true;
-                }
-                if (((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] > x[z]) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z]) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1]))) {
-                    drawAngoli = "abs";
-                    flag = true;
-                }
-                g.drawImage(snake.get(drawAngoli), x[z], y[z], this);
-                //CORPO
-                if (flag == false) {
-                    String drawCorpo = "";
-                    if (y[z] == y[z - 1] && y[z] == y[z + 1]) {
-                        drawCorpo = "mo";
-                    } else {
-                        drawCorpo = "mv";
-                    }
-                    if (x[z] == x[z - 1] && x[z] == x[z + 1]) {
-                        drawCorpo = "mv";
-                    } else {
-                        drawCorpo = "mo";
-                    }
-                    g.drawImage(snake.get(drawCorpo), x[z], y[z], this);
-                }
-            }
-        }
-        //CODA
-        String drawCoda = ""; //ho preferito adottare questa soluzione così sono sicuro che alla fine disegnerà sempre un unica immagine e non immagini sovrapposte
-        if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
-            drawCoda = "cs";
-        } else if (x[z] == (Names.PANNELLO_WIDTH - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
-            drawCoda = "cd";
-        }
-        if (y[z - 1] - y[z] == -Names.DOT_SIZE || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
-            drawCoda = "csu";
-        } else if ((y[z - 1] == 0) && (y[z] == (Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) || y[z] < y[z - 1]) {
-            drawCoda = "cg";
-        }
-        g.drawImage(snake.get(drawCoda), x[z], y[z], null);
-        
-        Toolkit.getDefaultToolkit().sync();
-        g.dispose();
-        
-    }
     
     
     
@@ -342,7 +459,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
         //PALLINO
         ImageIcon iia = new ImageIcon(Names.PATH_MELA);
         apple = iia.getImage();
-
+        
         //testa su
         ImageIcon idtsu = new ImageIcon(Names.PATH_TESTA_SU);
         snake.put("tsu", idtsu.getImage());
@@ -437,12 +554,13 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable{
     
     public void initGame() {
         dots = 2;
+        dotsE =2;
         for (int z = 0; z < dots; z++) {
             x[z] = 50 - z * Names.DOT_SIZE;
             y[z] = 50;
             
-            k[z] = 60 - z * Names.DOT_SIZE;
-            j[z] = 60;
+            k[z] = 100 - z * Names.DOT_SIZE;
+            j[z] = 100;
         }
         timer = new Timer(DELAY, this);
         timer.start();

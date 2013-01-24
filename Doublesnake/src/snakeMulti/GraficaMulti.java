@@ -116,9 +116,9 @@ public class GraficaMulti extends JFrame implements ActionListener {
             try {
                 this.finalize();
             } catch (Throwable ex) {
-                Logger.getLogger(snake.GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(snakeMulti.GraficaMulti.class.getName()).log(Level.SEVERE, null, ex);
             }
-            snake.GraficaSnake graficaSnake = new snake.GraficaSnake();
+            snakeMulti.GraficaMulti graficaSnake = new snakeMulti.GraficaMulti();
             graficaSnake.setVisible(true);
         }
         if (source == pauseButton) {
