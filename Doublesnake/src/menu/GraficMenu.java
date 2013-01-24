@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import snake.GraficaSnake;
+import snakeMulti.GraficaMulti;
 
 /**
  *
@@ -195,8 +196,8 @@ public class GraficMenu extends JPanel implements ActionListener {
             frameOpzioni.setVisible(true);
         }
         if (source == bStessoPc) {
-            //new GraficaSnake(true);
-            //TODO
+            JFrame snake = new GraficaMulti();
+            snake.setVisible(true);
         }
         if (source == bReteLocale) {
             //new GraficaSnake(true);
