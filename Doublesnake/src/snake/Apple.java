@@ -2,6 +2,8 @@ package snake;
 
 import doublesnake.Names;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,11 +14,12 @@ public final class Apple implements Runnable {
     private Thread th;
     private ArrayList<Coordinate> coordMap;
     private Punteggio punti;
-    //private Coordinate coordApple;
+    private Queue<Coordinate> logTesta;
 
     public Apple(ArrayList<Coordinate> coordOfTheMap) {
         punti = new Punteggio();
         coordMap = coordOfTheMap;
+        logTesta = new LinkedList<Coordinate>();
         locateFirstApple();
     }
 
@@ -46,6 +49,7 @@ public final class Apple implements Runnable {
     public synchronized void setVariables(int[] aBodyX, int[] aBodyY) {
         bodyX = aBodyX;
         bodyY = aBodyY;
+        logTesta.offer(new Coordinate(bodyX[0], bodyY[0]));
     }
 
     /**
@@ -83,11 +87,14 @@ public final class Apple implements Runnable {
      * Controlla se mela viene mangiata
      */
     public synchronized void checkApple() {
-        if ((bodyX[0] == apple_x) && (bodyY[0] == apple_y)) {
-            dots++;
-            punti.aggiungiMela(dots);
-            GraficaSnake.aggiornaLabelPunteggio(punti);
-            locateApple();
+        Coordinate tmpCoord;
+        if ((tmpCoord = logTesta.poll()) != null) {
+            if ((tmpCoord.getX() == apple_x) && (tmpCoord.getY() == apple_y)) {
+                dots++;
+                punti.aggiungiMela(dots);
+                GraficaSnake.aggiornaLabelPunteggio(punti);
+                locateApple();
+            }
         }
     }
 

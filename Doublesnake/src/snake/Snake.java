@@ -358,7 +358,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     /**
      * Classe interna per gestire il movimento (le direzioni) del serpente
      */
-    private class Directions {
+    protected static class Directions {
 
         private boolean left = false;
         private boolean right = true;
@@ -436,7 +436,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     /**
      * Listener per i tasti
      */
-    private class TAdapter extends KeyAdapter {
+    protected class TAdapter extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {

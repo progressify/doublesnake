@@ -108,20 +108,22 @@ public final class Names {
     public static final int PANNELLO_WIDTH = 700;
     public static final int PANNELLO_HEIGHT = 500;
     public static final int DOT_SIZE = 25;
+    private static Font font = null;
 
     public static Font caricaFont() {
-        Font font = null;
-        try {
-            File fl = new File(PATH_FONT);
-            FileInputStream fis = new FileInputStream(fl);
-            font = Font.createFont(Font.TRUETYPE_FONT, fis);
-            font = font.deriveFont(27f);
-            System.out.println(font.getSize());
-        } catch (FontFormatException ex) {
-            font = new Font("Helvetica", Font.BOLD, 14);
-            Logger.getLogger(Names.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
+        if (font == null) {
+            try {
+                File fl = new File(PATH_FONT);
+                FileInputStream fis = new FileInputStream(fl);
+                font = Font.createFont(Font.TRUETYPE_FONT, fis);
+                font = font.deriveFont(35f);
+                System.out.println(font.getSize());
+            } catch (FontFormatException ex) {
+                font = new Font("Helvetica", Font.BOLD, 35);
+                Logger.getLogger(Names.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return font;
     }
