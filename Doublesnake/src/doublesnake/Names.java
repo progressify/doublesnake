@@ -105,8 +105,8 @@ public final class Names {
     //pannello dove si muove lo snake
     public static final String PATH_CAMPO_COMETA = "./Grafica/cometa.jpg";
     public static final String PATH_MATTONCINO = "./Grafica/mattoncino.png";
-    public static final int PANNELLO_WIDTH = 700;
-    public static final int PANNELLO_HEIGHT = 500;
+    public static final int LARGHEZZA_PANNELLO = 700;
+    public static final int ALTEZZA_PANNELLO = 500;
     public static final int DOT_SIZE = 25;
     private static Font font = null;
 

@@ -227,15 +227,15 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                 }
             }
             //CODA
-            String drawCoda = ""; //ho preferito adottare questa soluzione così sono sicuro che alla fine disegnerà sempre un unica immagine e non immagini sovrapposte
-            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.PANNELLO_WIDTH)) {
+            String drawCoda = "";
+            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.LARGHEZZA_PANNELLO)) {
                 drawCoda = "cs";
-            } else if (x[z] == (Names.PANNELLO_WIDTH - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
+            } else if (x[z] == (Names.LARGHEZZA_PANNELLO - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
                 drawCoda = "cd";
             }
-            if (y[z - 1] - y[z] == -Names.DOT_SIZE || (y[z] == 0 && y[z - 1] == Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) {
+            if (y[z - 1] - y[z] == -Names.DOT_SIZE || (y[z] == 0 && y[z - 1] == Names.ALTEZZA_PANNELLO - Names.DOT_SIZE)) {
                 drawCoda = "csu";
-            } else if ((y[z - 1] == 0) && (y[z] == (Names.PANNELLO_HEIGHT - Names.DOT_SIZE)) || y[z] < y[z - 1]) {
+            } else if ((y[z - 1] == 0) && (y[z] == (Names.ALTEZZA_PANNELLO - Names.DOT_SIZE)) || y[z] < y[z - 1]) {
                 drawCoda = "cg";
             }
             g.drawImage(snake.get(drawCoda), x[z], y[z], null);
@@ -252,9 +252,12 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         FontMetrics metr = this.getFontMetrics(font);
         g.setColor(Color.RED);
         g.setFont(font);
-        g.drawString(msg, (Names.PANNELLO_WIDTH - metr.stringWidth(msg)) / 2, Names.PANNELLO_HEIGHT / 2);
+        g.drawString(msg, (Names.LARGHEZZA_PANNELLO - metr.stringWidth(msg)) / 2, Names.ALTEZZA_PANNELLO / 2);
         timer.stop();
         apples.stop();
+        synchronized (this.apples) {
+            this.apples.notify();
+        }
         //qui si deve passare il punteggio al record!!
     }
 
@@ -301,17 +304,17 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             y[0] += Names.DOT_SIZE;
         }
         //controllo per andare a capo
-        if (y[0] >= Names.PANNELLO_HEIGHT) {
+        if (y[0] >= Names.ALTEZZA_PANNELLO) {
             y[0] = 0;
         }
         if (y[0] < 0) {
-            y[0] = Names.PANNELLO_HEIGHT - 25;
+            y[0] = Names.ALTEZZA_PANNELLO - Names.DOT_SIZE;
         }
-        if (x[0] >= Names.PANNELLO_WIDTH) {
+        if (x[0] >= Names.LARGHEZZA_PANNELLO) {
             x[0] = 0;
         }
         if (x[0] < 0) {
-            x[0] = Names.PANNELLO_WIDTH;
+            x[0] = Names.LARGHEZZA_PANNELLO - Names.DOT_SIZE;
         }
     }
 
@@ -459,6 +462,9 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             }
             if ((key == KeyEvent.VK_SPACE)) {
                 pauseGame();
+            }
+            if ((key == KeyEvent.VK_ENTER)) {
+                //devo gestire il caso in cui voglio creare un nuovo gioco
             }
         }
     }

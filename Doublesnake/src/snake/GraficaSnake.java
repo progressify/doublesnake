@@ -35,7 +35,6 @@ public class GraficaSnake extends JFrame implements ActionListener {
         labelSfondo.setLayout(new BorderLayout());
         labelSfondo.add(createNorthPanel(), BorderLayout.NORTH);
         labelSfondo.add(createCenterPanel(), BorderLayout.CENTER);
-        //labelSfondo.add(createPanelSouth(), BorderLayout.SOUTH); //crea solo un JButton ma per chiarezza del codice ho fatto ugualmente un metodo
         add(labelSfondo);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -43,7 +42,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
 
     private JLabel createNorthPanel() {
         JLabel labelSfondoPanel = new JLabel();
-        labelSfondoPanel.setSize(Names.PANNELLO_HEIGHT, Names.PANNELLO_WIDTH);
+        labelSfondoPanel.setSize(Names.ALTEZZA_PANNELLO, Names.LARGHEZZA_PANNELLO);
         labelSfondoPanel.setIcon(new ImageIcon(Names.PATH_CAMPO_COMETA));
         snake = new Snake();
         labelSfondoPanel.setLayout(new BorderLayout());
@@ -63,7 +62,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
         labelPunteggio.setFont(font);
         panel.add(labelNomePlayer, BorderLayout.LINE_START);
         panel.add(labelPunteggio, BorderLayout.LINE_END);
-        panel.add(createSouthPanel(), BorderLayout.SOUTH);
+        panel.add(createSubSouthPanel(), BorderLayout.SOUTH);
         panel.setOpaque(false);
         return panel;
     }
@@ -72,7 +71,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
         labelPunteggio.setText("" + punti.getPunti());
     }
 
-    private JPanel createSouthPanel() {
+    private JPanel createSubSouthPanel() {
         JPanel panel = new JPanel();
         newGameButton = new JButton();
         newGameButton.setFocusable(false);

@@ -15,6 +15,7 @@ public final class Apple implements Runnable {
     private ArrayList<Coordinate> coordMap;
     private Punteggio punti;
     private Queue<Coordinate> logTesta;
+    private boolean run = true;
 
     public Apple(ArrayList<Coordinate> coordOfTheMap) {
         punti = new Punteggio();
@@ -25,7 +26,7 @@ public final class Apple implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (run) {
             synchronized (this) {
                 try {
                     wait();
@@ -43,7 +44,7 @@ public final class Apple implements Runnable {
     }
 
     public void stop() {
-        th.interrupt();
+        run = false;
     }
 
     public synchronized void setVariables(int[] aBodyX, int[] aBodyY) {

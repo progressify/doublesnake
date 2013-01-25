@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package snakeMulti;
 
 /**
  *
  * @author pc
  */
-
 import doublesnake.Names;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -54,7 +49,7 @@ public class GraficaMulti extends JFrame implements ActionListener {
 
     private JLabel createNorthPanel() {
         JLabel labelSfondoPanel = new JLabel();
-        labelSfondoPanel.setSize(Names.PANNELLO_HEIGHT, Names.PANNELLO_WIDTH);
+        labelSfondoPanel.setSize(Names.ALTEZZA_PANNELLO, Names.LARGHEZZA_PANNELLO);
         labelSfondoPanel.setIcon(new ImageIcon(Names.PATH_CAMPO_COMETA));
         snake = new SnakeMulti();
         labelSfondoPanel.setLayout(new BorderLayout());
