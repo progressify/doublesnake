@@ -56,7 +56,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
     private Directions lastDirectionE;
     private Punteggio punti;
     private Punteggio puntiE;
-    private Apple apples;
+    private Apple apples;   
 
     public SnakeMulti() {
         addKeyListener(new TAdapter());
@@ -71,7 +71,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
 
         } else {
             coordMap = new ArrayList<Coordinate>();
-            coordMapE = coordMapE;
+            coordMapE = new ArrayList<Coordinate>();
         }
         apples = new Apple(coordMap);
         apples.start();
@@ -83,8 +83,8 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
         lastDirection = new Directions(false, false, false, true);
         lastDirectionE = new Directions(false, false, false, true);
 
-        imageLoad(snake);
-        imageLoad(snakeEnemy);
+        imageLoad(snake, false);
+        imageLoad(snakeEnemy, true);
 
         setFocusable(true);
         setDelay();
@@ -313,11 +313,11 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
 
     public boolean checkCollisionWithMap() {
         boolean flag = false;
-        if (coordMap.contains(new Coordinate((x[0] / 25), (x[0] / 25)))) {
+        if (coordMap.contains(new Coordinate((x[0] / 25), (y[0] / 25)))) {
             flag = true;
             inGame = false;
 
-        } else if (coordMap.contains(new Coordinate((k[0] / 25), (k[0] / 25)))) {
+        } else if (coordMapE.contains(new Coordinate((k[0] / 25), (j[0] / 25)))) {
             flag = true;
             inGame = false;
         }
@@ -344,9 +344,12 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (inGame) {
-            manageApple();
             move();
             checkCollision();
+            
+            manageApple(x, y, dots);
+            manageApple(k, j, dotsE);
+            
         }
         repaint();
     }
@@ -355,17 +358,21 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
      * Metodo di servizio, creato unicamente al fine di non appesantire la
      * lettura di actionPerformed
      */
-    private void manageApple() {
-        apples.setVariables(x, y);
+    private void manageApple(int x[], int y[], int dots) {
+        
+
+        apples.setVariables(x, y, dots);
         synchronized (this.apples) {
             this.apples.notify();
         }
 //        lo avevo usato per contollare l'incremento del serpente
 //        int tmpDots = dots;
         dots = apples.getDots();
+         System.out.println("dots: " + dots + "Dots apples: "+ apples.getDots());
 //        if (dots > tmpDots) {
 //            System.out.println("dots: " + dots);
 //        }
+        
     }
 
     protected static class Directions {
@@ -418,65 +425,108 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
         }
     }
 
-    private void imageLoad(Hashtable<String, Image> snake) {
+    private void imageLoad(Hashtable<String, Image> snake, boolean player) {
+        String testagiu, testasu, testadestra, testasinistra, codasu, codagiu, codadestra, codasinistra, corpoorizzontale, corpovertiale, susinistra, sudestra, giusinistra, giudestra;
+
+
+        if (player) {
+            testagiu=Names.PATH_TESTA_GIU2;
+            testasu=Names.PATH_TESTA_SU2;
+            testadestra=Names.PATH_TESTA_DESTRA2;
+            testasinistra=Names.PATH_TESTA_SINISTRA2;
+            codasu=Names.PATH_CODA_SU2;
+            codagiu=Names.PATH_CODA_GIU2;
+            codasinistra=Names.PATH_CODA_SINISTRA2;
+            codadestra=Names.PATH_CODA_DESTRA2;
+            corpoorizzontale=Names.PATH_MOVIMETNO_ORIZZONTALE2;
+            corpovertiale=Names.PATH_MOVIMETNO_VERTICALE2;   
+            susinistra=Names.PATH_ALTO_ALTO_SINISTRA2;
+            sudestra=Names.PATH_ALTO_ALTO_DESTRA2;
+            giusinistra=Names.PATH_ALTO_BASSO_SINISTRA2;
+            giudestra=Names.PATH_ALTO_BASSO_DESTRA2;
+            
+          
+        }
+        
+        else{
+            
+            
+            testagiu=Names.PATH_TESTA_GIU;
+            testasu=Names.PATH_TESTA_SU;
+            testadestra=Names.PATH_TESTA_DESTRA;
+            testasinistra=Names.PATH_TESTA_SINISTRA;
+            codasu=Names.PATH_CODA_SU;
+            codagiu=Names.PATH_CODA_GIU;
+            codasinistra=Names.PATH_CODA_SINISTRA;
+            codadestra=Names.PATH_CODA_DESTRA;
+            corpoorizzontale=Names.PATH_MOVIMETNO_ORIZZONTALE;
+            corpovertiale=Names.PATH_MOVIMETNO_VERTICALE;   
+            susinistra=Names.PATH_ALTO_ALTO_SINISTRA;
+            sudestra=Names.PATH_ALTO_ALTO_DESTRA;
+            giusinistra=Names.PATH_ALTO_BASSO_SINISTRA;
+            giudestra=Names.PATH_ALTO_BASSO_DESTRA;
+            
+        }
+
+
         //PALLINO
         ImageIcon iia = new ImageIcon(Names.PATH_MELA);
         apple = iia.getImage();
 
         //testa su
-        ImageIcon idtsu = new ImageIcon(Names.PATH_TESTA_SU);
+        ImageIcon idtsu = new ImageIcon(testasu);
         snake.put("tsu", idtsu.getImage());
 
         //testa giu
-        ImageIcon idtg = new ImageIcon(Names.PATH_TESTA_GIU);
+        ImageIcon idtg = new ImageIcon(testagiu);
         snake.put("tg", idtg.getImage());
 
         //testa destra
-        ImageIcon idtd = new ImageIcon(Names.PATH_TESTA_DESTRA);
+        ImageIcon idtd = new ImageIcon(testadestra);
         snake.put("td", idtd.getImage());
 
         //testa sinistra
-        ImageIcon idts = new ImageIcon(Names.PATH_TESTA_SINISTRA);
+        ImageIcon idts = new ImageIcon(testasinistra);
         snake.put("ts", idts.getImage());
 
         //coda su 
-        ImageIcon idcsu = new ImageIcon(Names.PATH_CODA_SU);
+        ImageIcon idcsu = new ImageIcon(codasu);
         snake.put("csu", idcsu.getImage());
 
         //coda giu
-        ImageIcon idcg = new ImageIcon(Names.PATH_CODA_GIU);
+        ImageIcon idcg = new ImageIcon(codagiu);
         snake.put("cg", idcg.getImage());
 
         //coda sinistra
-        ImageIcon idcs = new ImageIcon(Names.PATH_CODA_SINISTRA);
+        ImageIcon idcs = new ImageIcon(codasinistra);
         snake.put("cs", idcs.getImage());
 
         //coda destra
-        ImageIcon idcd = new ImageIcon(Names.PATH_CODA_DESTRA);
+        ImageIcon idcd = new ImageIcon(codadestra);
         snake.put("cd", idcd.getImage());
 
         //verso alto a sinistra
-        ImageIcon idaas = new ImageIcon(Names.PATH_ALTO_ALTO_SINISTRA);
+        ImageIcon idaas = new ImageIcon(susinistra);
         snake.put("aas", idaas.getImage());
 
         //verso alto a destra
-        ImageIcon idaad = new ImageIcon(Names.PATH_ALTO_ALTO_DESTRA);
+        ImageIcon idaad = new ImageIcon(sudestra);
         snake.put("aad", idaad.getImage());
 
         //verso basso a sinistra
-        ImageIcon idabs = new ImageIcon(Names.PATH_ALTO_BASSO_SINISTRA);
+        ImageIcon idabs = new ImageIcon(giusinistra);
         snake.put("abs", idabs.getImage());
 
         //verso basso a destra
-        ImageIcon idabd = new ImageIcon(Names.PATH_ALTO_BASSO_DESTRA);
+        ImageIcon idabd = new ImageIcon(giudestra);
         snake.put("abd", idabd.getImage());
 
         //corpo orizzontale
-        ImageIcon idmo = new ImageIcon(Names.PATH_MOVIMETNO_ORIZZONTALE);
+        ImageIcon idmo = new ImageIcon(corpoorizzontale);
         snake.put("mo", idmo.getImage());
 
         //corpo verticale
-        ImageIcon idmv = new ImageIcon(Names.PATH_MOVIMETNO_VERTICALE);
+        ImageIcon idmv = new ImageIcon(corpovertiale);
         snake.put("mv", idmv.getImage());
 
         //mattoncino
@@ -494,7 +544,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
         initGame();
     }
 
-    private synchronized void insertInTheQueue(Directions dir, boolean player) {
+    private void insertInTheQueue(Directions dir, boolean player) {
         if (player) {
             if (coda.size() < 2) {
                 coda.offer(dir);
@@ -597,19 +647,19 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
 
             //key second player
 
-            if ((key == KeyEvent.VK_A) && (!lastDirection.isRight()) && timer.isRunning()) {
+            if ((key == KeyEvent.VK_A) && (!lastDirectionE.isRight()) && timer.isRunning()) {
                 Directions dir = new Directions(false, false, true, false);
                 insertInTheQueue(dir, false);
             }
-            if ((key == KeyEvent.VK_D) && (!lastDirection.isLeft()) && timer.isRunning()) {
+            if ((key == KeyEvent.VK_D) && (!lastDirectionE.isLeft()) && timer.isRunning()) {
                 Directions dir = new Directions(false, false, false, true);
                 insertInTheQueue(dir, false);
             }
-            if ((key == KeyEvent.VK_W) && (!lastDirection.isDown()) && timer.isRunning()) {
+            if ((key == KeyEvent.VK_W) && (!lastDirectionE.isDown()) && timer.isRunning()) {
                 Directions dir = new Directions(true, false, false, false);
                 insertInTheQueue(dir, false);
             }
-            if ((key == KeyEvent.VK_S) && (!lastDirection.isUp()) && timer.isRunning()) {
+            if ((key == KeyEvent.VK_S) && (!lastDirectionE.isUp()) && timer.isRunning()) {
                 Directions dir = new Directions(false, true, false, false);
                 insertInTheQueue(dir, false);
             }

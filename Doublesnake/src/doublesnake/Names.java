@@ -82,6 +82,7 @@ public final class Names {
     public static final int NUMERO_RIGHE = 20;
     //Mela
     public static final String PATH_MELA = "./Grafica/pallino.png";
+    
     //Snake Verde
     public static final int ALL_DOTS = 672;
     //testa
@@ -102,6 +103,26 @@ public final class Names {
     public static final String PATH_CODA_GIU = "./Grafica/snake/cg.png";
     public static final String PATH_CODA_DESTRA = "./Grafica/snake/cd.png";
     public static final String PATH_CODA_SINISTRA = "./Grafica/snake/cs.png";
+    
+    //snake giallo
+    //testa
+    public static final String PATH_TESTA_SU2 = "./Grafica/snake2/tsu.png";
+    public static final String PATH_TESTA_GIU2 = "./Grafica/snake2/tg.png";
+    public static final String PATH_TESTA_DESTRA2 = "./Grafica/snake2/td.png";
+    public static final String PATH_TESTA_SINISTRA2 = "./Grafica/snake2/ts.png";
+    //corpo
+    public static final String PATH_ALTO_ALTO_DESTRA2 = "./Grafica/snake2/aad.png";
+    public static final String PATH_ALTO_ALTO_SINISTRA2 = "./Grafica/snake2/aas.png";
+    public static final String PATH_ALTO_BASSO_DESTRA2 = "./Grafica/snake2/abd.png";
+    public static final String PATH_ALTO_BASSO_SINISTRA2 = "./Grafica/snake2/abs.png";
+    //movimento
+    public static final String PATH_MOVIMETNO_VERTICALE2 = "./Grafica/snake2/mv.png";
+    public static final String PATH_MOVIMETNO_ORIZZONTALE2 = "./Grafica/snake2/mo.png";
+    //coda
+    public static final String PATH_CODA_SU2 = "./Grafica/snake2/csu.png";
+    public static final String PATH_CODA_GIU2 = "./Grafica/snake2/cg.png";
+    public static final String PATH_CODA_DESTRA2 = "./Grafica/snake2/cd.png";
+    public static final String PATH_CODA_SINISTRA2 = "./Grafica/snake2/cs.png";
     //pannello dove si muove lo snake
     public static final String PATH_CAMPO_COMETA = "./Grafica/cometa.jpg";
     public static final String PATH_MATTONCINO = "./Grafica/mattoncino.png";

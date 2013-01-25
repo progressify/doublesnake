@@ -271,7 +271,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      */
     public boolean checkCollisionWithMap() {
         boolean flag = false;
-        if (coordMap.contains(new Coordinate((x[0] / 25), (x[0] / 25)))) {
+        if (coordMap.contains(new Coordinate((x[0] / 25), (y[0] / 25)))) {
             flag = true;
             inGame = false;
         }
