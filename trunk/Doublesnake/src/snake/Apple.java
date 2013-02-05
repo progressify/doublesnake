@@ -9,17 +9,21 @@ import java.util.logging.Logger;
 
 public final class Apple implements Runnable {
 
-    private int apple_x, apple_y, dots = 2;
+    private int apple_x, apple_y;
     private int[] bodyX = new int[Names.ALL_DOTS], bodyY = new int[Names.ALL_DOTS]; //coordinate della testa dello snake
     private Thread th;
     private ArrayList<Coordinate> coordMap;
-    private Queue<Coordinate> logTesta;
+    private Queue<CoordinateSnake> logTesta;
+    private Queue<Integer> serp1;
+    private Queue<Integer> serp2;
     private boolean run = true;
 
     public Apple(ArrayList<Coordinate> coordOfTheMap) {
-        
+
         coordMap = coordOfTheMap;
-        logTesta = new LinkedList<Coordinate>();
+        logTesta = new LinkedList<CoordinateSnake>();
+        serp1 = new LinkedList<Integer>();
+        serp2 = new LinkedList<Integer>();
         locateFirstApple();
     }
 
@@ -46,10 +50,10 @@ public final class Apple implements Runnable {
         run = false;
     }
 
-    public synchronized void setVariables(int[] aBodyX, int[] aBodyY) {
+    public synchronized void setVariables(int[] aBodyX, int[] aBodyY, boolean serp) {
         bodyX = aBodyX;
         bodyY = aBodyY;
-        logTesta.offer(new Coordinate(bodyX[0], bodyY[0]));
+        logTesta.offer(new CoordinateSnake((new Coordinate(bodyX[0], bodyY[0])), serp));
     }
 
     /**
@@ -87,10 +91,14 @@ public final class Apple implements Runnable {
      * Controlla se mela viene mangiata
      */
     public synchronized void checkApple() {
-        Coordinate tmpCoord;
+        CoordinateSnake tmpCoord;
         if ((tmpCoord = logTesta.poll()) != null) {
-            if ((tmpCoord.getX() == apple_x) && (tmpCoord.getY() == apple_y)) {
-                dots++;
+            if ((tmpCoord.getCoord().getX() == apple_x) && (tmpCoord.getCoord().getY() == apple_y)) {
+                if (tmpCoord.isSerp()) {
+                    serp1.offer(0);
+                } else {
+                    serp2.offer(0);
+                }
                 locateApple();
             }
         }
@@ -118,7 +126,30 @@ public final class Apple implements Runnable {
         return apple_y;
     }
 
-    public synchronized int getDots() {
-        return dots;
+    public Integer getSerp1() {
+        return serp1.poll();
+    }
+
+    public Integer getSerp2() {
+        return serp2.poll();
+    }
+
+    private static class CoordinateSnake {
+
+        Coordinate coord;
+        boolean serp;
+
+        public CoordinateSnake(Coordinate coord, boolean serp) {
+            this.coord = coord;
+            this.serp = serp;
+        }
+
+        public Coordinate getCoord() {
+            return coord;
+        }
+
+        public synchronized boolean isSerp() {
+            return serp;
+        }
     }
 }
