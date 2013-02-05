@@ -13,12 +13,11 @@ public final class Apple implements Runnable {
     private int[] bodyX = new int[Names.ALL_DOTS], bodyY = new int[Names.ALL_DOTS]; //coordinate della testa dello snake
     private Thread th;
     private ArrayList<Coordinate> coordMap;
-    private Punteggio punti;
     private Queue<Coordinate> logTesta;
     private boolean run = true;
 
     public Apple(ArrayList<Coordinate> coordOfTheMap) {
-        punti = new Punteggio();
+        
         coordMap = coordOfTheMap;
         logTesta = new LinkedList<Coordinate>();
         locateFirstApple();
@@ -92,8 +91,6 @@ public final class Apple implements Runnable {
         if ((tmpCoord = logTesta.poll()) != null) {
             if ((tmpCoord.getX() == apple_x) && (tmpCoord.getY() == apple_y)) {
                 dots++;
-                punti.aggiungiMela(dots);
-                GraficaSnake.aggiornaLabelPunteggio(punti);
                 locateApple();
             }
         }

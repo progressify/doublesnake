@@ -2,11 +2,14 @@ package doublesnake;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import snake.GraficaSnake;
 
 /**
@@ -154,5 +157,137 @@ public final class Names {
             Thread.sleep(300);
         } catch (InterruptedException ex) {
         }
+    }
+    
+    public static void imageLoad(Hashtable<String, Image> snake) {
+        //PALLINO
+        ImageIcon iia = new ImageIcon(Names.PATH_MELA);
+        snake.put("apple" , iia.getImage());
+
+        //testa su
+        ImageIcon idtsu = new ImageIcon(Names.PATH_TESTA_SU);
+        snake.put("tsu", idtsu.getImage());
+
+        //testa giu
+        ImageIcon idtg = new ImageIcon(Names.PATH_TESTA_GIU);
+        snake.put("tg", idtg.getImage());
+
+        //testa destra
+        ImageIcon idtd = new ImageIcon(Names.PATH_TESTA_DESTRA);
+        snake.put("td", idtd.getImage());
+
+        //testa sinistra
+        ImageIcon idts = new ImageIcon(Names.PATH_TESTA_SINISTRA);
+        snake.put("ts", idts.getImage());
+
+        //coda su 
+        ImageIcon idcsu = new ImageIcon(Names.PATH_CODA_SU);
+        snake.put("csu", idcsu.getImage());
+
+        //coda giu
+        ImageIcon idcg = new ImageIcon(Names.PATH_CODA_GIU);
+        snake.put("cg", idcg.getImage());
+
+        //coda sinistra
+        ImageIcon idcs = new ImageIcon(Names.PATH_CODA_SINISTRA);
+        snake.put("cs", idcs.getImage());
+
+        //coda destra
+        ImageIcon idcd = new ImageIcon(Names.PATH_CODA_DESTRA);
+        snake.put("cd", idcd.getImage());
+
+        //verso alto a sinistra
+        ImageIcon idaas = new ImageIcon(Names.PATH_ALTO_ALTO_SINISTRA);
+        snake.put("aas", idaas.getImage());
+
+        //verso alto a destra
+        ImageIcon idaad = new ImageIcon(Names.PATH_ALTO_ALTO_DESTRA);
+        snake.put("aad", idaad.getImage());
+
+        //verso basso a sinistra
+        ImageIcon idabs = new ImageIcon(Names.PATH_ALTO_BASSO_SINISTRA);
+        snake.put("abs", idabs.getImage());
+
+        //verso basso a destra
+        ImageIcon idabd = new ImageIcon(Names.PATH_ALTO_BASSO_DESTRA);
+        snake.put("abd", idabd.getImage());
+
+        //corpo orizzontale
+        ImageIcon idmo = new ImageIcon(Names.PATH_MOVIMETNO_ORIZZONTALE);
+        snake.put("mo", idmo.getImage());
+
+        //corpo verticale
+        ImageIcon idmv = new ImageIcon(Names.PATH_MOVIMETNO_VERTICALE);
+        snake.put("mv", idmv.getImage());
+
+        //mattoncino
+        ImageIcon mattoncino = new ImageIcon(Names.PATH_MATTONCINO);
+        snake.put("mattoncino", mattoncino.getImage());
+    }
+    
+    public static void imageLoad2(Hashtable<String, Image> snake) {
+        //PALLINO
+        ImageIcon iia = new ImageIcon(Names.PATH_MELA);
+        snake.put("apple" , iia.getImage());
+
+        //testa su
+        ImageIcon idtsu = new ImageIcon(Names.PATH_TESTA_SU2);
+        snake.put("tsu", idtsu.getImage());
+
+        //testa giu
+        ImageIcon idtg = new ImageIcon(Names.PATH_TESTA_GIU2);
+        snake.put("tg", idtg.getImage());
+
+        //testa destra
+        ImageIcon idtd = new ImageIcon(Names.PATH_TESTA_DESTRA2);
+        snake.put("td", idtd.getImage());
+
+        //testa sinistra
+        ImageIcon idts = new ImageIcon(Names.PATH_TESTA_SINISTRA2);
+        snake.put("ts", idts.getImage());
+
+        //coda su 
+        ImageIcon idcsu = new ImageIcon(Names.PATH_CODA_SU2);
+        snake.put("csu", idcsu.getImage());
+
+        //coda giu
+        ImageIcon idcg = new ImageIcon(Names.PATH_CODA_GIU2);
+        snake.put("cg", idcg.getImage());
+
+        //coda sinistra
+        ImageIcon idcs = new ImageIcon(Names.PATH_CODA_SINISTRA2);
+        snake.put("cs", idcs.getImage());
+
+        //coda destra
+        ImageIcon idcd = new ImageIcon(Names.PATH_CODA_DESTRA2);
+        snake.put("cd", idcd.getImage());
+
+        //verso alto a sinistra
+        ImageIcon idaas = new ImageIcon(Names.PATH_ALTO_ALTO_SINISTRA2);
+        snake.put("aas", idaas.getImage());
+
+        //verso alto a destra
+        ImageIcon idaad = new ImageIcon(Names.PATH_ALTO_ALTO_DESTRA2);
+        snake.put("aad", idaad.getImage());
+
+        //verso basso a sinistra
+        ImageIcon idabs = new ImageIcon(Names.PATH_ALTO_BASSO_SINISTRA2);
+        snake.put("abs", idabs.getImage());
+
+        //verso basso a destra
+        ImageIcon idabd = new ImageIcon(Names.PATH_ALTO_BASSO_DESTRA2);
+        snake.put("abd", idabd.getImage());
+
+        //corpo orizzontale
+        ImageIcon idmo = new ImageIcon(Names.PATH_MOVIMETNO_ORIZZONTALE2);
+        snake.put("mo", idmo.getImage());
+
+        //corpo verticale
+        ImageIcon idmv = new ImageIcon(Names.PATH_MOVIMETNO_VERTICALE2);
+        snake.put("mv", idmv.getImage());
+
+        //mattoncino
+        ImageIcon mattoncino = new ImageIcon(Names.PATH_MATTONCINO);
+        snake.put("mattoncino", mattoncino.getImage());
     }
 }

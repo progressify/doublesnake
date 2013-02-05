@@ -59,7 +59,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
     private Apple apples;   
 
     public SnakeMulti() {
-        addKeyListener(new TAdapter());
+        addKeyListener(new SnakeMulti.TAdapter());
 
         snake = new Hashtable<String, Image>();
         snakeEnemy = new Hashtable<String, Image>();
@@ -103,8 +103,8 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
             g.drawImage(apple, apples.getApple_x(), apples.getApple_y(), null);
             int i = 0;
             SnakeMulti.Directions tmp;
-            Queue<Directions> coda;
-            Directions lastDirection;
+            Queue<SnakeMulti.Directions> coda;
+            SnakeMulti.Directions lastDirection;
             int x[];
             int y[];
             int dots;
@@ -212,7 +212,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
         }
     }
 
-    public void drawingSnake(Graphics g, int dots, Directions lastDirection, Queue<Directions> coda, Hashtable<String, Image> snake, int x[], int y[]) {
+    public void drawingSnake(Graphics g, int dots, SnakeMulti.Directions lastDirection, Queue<SnakeMulti.Directions> coda, Hashtable<String, Image> snake, int x[], int y[]) {
         int z;
         boolean flag;
         for (z = 0; z < dots - 1; z++) {
@@ -361,7 +361,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
     private void manageApple(int x[], int y[], int dots) {
         
 
-        apples.setVariables(x, y, dots);
+        apples.setVariables(x, y);
         synchronized (this.apples) {
             this.apples.notify();
         }
@@ -544,7 +544,7 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
         initGame();
     }
 
-    private void insertInTheQueue(Directions dir, boolean player) {
+    private void insertInTheQueue(SnakeMulti.Directions dir, boolean player) {
         if (player) {
             if (coda.size() < 2) {
                 coda.offer(dir);
@@ -578,12 +578,12 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
         moving(dotsE, k, j, lastDirectionE, codaEnemy);
     }
 
-    private void moving(int dots, int x[], int y[], Directions lastDirection, Queue< Directions> coda) {
+    private void moving(int dots, int x[], int y[], SnakeMulti.Directions lastDirection, Queue< SnakeMulti.Directions> coda) {
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
-        Directions tmp = lastDirection;
+        SnakeMulti.Directions tmp = lastDirection;
         if (coda.size() != 0) {
             tmp = coda.peek();
         }
@@ -648,22 +648,21 @@ public class SnakeMulti extends JPanel implements ActionListener, Runnable {
             //key second player
 
             if ((key == KeyEvent.VK_A) && (!lastDirectionE.isRight()) && timer.isRunning()) {
-                Directions dir = new Directions(false, false, true, false);
+                SnakeMulti.Directions dir = new SnakeMulti.Directions(false, false, true, false);
                 insertInTheQueue(dir, false);
             }
             if ((key == KeyEvent.VK_D) && (!lastDirectionE.isLeft()) && timer.isRunning()) {
-                Directions dir = new Directions(false, false, false, true);
+                SnakeMulti.Directions dir = new SnakeMulti.Directions(false, false, false, true);
                 insertInTheQueue(dir, false);
             }
             if ((key == KeyEvent.VK_W) && (!lastDirectionE.isDown()) && timer.isRunning()) {
-                Directions dir = new Directions(true, false, false, false);
+                SnakeMulti.Directions dir = new SnakeMulti.Directions(true, false, false, false);
                 insertInTheQueue(dir, false);
             }
             if ((key == KeyEvent.VK_S) && (!lastDirectionE.isUp()) && timer.isRunning()) {
-                Directions dir = new Directions(false, true, false, false);
+                SnakeMulti.Directions dir = new SnakeMulti.Directions(false, true, false, false);
                 insertInTheQueue(dir, false);
             }
-
 
             if ((key == KeyEvent.VK_SPACE)) {
                 pauseGame();
