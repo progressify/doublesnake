@@ -1,7 +1,6 @@
 package snake;
 
 import doublesnake.Names;
-import gestioneMappe.SelezionaMappa;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Queue;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -31,32 +29,44 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private int dots;
     private boolean inGame = true;
     private Timer timer;
-    private Image apple;
     private Hashtable<String, Image> snake;
     private Thread th;
     private ArrayList<Coordinate> coordMap;
-    private Queue<Directions> coda;
-    private Directions lastDirection;
+    private Queue<Snake.Directions> coda;
+    private Snake.Directions lastDirection;
     private Punteggio punti;
     private Apple apples;
+    public boolean giocatore, partita;
 
-    public Snake() {
-        addKeyListener(new TAdapter());
-        snake = new Hashtable<String, Image>();
-        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
-        if (sel.restituisciCoordinateMappa() != null) {
-            coordMap = sel.restituisciCoordinateMappa();
-
+    public Snake(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa) {
+        giocatore = gioc;
+        partita=part;
+//        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
+//        if (sel.restituisciCoordinateMappa() != null) {
+//            coordMap = sel.restituisciCoordinateMappa();
+//        } else {
+//            coordMap = new ArrayList<Coordinate>();
+//        }
+        coordMap = coordMappa;
+        //apples = new Apple(coordMap);
+        apples = mela;
+        if (giocatore) {
+            snake = new Hashtable<String, Image>();
+            Names.imageLoad(snake);
+            lastDirection = new Snake.Directions(false, false, false, true);
+//            apples.start();
         } else {
-            coordMap = new ArrayList<Coordinate>();
+            snake = new Hashtable<String, Image>();
+            lastDirection = new Snake.Directions(false, false, true, false);
+            Names.imageLoad2(snake);
         }
-        apples = new Apple(coordMap);
-        apples.start();
-        coda = new LinkedList<Directions>();
-        lastDirection = new Directions(false, false, false, true);
-        imageLoad(snake);
+        addKeyListener(new Snake.TAdapter());
+
+        coda = new LinkedList<Snake.Directions>();
+
         setFocusable(true);
         setDelay();
+        punti = new Punteggio();
         this.start();
     }
 
@@ -70,72 +80,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         initGame();
     }
 
-    private void imageLoad(Hashtable<String, Image> snake) {
-        //PALLINO
-        ImageIcon iia = new ImageIcon(Names.PATH_MELA);
-        apple = iia.getImage();
-
-        //testa su
-        ImageIcon idtsu = new ImageIcon(Names.PATH_TESTA_SU);
-        snake.put("tsu", idtsu.getImage());
-
-        //testa giu
-        ImageIcon idtg = new ImageIcon(Names.PATH_TESTA_GIU);
-        snake.put("tg", idtg.getImage());
-
-        //testa destra
-        ImageIcon idtd = new ImageIcon(Names.PATH_TESTA_DESTRA);
-        snake.put("td", idtd.getImage());
-
-        //testa sinistra
-        ImageIcon idts = new ImageIcon(Names.PATH_TESTA_SINISTRA);
-        snake.put("ts", idts.getImage());
-
-        //coda su 
-        ImageIcon idcsu = new ImageIcon(Names.PATH_CODA_SU);
-        snake.put("csu", idcsu.getImage());
-
-        //coda giu
-        ImageIcon idcg = new ImageIcon(Names.PATH_CODA_GIU);
-        snake.put("cg", idcg.getImage());
-
-        //coda sinistra
-        ImageIcon idcs = new ImageIcon(Names.PATH_CODA_SINISTRA);
-        snake.put("cs", idcs.getImage());
-
-        //coda destra
-        ImageIcon idcd = new ImageIcon(Names.PATH_CODA_DESTRA);
-        snake.put("cd", idcd.getImage());
-
-        //verso alto a sinistra
-        ImageIcon idaas = new ImageIcon(Names.PATH_ALTO_ALTO_SINISTRA);
-        snake.put("aas", idaas.getImage());
-
-        //verso alto a destra
-        ImageIcon idaad = new ImageIcon(Names.PATH_ALTO_ALTO_DESTRA);
-        snake.put("aad", idaad.getImage());
-
-        //verso basso a sinistra
-        ImageIcon idabs = new ImageIcon(Names.PATH_ALTO_BASSO_SINISTRA);
-        snake.put("abs", idabs.getImage());
-
-        //verso basso a destra
-        ImageIcon idabd = new ImageIcon(Names.PATH_ALTO_BASSO_DESTRA);
-        snake.put("abd", idabd.getImage());
-
-        //corpo orizzontale
-        ImageIcon idmo = new ImageIcon(Names.PATH_MOVIMETNO_ORIZZONTALE);
-        snake.put("mo", idmo.getImage());
-
-        //corpo verticale
-        ImageIcon idmv = new ImageIcon(Names.PATH_MOVIMETNO_VERTICALE);
-        snake.put("mv", idmv.getImage());
-
-        //mattoncino
-        ImageIcon mattoncino = new ImageIcon(Names.PATH_MATTONCINO);
-        snake.put("mattoncino", mattoncino.getImage());
-    }
-
     public final void setDelay() {
         Opzioni opz = (Opzioni) Opzioni.getIstance(new JFrame());
         DELAY = opz.getLivello();
@@ -143,9 +87,16 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     public void initGame() {
         dots = 2;
-        for (int z = 0; z < dots; z++) {
-            x[z] = 50 - z * Names.DOT_SIZE;
-            y[z] = 50;
+        if (giocatore) {
+            for (int z = 0; z < dots; z++) {
+                x[z] = 50 - z * Names.DOT_SIZE;
+                y[z] = 50;
+            }
+        } else {
+            for (int z = 0; z < dots; z++) {
+                x[z] = 650 + z * Names.DOT_SIZE;
+                y[z] = 450;
+            }
         }
         timer = new Timer(DELAY, this);
         timer.start();
@@ -164,14 +115,14 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         super.paint(g);
         drawMattoncini(g);
         if (inGame && !checkCollisionWithMap()) { //per non fargli effettuare il repaint quando incontra il muro
-            g.drawImage(apple, apples.getApple_x(), apples.getApple_y(), null);
+            g.drawImage(snake.get("apple"), apples.getApple_x(), apples.getApple_y(), null);
             int z;
             boolean flag;
             for (z = 0; z < dots - 1; z++) {
                 flag = false;
                 if (z == 0) {
                     //TESTA
-                    Directions tmp = lastDirection;
+                    Snake.Directions tmp = lastDirection;
                     if (coda.size() != 0) {
                         tmp = coda.remove();
                     }
@@ -286,7 +237,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
-        Directions tmp = lastDirection;
+        Snake.Directions tmp = lastDirection;
         if (coda.size() != 0) {
             tmp = coda.peek();
         }
@@ -327,7 +278,6 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             if ((x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
             }
-
         }
     }
 
@@ -350,12 +300,14 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         synchronized (this.apples) {
             this.apples.notify();
         }
-//        lo avevo usato per contollare l'incremento del serpente
-//        int tmpDots = dots;
+        int tmpDots = dots;
         dots = apples.getDots();
-//        if (dots > tmpDots) {
-//            System.out.println("dots: " + dots);
-//        }
+        if (dots > tmpDots) {
+            punti.aggiungiMela(dots);
+            if (!partita) {
+                GraficaSnake.aggiornaLabelPunteggio(punti);
+            }
+        }
     }
 
     /**
@@ -418,7 +370,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      *
      * @param dir direzione inserita
      */
-    private synchronized void insertInTheQueue(Directions dir) {
+    private synchronized void insertInTheQueue(Snake.Directions dir) {
         if (coda.size() < 2) {
             coda.offer(dir);
             lastDirection = dir;
@@ -444,27 +396,48 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         @Override
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
-            if ((key == KeyEvent.VK_LEFT) && (!lastDirection.isRight()) && timer.isRunning()) {
-                Directions dir = new Directions(false, false, true, false);
-                insertInTheQueue(dir);
-            }
-            if ((key == KeyEvent.VK_RIGHT) && (!lastDirection.isLeft()) && timer.isRunning()) {
-                Directions dir = new Directions(false, false, false, true);
-                insertInTheQueue(dir);
-            }
-            if ((key == KeyEvent.VK_UP) && (!lastDirection.isDown()) && timer.isRunning()) {
-                Directions dir = new Directions(true, false, false, false);
-                insertInTheQueue(dir);
-            }
-            if ((key == KeyEvent.VK_DOWN) && (!lastDirection.isUp()) && timer.isRunning()) {
-                Directions dir = new Directions(false, true, false, false);
-                insertInTheQueue(dir);
-            }
             if ((key == KeyEvent.VK_SPACE)) {
                 pauseGame();
             }
             if ((key == KeyEvent.VK_ENTER)) {
                 //devo gestire il caso in cui voglio creare un nuovo gioco
+            }
+
+            if (giocatore) {
+                if ((key == KeyEvent.VK_LEFT) && (!lastDirection.isRight()) && timer.isRunning()) {
+                    Snake.Directions dir = new Snake.Directions(false, false, true, false);
+                    insertInTheQueue(dir);
+                }
+                if ((key == KeyEvent.VK_RIGHT) && (!lastDirection.isLeft()) && timer.isRunning()) {
+                    Snake.Directions dir = new Snake.Directions(false, false, false, true);
+                    insertInTheQueue(dir);
+                }
+                if ((key == KeyEvent.VK_UP) && (!lastDirection.isDown()) && timer.isRunning()) {
+                    Snake.Directions dir = new Snake.Directions(true, false, false, false);
+                    insertInTheQueue(dir);
+                }
+                if ((key == KeyEvent.VK_DOWN) && (!lastDirection.isUp()) && timer.isRunning()) {
+                    Snake.Directions dir = new Snake.Directions(false, true, false, false);
+                    insertInTheQueue(dir);
+                }
+            } else {
+                if ((key == KeyEvent.VK_A) && (!lastDirection.isRight()) && timer.isRunning()) {
+                    Snake.Directions dir = new Snake.Directions(false, false, true, false);
+                    insertInTheQueue(dir);
+                }
+                if ((key == KeyEvent.VK_D) && (!lastDirection.isLeft()) && timer.isRunning()) {
+                    Snake.Directions dir = new Snake.Directions(false, false, false, true);
+                    insertInTheQueue(dir);
+                }
+                if ((key == KeyEvent.VK_W) && (!lastDirection.isDown()) && timer.isRunning()) {
+                    Snake.Directions dir = new Snake.Directions(true, false, false, false);
+                    insertInTheQueue(dir);
+                }
+                if ((key == KeyEvent.VK_S) && (!lastDirection.isUp()) && timer.isRunning()) {
+                    Snake.Directions dir = new Snake.Directions(false, true, false, false);
+                    insertInTheQueue(dir);
+                }
+
             }
         }
     }

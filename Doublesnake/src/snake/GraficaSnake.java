@@ -1,11 +1,13 @@
 package snake;
 
 import doublesnake.Names;
+import gestioneMappe.SelezionaMappa;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -24,6 +26,8 @@ public class GraficaSnake extends JFrame implements ActionListener {
     private JButton pauseButton;
     private Snake snake;
     private Font font;
+    private Apple mela;
+    private ArrayList<Coordinate> coordMap;
 
     public GraficaSnake() {
         font = Names.caricaFont();
@@ -44,7 +48,17 @@ public class GraficaSnake extends JFrame implements ActionListener {
         JLabel labelSfondoPanel = new JLabel();
         labelSfondoPanel.setSize(Names.ALTEZZA_PANNELLO, Names.LARGHEZZA_PANNELLO);
         labelSfondoPanel.setIcon(new ImageIcon(Names.PATH_CAMPO_COMETA));
-        snake = new Snake();
+        
+        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
+        if (sel.restituisciCoordinateMappa() != null) {
+            coordMap = sel.restituisciCoordinateMappa();
+        } else {
+            coordMap = new ArrayList<Coordinate>();
+        }
+        mela=new Apple(coordMap);
+        mela.start();
+        snake = new Snake(true,false,mela,coordMap);
+        
         labelSfondoPanel.setLayout(new BorderLayout());
         labelSfondoPanel.add(snake, BorderLayout.CENTER);
         snake.setOpaque(false);
@@ -117,5 +131,6 @@ public class GraficaSnake extends JFrame implements ActionListener {
     public static void main(String[] args) {
         GraficaSnake prova = new GraficaSnake();
         prova.setVisible(true);
+        prova.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
