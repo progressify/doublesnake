@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import menu.Opzioni;
+import snake.Snake.Directions;
 
 public class GraficaSnake extends JFrame implements ActionListener {
 
@@ -48,20 +51,20 @@ public class GraficaSnake extends JFrame implements ActionListener {
         JLabel labelSfondoPanel = new JLabel();
         labelSfondoPanel.setSize(Names.ALTEZZA_PANNELLO, Names.LARGHEZZA_PANNELLO);
         labelSfondoPanel.setIcon(new ImageIcon(Names.PATH_CAMPO_COMETA));
-        
+
         SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
         if (sel.restituisciCoordinateMappa() != null) {
             coordMap = sel.restituisciCoordinateMappa();
         } else {
             coordMap = new ArrayList<Coordinate>();
         }
-        mela=new Apple(coordMap);
+        mela = new Apple(coordMap);
         mela.start();
-        snake = new Snake(true,false,mela,coordMap);
-        
+        TAdapter listener = new TAdapter();
+        snake = new Snake(true, false, mela, coordMap, listener);
+        snake.setOpaque(false);
         labelSfondoPanel.setLayout(new BorderLayout());
         labelSfondoPanel.add(snake, BorderLayout.CENTER);
-        snake.setOpaque(false);
         return labelSfondoPanel;
     }
 
@@ -112,7 +115,6 @@ public class GraficaSnake extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-
         if (source == newGameButton) {
             this.setVisible(false);
             try {
@@ -132,5 +134,32 @@ public class GraficaSnake extends JFrame implements ActionListener {
         GraficaSnake prova = new GraficaSnake();
         prova.setVisible(true);
         prova.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public class TAdapter extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int key = e.getKeyCode();
+            if ((key == KeyEvent.VK_SPACE)) {
+                snake.pauseGame();
+            }
+            if ((key == KeyEvent.VK_LEFT) && (!snake.getLastDirection().isRight()) && snake.getTimer().isRunning()) {
+                Directions dir = new Directions(false, false, true, false);
+                snake.insertInTheQueue(dir);
+            }
+            if ((key == KeyEvent.VK_RIGHT) && (!snake.getLastDirection().isLeft()) && snake.getTimer().isRunning()) {
+                Directions dir = new Directions(false, false, false, true);
+                snake.insertInTheQueue(dir);
+            }
+            if ((key == KeyEvent.VK_UP) && (!snake.getLastDirection().isDown()) && snake.getTimer().isRunning()) {
+                Directions dir = new Directions(true, false, false, false);
+                snake.insertInTheQueue(dir);
+            }
+            if ((key == KeyEvent.VK_DOWN) && (!snake.getLastDirection().isUp()) && snake.getTimer().isRunning()) {
+                Directions dir = new Directions(false, true, false, false);
+                snake.insertInTheQueue(dir);
+            }
+        }
     }
 }

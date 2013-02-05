@@ -10,7 +10,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -32,15 +31,15 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private Hashtable<String, Image> snake;
     private Thread th;
     private ArrayList<Coordinate> coordMap;
-    private Queue<Snake.Directions> coda;
-    private Snake.Directions lastDirection;
+    private Queue<Directions> coda/*, coda2*/;
+    private Directions lastDirection/*, lastDirection2 = new Directions(false, false, true, false)*/;
     private Punteggio punti;
     private Apple apples;
     public boolean giocatore, partita;
 
-    public Snake(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa) {
+    public Snake(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener) {
         giocatore = gioc;
-        partita=part;
+        partita = part;
 //        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
 //        if (sel.restituisciCoordinateMappa() != null) {
 //            coordMap = sel.restituisciCoordinateMappa();
@@ -53,16 +52,19 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         if (giocatore) {
             snake = new Hashtable<String, Image>();
             Names.imageLoad(snake);
-            lastDirection = new Snake.Directions(false, false, false, true);
+            lastDirection = new Directions(false, false, false, true);
 //            apples.start();
         } else {
             snake = new Hashtable<String, Image>();
-            lastDirection = new Snake.Directions(false, false, true, false);
+            //lastDirection2 = new Directions(false, false, true, false);
+            lastDirection = new Directions(false, false, true, false);
             Names.imageLoad2(snake);
         }
-        addKeyListener(new Snake.TAdapter());
 
-        coda = new LinkedList<Snake.Directions>();
+        addKeyListener(kListener);
+
+        coda = new LinkedList<Directions>();
+        //coda2 = new LinkedList<Directions>();
 
         setFocusable(true);
         setDelay();
@@ -112,20 +114,30 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     @Override
     public void paint(Graphics g) {
+        Directions tmp;
         super.paint(g);
         drawMattoncini(g);
         if (inGame && !checkCollisionWithMap()) { //per non fargli effettuare il repaint quando incontra il muro
-            g.drawImage(snake.get("apple"), apples.getApple_x(), apples.getApple_y(), null);
+            if (!giocatore || !partita) {
+                g.drawImage(snake.get("apple"), apples.getApple_x(), apples.getApple_y(), null);
+            }
             int z;
             boolean flag;
             for (z = 0; z < dots - 1; z++) {
                 flag = false;
                 if (z == 0) {
                     //TESTA
-                    Snake.Directions tmp = lastDirection;
+                    //if (giocatore) {
+                    tmp = lastDirection;
                     if (coda.size() != 0) {
-                        tmp = coda.remove();
+                        tmp = coda.poll();
                     }
+//                    } else {
+//                        tmp = lastDirection2;
+//                        if (coda2.size() != 0) {
+//                            tmp = coda2.remove();
+//                        }
+//                    }
                     String drawTesta = "";
                     if (tmp.isLeft()) {
                         drawTesta = "ts";
@@ -198,11 +210,16 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     }
 
     public void gameOver(Graphics g) {
-        String msg = "Game Over";
+        String msg;
         Font font = Names.caricaFont();
         FontMetrics metr = this.getFontMetrics(font);
         g.setColor(Color.RED);
         g.setFont(font);
+        if (!partita) {
+            msg = "Game Over";
+        } else {
+            msg = "Hai Vinto: " + "Cazzo!"; //scrivere il nome del giocatore che ha vinto(bisogna capire come devo prendermelo)
+        }
         g.drawString(msg, (Names.LARGHEZZA_PANNELLO - metr.stringWidth(msg)) / 2, Names.ALTEZZA_PANNELLO / 2);
         timer.stop();
         apples.stop();
@@ -233,14 +250,22 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      * Muove il serpente, sposta le coordinate negli ArrayList x e y
      */
     public synchronized void move() {
+        Directions tmp;
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
         }
-        Snake.Directions tmp = lastDirection;
+//        if (giocatore) {
+        tmp = lastDirection;
         if (coda.size() != 0) {
             tmp = coda.peek();
         }
+//        } else {
+//            tmp = lastDirection2;
+//            if (coda2.size() != 0) {
+//                tmp = coda2.peek();
+//            }
+//        }
 
         if (tmp.isLeft()) {
             x[0] -= Names.DOT_SIZE;
@@ -288,7 +313,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             move();
             checkCollision();
         }
-        repaint();
+        //repaint();
     }
 
     /**
@@ -296,12 +321,25 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      * lettura di actionPerformed
      */
     private void manageApple() {
-        apples.setVariables(x, y);
+        if (giocatore) {
+            apples.setVariables(x, y, true);
+        } else {
+            apples.setVariables(x, y, false);
+        }
         synchronized (this.apples) {
             this.apples.notify();
         }
         int tmpDots = dots;
-        dots = apples.getDots();
+        Integer dot;
+        if (giocatore) {
+            dot = apples.getSerp1();
+        } else {
+            dot = apples.getSerp2();
+        }
+        if (dot != null) {
+            dots++;
+        }
+//        dots = apples.getDots();
         if (dots > tmpDots) {
             punti.aggiungiMela(dots);
             if (!partita) {
@@ -313,7 +351,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     /**
      * Classe interna per gestire il movimento (le direzioni) del serpente
      */
-    protected static class Directions {
+    public static class Directions {
 
         private boolean left = false;
         private boolean right = true;
@@ -370,13 +408,19 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      *
      * @param dir direzione inserita
      */
-    private synchronized void insertInTheQueue(Snake.Directions dir) {
+    public synchronized void insertInTheQueue(Directions dir) {
         if (coda.size() < 2) {
             coda.offer(dir);
             lastDirection = dir;
         }
     }
 
+//    public synchronized void insertInTheQueue2(Directions dir) {
+//        if (coda2.size() < 2) {
+//            coda2.offer(dir);
+//            lastDirection2 = dir;
+//        }
+//    }
     /**
      * Metodo per mettere in pausa / riprendere il gioco
      */
@@ -388,57 +432,65 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
+//    public Queue<Directions> getCoda() {
+//        return coda;
+//    }
+//    public Queue<Directions> getCoda2() {
+//        return coda2;
+//    }
+    public Directions getLastDirection() {
+        return lastDirection;
+    }
+
+//    public Directions getLastDirection2() {
+//        return lastDirection2;
+//    }
+    public Timer getTimer() {
+        return timer;
+    }
     /**
      * Listener per i tasti
      */
-    protected class TAdapter extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            int key = e.getKeyCode();
-            if ((key == KeyEvent.VK_SPACE)) {
-                pauseGame();
-            }
-            if ((key == KeyEvent.VK_ENTER)) {
-                //devo gestire il caso in cui voglio creare un nuovo gioco
-            }
-
-            if (giocatore) {
-                if ((key == KeyEvent.VK_LEFT) && (!lastDirection.isRight()) && timer.isRunning()) {
-                    Snake.Directions dir = new Snake.Directions(false, false, true, false);
-                    insertInTheQueue(dir);
-                }
-                if ((key == KeyEvent.VK_RIGHT) && (!lastDirection.isLeft()) && timer.isRunning()) {
-                    Snake.Directions dir = new Snake.Directions(false, false, false, true);
-                    insertInTheQueue(dir);
-                }
-                if ((key == KeyEvent.VK_UP) && (!lastDirection.isDown()) && timer.isRunning()) {
-                    Snake.Directions dir = new Snake.Directions(true, false, false, false);
-                    insertInTheQueue(dir);
-                }
-                if ((key == KeyEvent.VK_DOWN) && (!lastDirection.isUp()) && timer.isRunning()) {
-                    Snake.Directions dir = new Snake.Directions(false, true, false, false);
-                    insertInTheQueue(dir);
-                }
-            } else {
-                if ((key == KeyEvent.VK_A) && (!lastDirection.isRight()) && timer.isRunning()) {
-                    Snake.Directions dir = new Snake.Directions(false, false, true, false);
-                    insertInTheQueue(dir);
-                }
-                if ((key == KeyEvent.VK_D) && (!lastDirection.isLeft()) && timer.isRunning()) {
-                    Snake.Directions dir = new Snake.Directions(false, false, false, true);
-                    insertInTheQueue(dir);
-                }
-                if ((key == KeyEvent.VK_W) && (!lastDirection.isDown()) && timer.isRunning()) {
-                    Snake.Directions dir = new Snake.Directions(true, false, false, false);
-                    insertInTheQueue(dir);
-                }
-                if ((key == KeyEvent.VK_S) && (!lastDirection.isUp()) && timer.isRunning()) {
-                    Snake.Directions dir = new Snake.Directions(false, true, false, false);
-                    insertInTheQueue(dir);
-                }
-
-            }
-        }
-    }
+//    public class TAdapter extends KeyAdapter {
+//
+//        @Override
+//        public void keyPressed(KeyEvent e) {
+//            int key = e.getKeyCode();
+//            if ((key == KeyEvent.VK_SPACE)) {
+//                pauseGame();
+//            }
+//            if ((key == KeyEvent.VK_LEFT) && (!lastDirection.isRight()) && timer.isRunning()) {
+//                Directions dir = new Directions(false, false, true, false);
+//                insertInTheQueue(dir);
+//            }
+//            if ((key == KeyEvent.VK_RIGHT) && (!lastDirection.isLeft()) && timer.isRunning()) {
+//                Directions dir = new Directions(false, false, false, true);
+//                insertInTheQueue(dir);
+//            }
+//            if ((key == KeyEvent.VK_UP) && (!lastDirection.isDown()) && timer.isRunning()) {
+//                Directions dir = new Directions(true, false, false, false);
+//                insertInTheQueue(dir);
+//            }
+//            if ((key == KeyEvent.VK_DOWN) && (!lastDirection.isUp()) && timer.isRunning()) {
+//                Directions dir = new Directions(false, true, false, false);
+//                insertInTheQueue(dir);
+//            }
+//            if ((key == KeyEvent.VK_A) && (!lastDirection2.isRight()) && timer.isRunning()) {
+//                Directions dir = new Directions(false, false, true, false);
+//                insertInTheQueue2(dir);
+//            }
+//            if ((key == KeyEvent.VK_D) && (!lastDirection2.isLeft()) && timer.isRunning()) {
+//                Directions dir = new Directions(false, false, false, true);
+//                insertInTheQueue2(dir);
+//            }
+//            if ((key == KeyEvent.VK_W) && (!lastDirection2.isDown()) && timer.isRunning()) {
+//                Directions dir = new Directions(true, false, false, false);
+//                insertInTheQueue2(dir);
+//            }
+//            if ((key == KeyEvent.VK_S) && (!lastDirection2.isUp()) && timer.isRunning()) {
+//                Directions dir = new Directions(false, true, false, false);
+//                insertInTheQueue2(dir);
+//            }
+//        }
+//    }
 }
