@@ -313,7 +313,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             move();
             checkCollision();
         }
-        //repaint();
+        repaint();
     }
 
     /**
