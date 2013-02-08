@@ -48,6 +48,8 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
     private Apple mela;
     private ArrayList<Coordinate> coordMap;
     private ServerSocket host;
+    ConnectionServer conServer;
+    ConnectionClient conClient;
 
     public GraficaMultiOn() throws IOException {
         font = Names.caricaFont();
@@ -85,10 +87,8 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
         
         
         // fare if se host o client
-        ConnectionServer con= new ConnectionServer(snake2);   
-        Socket client= new Socket();
-        PrintStream out = new PrintStream(client.getOutputStream());
-        DataInputStream in = new DataInputStream (client.getInputStream());
+        conServer= new ConnectionServer(snake2);   
+        conClient= new  ConnectionClient(snake2, null);
         //fine host client
         
         
@@ -179,26 +179,56 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
-            if ((key == KeyEvent.VK_SPACE)) {
-                snake.pauseGame();
-                snake2.pauseGame();
-            }
+            
+          
             if ((key == KeyEvent.VK_LEFT) && (!snake.getLastDirection().isRight()) && snake.getTimer().isRunning()) {
                 Directions dir = new Directions(false, false, true, false);
                 snake.insertInTheQueue(dir);
+                try {
+                    if(conClient!=null)
+                         conClient.writeDirection(KeyEvent.VK_LEFT);
+                    else
+                         conServer.writeDirection(KeyEvent.VK_LEFT);
+                } catch (IOException ex) {
+                    Logger.getLogger(GraficaMultiOn.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }
             if ((key == KeyEvent.VK_RIGHT) && (!snake.getLastDirection().isLeft()) && snake.getTimer().isRunning()) {
                 Directions dir = new Directions(false, false, false, true);
                 snake.insertInTheQueue(dir);
+                try {
+                     if(conClient!=null)
+                         conClient.writeDirection(KeyEvent.VK_RIGHT);
+                    else
+                         conServer.writeDirection(KeyEvent.VK_RIGHT);
+                } catch (IOException ex) {
+                    Logger.getLogger(GraficaMultiOn.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             if ((key == KeyEvent.VK_UP) && (!snake.getLastDirection().isDown()) && snake.getTimer().isRunning()) {
                 Directions dir = new Directions(true, false, false, false);
                 snake.insertInTheQueue(dir);
+                 try {
+                 if(conClient!=null)
+                         conClient.writeDirection(KeyEvent.VK_UP);
+                    else
+                         conServer.writeDirection(KeyEvent.VK_UP);
+                 }catch(IOException ex){
+                       Logger.getLogger(GraficaMultiOn.class.getName()).log(Level.SEVERE, null, ex);
+                 }
             }
             if ((key == KeyEvent.VK_DOWN) && (!snake.getLastDirection().isUp()) && snake.getTimer().isRunning()) {
                 Directions dir = new Directions(false, true, false, false);
                 snake.insertInTheQueue(dir);
+                try {
+                     if(conClient!=null)
+                         conClient.writeDirection(KeyEvent.VK_DOWN);
+                    else
+                         conServer.writeDirection(KeyEvent.VK_DOWN);
+                } catch (IOException ex) {
+                    Logger.getLogger(GraficaMultiOn.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
          
         }
