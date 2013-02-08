@@ -1,4 +1,8 @@
-package snake;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package snakeMulti;
 
 import doublesnake.Names;
 import java.awt.Color;
@@ -18,9 +22,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import menu.Opzioni;
+import snake.Apple;
+import snake.Coordinate;
+import snake.GraficaSnake;
+import snake.Punteggio;
+import snake.Snake;
 
-public class Snake extends JPanel implements ActionListener, Runnable {
-
+public class SnakeOnline extends JPanel implements ActionListener, Runnable {
+    
     private static final long serialVersionUID = 1L;
     private int DELAY;
     private int x[] = new int[Names.ALL_DOTS];
@@ -31,13 +40,14 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private Hashtable<String, Image> snake;
     private Thread th;
     private ArrayList<Coordinate> coordMap;
-    private Queue<Directions> coda/*, coda2*/;
-    private Directions lastDirection/*, lastDirection2 = new Directions(false, false, true, false)*/;
+    private Queue<Snake.Directions> coda/*, coda2*/;
+    private Snake.Directions lastDirection/*, lastDirection2 = new Directions(false, false, true, false)*/;
     private Punteggio punti;
     private Apple apples;
     public boolean giocatore, partita;
-
-    public Snake(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener) {
+    
+    
+    public SnakeOnline(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener) {
         giocatore = gioc;
         partita = part;
 //        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
@@ -52,18 +62,18 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         if (giocatore) {
             snake = new Hashtable<String, Image>();
             Names.imageLoad(snake);
-            lastDirection = new Directions(false, false, false, true);
+            lastDirection = new Snake.Directions(false, false, false, true);
 //            apples.start();
         } else {
             snake = new Hashtable<String, Image>();
             //lastDirection2 = new Directions(false, false, true, false);
-            lastDirection = new Directions(false, false, true, false);
+            lastDirection = new Snake.Directions(false, false, true, false);
             Names.imageLoad2(snake);
         }
 
         addKeyListener(kListener);
 
-        coda = new LinkedList<Directions>();
+        coda = new LinkedList<Snake.Directions>();
         //coda2 = new LinkedList<Directions>();
 
         setFocusable(true);
@@ -71,6 +81,12 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         punti = new Punteggio();
         this.start();
     }
+
+    
+    
+    
+    
+    
 
     private void start() {
         th = new Thread(this);
@@ -114,7 +130,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     @Override
     public void paint(Graphics g) {
-        Directions tmp;
+        Snake.Directions tmp;
         super.paint(g);
         drawMattoncini(g);
         if (inGame && !checkCollisionWithMap()) { //per non fargli effettuare il repaint quando incontra il muro
@@ -250,7 +266,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      * Muove il serpente, sposta le coordinate negli ArrayList x e y
      */
     public synchronized void move() {
-        Directions tmp;
+        Snake.Directions tmp;
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
@@ -408,7 +424,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      *
      * @param dir direzione inserita
      */
-    public synchronized void insertInTheQueue(Directions dir) {
+    public synchronized void insertInTheQueue(Snake.Directions dir) {
         if (coda.size() < 2) {
             coda.offer(dir);
             lastDirection = dir;
@@ -438,7 +454,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 //    public Queue<Directions> getCoda2() {
 //        return coda2;
 //    }
-    public Directions getLastDirection() {
+    public Snake.Directions getLastDirection() {
         return lastDirection;
     }
 
@@ -494,3 +510,4 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 //        }
 //    }
 }
+
