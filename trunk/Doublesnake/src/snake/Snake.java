@@ -60,9 +60,9 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             lastDirection = new Directions(false, false, true, false);
             Names.imageLoad2(snake);
         }
-
-        addKeyListener(kListener);
-
+        if(kListener!=null)
+               addKeyListener(kListener);
+        
         coda = new LinkedList<Directions>();
         //coda2 = new LinkedList<Directions>();
 
