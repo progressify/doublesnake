@@ -82,14 +82,14 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
         mela = new Apple(coordMap);
         mela.start();
         GraficaMultiOn.TAdapter listener = new GraficaMultiOn.TAdapter();
-        snake = new Snake(true, true, mela, coordMap, listener);
-        snake2 = new Snake(false, true, mela, coordMap, listener);
+        snake = new Snake(false, true, mela, coordMap, listener);
+        snake2 = new Snake(true, true, mela, coordMap, null);
         
         
         // fare if se host o client
-         conServer= new ConnectionServer(snake2);   
+        // conServer= new ConnectionServer(snake2);   
         
-        //conClient= new  ConnectionClient(snake2, "193.205.162.64");
+        conClient= new  ConnectionClient(snake2, "192.168.1.13");
         //fine host client
         
         
@@ -186,10 +186,12 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
                 Directions dir = new Directions(false, false, true, false);
                 snake.insertInTheQueue(dir);
                 try {
-                    if(conClient!=null)
-                         conClient.writeDirection(KeyEvent.VK_LEFT);
-                    else
-                         conServer.writeDirection(KeyEvent.VK_LEFT);
+                    if(conClient!=null) {
+                        conClient.writeDirection(KeyEvent.VK_LEFT);
+                    }
+                    else {
+                        conServer.writeDirection(KeyEvent.VK_LEFT);
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(GraficaMultiOn.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -199,10 +201,12 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
                 Directions dir = new Directions(false, false, false, true);
                 snake.insertInTheQueue(dir);
                 try {
-                     if(conClient!=null)
-                         conClient.writeDirection(KeyEvent.VK_RIGHT);
-                    else
-                         conServer.writeDirection(KeyEvent.VK_RIGHT);
+                     if(conClient!=null) {
+                        conClient.writeDirection(KeyEvent.VK_RIGHT);
+                    }
+                    else {
+                        conServer.writeDirection(KeyEvent.VK_RIGHT);
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(GraficaMultiOn.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -211,10 +215,12 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
                 Directions dir = new Directions(true, false, false, false);
                 snake.insertInTheQueue(dir);
                  try {
-                 if(conClient!=null)
+                 if(conClient!=null) {
                          conClient.writeDirection(KeyEvent.VK_UP);
-                    else
+                     }
+                    else {
                          conServer.writeDirection(KeyEvent.VK_UP);
+                     }
                  }catch(IOException ex){
                        Logger.getLogger(GraficaMultiOn.class.getName()).log(Level.SEVERE, null, ex);
                  }
@@ -223,10 +229,12 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
                 Directions dir = new Directions(false, true, false, false);
                 snake.insertInTheQueue(dir);
                 try {
-                     if(conClient!=null)
-                         conClient.writeDirection(KeyEvent.VK_DOWN);
-                    else
-                         conServer.writeDirection(KeyEvent.VK_DOWN);
+                     if(conClient!=null) {
+                        conClient.writeDirection(KeyEvent.VK_DOWN);
+                    }
+                    else {
+                        conServer.writeDirection(KeyEvent.VK_DOWN);
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(GraficaMultiOn.class.getName()).log(Level.SEVERE, null, ex);
                 }

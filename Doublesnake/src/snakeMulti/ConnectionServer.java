@@ -69,19 +69,19 @@ class doComms implements Runnable {
         
         while((line = in.readUTF()) != null && !line.equals(".")) {
            int key = Integer.parseInt(line);
-           if ((key == KeyEvent.VK_A) && (!snake.getLastDirection().isRight()) && snake.getTimer().isRunning()) {
+           if ((key == KeyEvent.VK_LEFT) && (!snake.getLastDirection().isRight()) && snake.getTimer().isRunning()) {
                 Snake.Directions dir = new Snake.Directions(false, false, true, false);
                 snake.insertInTheQueue(dir);
             }
-            if ((key == KeyEvent.VK_D) && (!snake.getLastDirection().isLeft()) && snake.getTimer().isRunning()) {
+            if ((key == KeyEvent.VK_RIGHT) && (!snake.getLastDirection().isLeft()) && snake.getTimer().isRunning()) {
                 Snake.Directions dir = new Snake.Directions(false, false, false, true);
                 snake.insertInTheQueue(dir);
             }
-            if ((key == KeyEvent.VK_W) && (!snake.getLastDirection().isDown()) && snake.getTimer().isRunning()) {
+            if ((key == KeyEvent.VK_UP) && (!snake.getLastDirection().isDown()) && snake.getTimer().isRunning()) {
                 Snake.Directions dir = new Snake.Directions(true, false, false, false);
                 snake.insertInTheQueue(dir);
             }
-            if ((key == KeyEvent.VK_S) && (!snake.getLastDirection().isUp()) && snake.getTimer().isRunning()) {
+            if ((key == KeyEvent.VK_DOWN) && (!snake.getLastDirection().isUp()) && snake.getTimer().isRunning()) {
                 Snake.Directions dir = new Snake.Directions(false, true, false, false);
                 snake.insertInTheQueue(dir);
             }
