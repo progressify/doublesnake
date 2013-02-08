@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package snakeMulti;
+package snakeRete;
 
+import snakeRete.ConnectionServer;
+import snakeRete.ConnectionClient;
 import doublesnake.Names;
 import gestioneMappe.SelezionaMappa;
 import java.awt.BorderLayout;
@@ -35,6 +37,7 @@ import snake.Coordinate;
 import snake.Punteggio;
 import snake.Snake;
 import snake.Snake.Directions;
+import snakeMulti.GraficaMulti;
 
 public class GraficaMultiOn extends JFrame implements ActionListener {
 
@@ -48,8 +51,8 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
     private Apple mela;
     private ArrayList<Coordinate> coordMap;
     private ServerSocket host;
-    ConnectionServer conServer;
-    ConnectionClient conClient;
+    private ConnectionServer conServer=null;
+    private ConnectionClient conClient=null;
 
     public GraficaMultiOn() throws IOException {
         font = Names.caricaFont();

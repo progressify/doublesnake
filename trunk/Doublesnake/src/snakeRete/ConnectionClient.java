@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package snakeMulti;
+package snakeRete;
 
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
@@ -66,8 +66,9 @@ class doCommsz implements Runnable {
             // Get input from the client
 
             while (true) {
-                int key = in.readInt();
-
+                String tmp= in.readLine();
+                int key=Integer.parseInt(tmp);
+                
                 if ((key == KeyEvent.VK_LEFT) && (!snake.getLastDirection().isRight()) && snake.getTimer().isRunning()) {
                     Snake.Directions dir = new Snake.Directions(false, false, true, false);
                     snake.insertInTheQueue(dir);
@@ -99,7 +100,6 @@ class doCommsz implements Runnable {
     }
 
     public void write(int dir) {
-
         out.println(dir);
     }
 }
