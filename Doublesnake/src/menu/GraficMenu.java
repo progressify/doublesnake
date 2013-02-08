@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import snake.GraficaSnake;
 import snakeMulti.GraficaMulti;
-import snakeMulti.GraficaMultiOn;
+import snakeRete.GraficaMultiOn;
 
 /**
  *

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package snakeMulti;
+package snakeRete;
 
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
@@ -19,32 +19,29 @@ import snake.Snake;
  */
 public class ConnectionServer {
 
+  doComms conn_c;
   private static int port=4000, maxConnections=0;
   Snake snake;
   private Socket server;
   // Listen for incoming connections and handle them
   public ConnectionServer(Snake snake) {
-    int i=0;
+    
     this.snake=snake;
     try{
-      ServerSocket listener = new ServerSocket(port);
-
-      while((i++ < maxConnections) || (maxConnections == 0)){
-        doComms connection;
-
+     
+        ServerSocket listener = new ServerSocket(port);
         server = listener.accept();
-        doComms conn_c= new doComms(server, snake);
+        conn_c= new doComms(server, snake);
         Thread t = new Thread(conn_c);
         t.start();
-      }
+      
     } catch (IOException ioe) {
       System.out.println("IOException on socket listen: " + ioe);
       ioe.printStackTrace();
     }
   }
    public void writeDirection(int dir) throws IOException{
-    PrintStream out = new PrintStream(server.getOutputStream());    
-    out.println(dir);   
+    conn_c.write(dir);
     }
 
 }
@@ -52,10 +49,14 @@ class doComms implements Runnable {
     private Socket server;
     private String line,input;
     private Snake snake;
+    DataInputStream in;
+    PrintStream out;
 
-    doComms(Socket server, Snake snake) {
+    doComms(Socket server, Snake snake) throws IOException {
       this.server=server;
       this.snake=snake;
+      in= new DataInputStream(server.getInputStream());
+      out= new PrintStream(server.getOutputStream());
     }
 
     public void run () {
@@ -63,12 +64,10 @@ class doComms implements Runnable {
       input="";
 
       try {
-        // Get input from the client
-        DataInputStream in = new DataInputStream (server.getInputStream());
-        PrintStream out = new PrintStream(server.getOutputStream());
-        
-        while((line = in.readUTF()) != null && !line.equals(".")) {
-           int key = Integer.parseInt(line);
+   
+        while(true) {
+           String tmp=in.readLine();
+           int key = Integer.parseInt(tmp);
            if ((key == KeyEvent.VK_LEFT) && (!snake.getLastDirection().isRight()) && snake.getTimer().isRunning()) {
                 Snake.Directions dir = new Snake.Directions(false, false, true, false);
                 snake.insertInTheQueue(dir);
@@ -97,5 +96,8 @@ class doComms implements Runnable {
         System.out.println("IOException on socket listen: " + ioe);
         ioe.printStackTrace();
       }
+    }
+    public void write(int dir){
+        out.println(dir);
     }
 }

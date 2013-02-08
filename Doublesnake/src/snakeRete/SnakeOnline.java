@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package snakeMulti;
+package snakeRete;
 
 import doublesnake.Names;
 import java.awt.Color;
@@ -58,8 +58,10 @@ public class SnakeOnline extends JPanel implements ActionListener, Runnable {
 //        }
         coordMap = coordMappa;
         //apples = new Apple(coordMap);
-        apples = mela;
+        
+        
         if (giocatore) {
+            apples = mela;
             snake = new Hashtable<String, Image>();
             Names.imageLoad(snake);
             lastDirection = new Snake.Directions(false, false, false, true);
@@ -69,6 +71,7 @@ public class SnakeOnline extends JPanel implements ActionListener, Runnable {
             //lastDirection2 = new Directions(false, false, true, false);
             lastDirection = new Snake.Directions(false, false, true, false);
             Names.imageLoad2(snake);
+            apples=null;
         }
 
         addKeyListener(kListener);
@@ -335,7 +338,12 @@ public class SnakeOnline extends JPanel implements ActionListener, Runnable {
     /**
      * Metodo di servizio, creato unicamente al fine di non appesantire la
      * lettura di actionPerformed
+     * 
      */
+    public void setApple(Apple tmp){
+        apples=tmp;
+    }
+    
     private void manageApple() {
         if (giocatore) {
             apples.setVariables(x, y, true);
