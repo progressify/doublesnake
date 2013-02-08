@@ -28,7 +28,7 @@ public class ConnectionClient {
         int i = 0;
         
         try {
-            client = new Socket(addr, 4000);
+            client = new Socket(addr, 4444);
             doCommsz connection;     
             doCommsz conn_c = new doCommsz(client, snake);
             Thread t = new Thread(conn_c);

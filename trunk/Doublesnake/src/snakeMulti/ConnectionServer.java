@@ -19,7 +19,7 @@ import snake.Snake;
  */
 public class ConnectionServer {
 
-  private static int port=4444, maxConnections=0;
+  private static int port=4000, maxConnections=0;
   Snake snake;
   private Socket server;
   // Listen for incoming connections and handle them
