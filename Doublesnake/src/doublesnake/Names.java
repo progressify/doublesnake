@@ -27,12 +27,15 @@ public final class Names {
     public static final String NOME_FRAME_OPZIONI = "DOUBLE SNAKE - Opzioni";
     public static final String NOME_FRAME_CREAMAPPA = "DOUBLE SNAKE - Crea Mappa";
     public static final String NOME_FRAME_SELEZIONAMAPPA = "DOUBLE SNAKE - Seleziona Mappa";
+    public static final String NOME_FRAME_RETE = "DOUBLE SNAKE - Rete Locale";
     public static final int LARGHEZZA_FRAME = 700;
     public static final int ALTEZZA_FRAME = 600;
     public static final int LARGHEZZA_OPZIONI = 460;
     public static final int ALTEZZA_OPZIONI = 230;
     public static final int LARGHEZZA_RECORD = 300;
     public static final int ALTEZZA_RECORD = 330;
+    public static final int LARGHEZZA_RETE = 300;
+    public static final int ALTEZZA_RETE = 100;
     public static final String PATH_SFONDO = "./Grafica/spazio.jpg";
     public static final String PATH_FONT = "./Grafica/digital.ttf";
     //classe record
@@ -65,6 +68,9 @@ public final class Names {
     public static final String PATH_FRECCIA_SINISTRA = "./Grafica/frecciaverdesx.png";
     public static final String PATH_BUTTON_AGGIORNA = "./Grafica/pulsantereset2.png";
     public static final String PATH_BUTTON_ANNULLA = "./Grafica/Annulla.png";
+    public static final String PATH_BUTTON_HOST = "./Grafica/creapartita.png";
+    public static final String PATH_BUTTON_CLIENT = "./Grafica/cercapartita.png";
+    
     //tooltiptext
     public static final String TOOLTIP_ANNULLABUTTON = "Indietro";
     public static final String TOOLTIP_PAUSA = "Pausa";
@@ -79,6 +85,8 @@ public final class Names {
     public static final String TOOLTIP_LIVELLO4 = "Livello 4";
     public static final String TOOLTIP_LIVELLO5 = "Livello 5";
     public static final String TOOLTIP_NEWGAMEBUTTON = "Nuovo Gioco";
+    public static final String TOOLTIP_HOST = "Sei Host e stai creando una partita";
+    public static final String TOOLTIP_CLIENT = "Sei Client e stai cercando una partita";
     //tutto quello che mi serve per la griglia
     public static final String NOME_FILE_MAPPE = "mappe.dat";
     public static final int NUMERO_COLONNE = 28;
