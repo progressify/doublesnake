@@ -5,9 +5,6 @@ import gestioneMappe.EditorMappe;
 import gestioneMappe.SelezionaMappa;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -204,13 +201,15 @@ public class GraficMenu extends JPanel implements ActionListener {
             snake.setVisible(true);
         }
         if (source == bReteLocale) {
-            JFrame snake;
-            try {
-                snake = new GraficaMultiOn();
-                snake.setVisible(true);
-            } catch (IOException ex) {
-                Logger.getLogger(GraficMenu.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            JFrame snake;
+//            try {
+//                snake = new GraficaMultiOn();
+//                snake.setVisible(true);
+//            } catch (IOException ex) {
+//                Logger.getLogger(GraficMenu.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+            JFrame frameRete = GraficaRete.getIstance(windows);
+            frameRete.setVisible(true);
            
         }
         if (source == bOpzione) {

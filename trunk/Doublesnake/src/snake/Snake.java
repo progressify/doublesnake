@@ -60,12 +60,12 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             lastDirection = new Directions(false, false, true, false);
             Names.imageLoad2(snake);
         }
-        if(kListener!=null)
-               addKeyListener(kListener);
-        
+        if (kListener != null) {
+            addKeyListener(kListener);
+        }
+
         coda = new LinkedList<Directions>();
         //coda2 = new LinkedList<Directions>();
-
         setFocusable(true);
         setDelay();
         punti = new Punteggio();
@@ -155,21 +155,41 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                 } else {
                     //ANGOLI
                     String drawAngoli = "";
-                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
-                        drawAngoli = "aad";
-                        flag = true;
-                    }
-                    if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
-                        drawAngoli = "aas";
-                        flag = true;
-                    }
-                    if ((((y[z + 1] < y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
-                        drawAngoli = "abd";
-                        flag = true;
-                    }
-                    if (((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] > x[z]) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z]) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1]))) {
-                        drawAngoli = "abs";
-                        flag = true;
+                    if( ((x[z]==0 && x[z-1]==Names.LARGHEZZA_PANNELLO-25) || (x[z-1]==0 && x[z]==Names.LARGHEZZA_PANNELLO-25)) || (y[z]==0 && y[z-1]==Names.ALTEZZA_PANNELLO-25 || y[z]==0 && y[z-1]==Names.ALTEZZA_PANNELLO-25)){
+                        System.out.println("si è verificata la condizione");
+                        if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
+                            drawAngoli = "aas";
+                            flag = true;
+                        }
+                        if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
+                            drawAngoli = "aad";
+                            flag = true;
+                        }
+                        if ((((y[z + 1] < y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
+                            drawAngoli = "abs";
+                            flag = true;
+                        }
+                        if (((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] > x[z]) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z]) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1]))) {
+                            drawAngoli = "abd";
+                            flag = true;
+                        }
+                    }else{
+                        if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
+                            drawAngoli = "aad";
+                            flag = true;
+                        }
+                        if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] > x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] < x[z - 1])))) {
+                            drawAngoli = "aas";
+                            flag = true;
+                        }
+                        if ((((y[z + 1] < y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1]))) || ((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] < x[z]) && (x[z] == x[z - 1]))) {
+                            drawAngoli = "abd";
+                            flag = true;
+                        }
+                        if (((y[z + 1] == y[z]) && (y[z] > y[z - 1]) && (x[z + 1] > x[z]) && (x[z] == x[z - 1])) || ((y[z + 1] < y[z]) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && (x[z] < x[z - 1]))) {
+                            drawAngoli = "abs";
+                            flag = true;
+                        }
                     }
                     g.drawImage(snake.get(drawAngoli), x[z], y[z], this);
                     //CORPO
@@ -191,7 +211,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             }
             //CODA
             String drawCoda = "";
-            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.LARGHEZZA_PANNELLO)) {
+            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.LARGHEZZA_PANNELLO-25)) {
                 drawCoda = "cs";
             } else if (x[z] == (Names.LARGHEZZA_PANNELLO - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
                 drawCoda = "cd";
@@ -298,7 +318,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
      * Per controllare se il serpente si mangia da solo
      */
     public void checkCollision() {
-        
+
         for (int z = dots; z > 0; z--) {
             if ((x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
@@ -314,6 +334,10 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             checkCollision();
         }
         repaint();
+    }
+
+    public int getDELAY() {
+        return DELAY;
     }
 
     /**
