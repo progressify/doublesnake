@@ -14,6 +14,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -43,11 +44,12 @@ public class SnakeOnline extends JPanel implements ActionListener, Runnable {
     private Queue<Snake.Directions> coda/*, coda2*/;
     private Snake.Directions lastDirection/*, lastDirection2 = new Directions(false, false, true, false)*/;
     private Punteggio punti;
-    private Apple apples;
+    private Appleable apples;
     public boolean giocatore, partita;
     
     
-    public SnakeOnline(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener) {
+    public SnakeOnline(boolean host, boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener) throws IOException {
+       
         giocatore = gioc;
         partita = part;
 //        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
@@ -61,7 +63,16 @@ public class SnakeOnline extends JPanel implements ActionListener, Runnable {
         
         
         if (giocatore) {
-            apples = mela;
+            if(host==false){
+                AppleClient ap= new AppleClient(coordMap);
+                apples=ap;
+                
+            }
+            else {
+                AppleHost ap= new AppleHost(coordMap);
+                apples=ap;
+            }
+           
             snake = new Hashtable<String, Image>();
             Names.imageLoad(snake);
             lastDirection = new Snake.Directions(false, false, false, true);
@@ -340,7 +351,7 @@ public class SnakeOnline extends JPanel implements ActionListener, Runnable {
      * lettura di actionPerformed
      * 
      */
-    public void setApple(Apple tmp){
+    public void setApple(Appleable tmp){
         apples=tmp;
     }
     
