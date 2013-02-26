@@ -53,8 +53,10 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
     private ServerSocket host;
     private ConnectionServer conServer=null;
     private ConnectionClient conClient=null;
-
-    public GraficaMultiOn() throws IOException {
+    private String ip;
+    
+    public GraficaMultiOn(String ip) throws IOException {
+        this.ip=ip;
         font = Names.caricaFont();
         setName(Names.NOME_FRAME_GIOCA);
         setTitle(Names.NOME_FRAME_GIOCA);
@@ -85,16 +87,18 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
         mela = new Apple(coordMap);
         mela.start();
         GraficaMultiOn.TAdapter listener = new GraficaMultiOn.TAdapter();
-        snake = new Snake(false, true, mela, coordMap, listener);
-        snake2 = new Snake(true, true, mela, coordMap, null);
+        snake = new Snake(true, true, mela, coordMap, listener);
+        snake2 = new Snake(false, true, mela, coordMap, null);
         
         
-        // fare if se host o client
-        // conServer= new ConnectionServer(snake2);   
-        
-        conClient= new  ConnectionClient(snake2, "192.168.1.13");
-        //fine host client
-        
+       if(ip.isEmpty()){
+       conServer= new ConnectionServer(snake2);   
+       }
+       else{
+        conClient= new  ConnectionClient(snake2, "127.0.0.1");
+       }
+        //fine host client}
+//        
         
         
         snake.setOpaque(false);

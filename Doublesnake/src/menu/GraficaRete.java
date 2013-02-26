@@ -4,12 +4,17 @@ import doublesnake.Names;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import snakeMulti.GraficaMulti;
+import snakeRete.GraficaMultiOn;
 
 /**
  *
@@ -76,9 +81,24 @@ public class GraficaRete extends JFrame implements ActionListener {
 
         if (source == host) {
             JOptionPane.showMessageDialog(rootPane, "fai visualizzare qui l'ip");
+                JFrame snake = null;
+            try {
+                snake = new GraficaMultiOn("");
+            } catch (IOException ex) {
+                Logger.getLogger(GraficaRete.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            snake.setVisible(true);
         }
         if (source == client) {
             ipClient=JOptionPane.showInputDialog(rootPane, source);
+             JOptionPane.showMessageDialog(rootPane, "fai visualizzare qui l'ip");
+                JFrame snake = null;
+            try {
+                snake = new GraficaMultiOn(ipClient);
+            } catch (IOException ex) {
+                Logger.getLogger(GraficaRete.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            snake.setVisible(true);
+        }
         }
     }
-}
