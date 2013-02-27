@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import menu.Opzioni;
 import snake.Snake.Directions;
-
+import menu.WindowAdapterInner;
 public class GraficaSnake extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
@@ -31,9 +32,11 @@ public class GraficaSnake extends JFrame implements ActionListener {
     private Font font;
     private Apple mela;
     private ArrayList<Coordinate> coordMap;
+    private WindowAdapterInner closer;
 
-    public GraficaSnake() {
+    public GraficaSnake(WindowAdapterInner closer) {
         font = Names.caricaFont();
+        this.closer=closer;
         setName(Names.NOME_FRAME_GIOCA);
         setTitle(Names.NOME_FRAME_GIOCA);
         setSize(Names.LARGHEZZA_FRAME, Names.ALTEZZA_FRAME);
@@ -122,8 +125,11 @@ public class GraficaSnake extends JFrame implements ActionListener {
             } catch (Throwable ex) {
                 Logger.getLogger(GraficaSnake.class.getName()).log(Level.SEVERE, null, ex);
             }
-            GraficaSnake graficaSnake = new GraficaSnake();
+            
+            GraficaSnake graficaSnake = new GraficaSnake(closer);
             graficaSnake.setVisible(true);
+            graficaSnake.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            graficaSnake.addWindowListener(closer);
         }
         if (source == pauseButton) {
             snake.pauseGame();
@@ -131,7 +137,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        GraficaSnake prova = new GraficaSnake();
+        GraficaSnake prova = new GraficaSnake(null);
         prova.setVisible(true);
         prova.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
