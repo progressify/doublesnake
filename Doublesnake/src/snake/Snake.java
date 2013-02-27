@@ -36,10 +36,12 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private Punteggio punti;
     private Apple apples;
     public boolean giocatore, partita;
+    private Snake other;
 
-    public Snake(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener) {
+    public Snake(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener, Snake other) {
         giocatore = gioc;
         partita = part;
+        this.other=other;
 //        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
 //        if (sel.restituisciCoordinateMappa() != null) {
 //            coordMap = sel.restituisciCoordinateMappa();
@@ -87,6 +89,10 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         DELAY = opz.getLivello();
     }
 
+    public void setOther(Snake other){
+        this.other=other;
+    }
+    
     public void initGame() {
         dots = 2;
         if (giocatore) {
@@ -314,16 +320,39 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
+    
+    public int getDots(){
+        return dots;
+    }
+    
     /**
      * Per controllare se il serpente si mangia da solo
      */
     public void checkCollision() {
 
+        
         for (int z = dots; z > 0; z--) {
             if ((x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
             }
         }
+       if(partita){
+           int a[]= other.getPositionsX();
+           int b[]= other.getPositionY();  
+           int dotx= other.getDots();
+           for(int i=0; i< dotx; i++){
+               if ((x[0] == a[i]) && (y[0] == b[i])) {
+                inGame = false;
+            }
+       }
+    }}
+    
+    
+    public int[] getPositionsX(){
+        return x;
+    }
+    public int[] getPositionY(){
+        return y;
     }
 
     @Override

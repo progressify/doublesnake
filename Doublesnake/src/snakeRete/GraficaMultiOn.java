@@ -87,8 +87,9 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
         mela = new Apple(coordMap);
         mela.start();
         GraficaMultiOn.TAdapter listener = new GraficaMultiOn.TAdapter();
-        snake = new Snake(true, true, mela, coordMap, listener);
-        snake2 = new Snake(false, true, mela, coordMap, null);
+        snake = new Snake(false, true, mela, coordMap, listener, null);
+        snake2 = new Snake(true, true, mela, coordMap, null, snake);
+        snake.setOther(snake2);
         
         
        if(ip.isEmpty()){
