@@ -29,7 +29,7 @@ import snake.Coordinate;
 import snake.Punteggio;
 import snake.Snake;
 import snake.Snake.Directions;
-
+import menu.WindowAdapterInner;
 public class GraficaMulti extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
@@ -41,11 +41,13 @@ public class GraficaMulti extends JFrame implements ActionListener {
     private Font font;
     private Apple mela;
     private ArrayList<Coordinate> coordMap;
+    private WindowAdapterInner closer;
 
-    public GraficaMulti() {
+    public GraficaMulti(WindowAdapterInner closer) {
         font = Names.caricaFont();
         setName(Names.NOME_FRAME_GIOCA);
         setTitle(Names.NOME_FRAME_GIOCA);
+        this.closer=closer;
         setSize(Names.LARGHEZZA_FRAME, Names.ALTEZZA_FRAME);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
@@ -141,8 +143,10 @@ public class GraficaMulti extends JFrame implements ActionListener {
             } catch (Throwable ex) {
                 Logger.getLogger(GraficaMulti.class.getName()).log(Level.SEVERE, null, ex);
             }
-            GraficaMulti graficaSnake = new GraficaMulti();
+            GraficaMulti graficaSnake = new GraficaMulti(closer);
             graficaSnake.setVisible(true);
+            graficaSnake.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            graficaSnake.addWindowListener(closer);
         }
         if (source == pauseButton) {
             snake.pauseGame();
@@ -150,7 +154,7 @@ public class GraficaMulti extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        GraficaMulti prova = new GraficaMulti();
+        GraficaMulti prova = new GraficaMulti(null);
         prova.setVisible(true);
         prova.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

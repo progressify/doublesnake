@@ -159,28 +159,16 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
         return panel;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
-        if (source == newGameButton) {
-            this.setVisible(false);
-            try {
-                this.finalize();
-            } catch (Throwable ex) {
-                Logger.getLogger(GraficaMulti.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            GraficaMulti graficaSnake = new GraficaMulti();
-            graficaSnake.setVisible(true);
-        }
-        if (source == pauseButton) {
-            snake.pauseGame();
-        }
-    }
 
     public static void main(String[] args) {
-        GraficaMulti prova = new GraficaMulti();
+        GraficaMulti prova = new GraficaMulti(null);
         prova.setVisible(true);
         prova.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public class TAdapter extends KeyAdapter {
