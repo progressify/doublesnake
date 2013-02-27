@@ -5,6 +5,14 @@ import gestioneMappe.EditorMappe;
 import gestioneMappe.SelezionaMappa;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,6 +40,7 @@ public class GraficMenu extends JPanel implements ActionListener {
     private JButton bReteLocale;
     private JButton bOpzione;
     private JLabel label;
+    private MusicHandler music;
 
     public GraficMenu() {
         windows = new JFrame();
@@ -46,6 +55,7 @@ public class GraficMenu extends JPanel implements ActionListener {
         windows.setLocationRelativeTo(null);
         windows.setVisible(true);
         windows.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        music = new MusicHandler();
         //imposta il look&feel del sistema operativo ospitante, va impostato solo la prima volta, poi resta memorizzato per tutti i frame
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -178,29 +188,36 @@ public class GraficMenu extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         Names.wwait();
-
+        WindowAdapterInner closer= new WindowAdapterInner(music);
         if (source == bGioca) {
+            music.setLocation("single.wav");
             JFrame snake = new GraficaSnake();
             snake.setVisible(true);
+            snake.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            snake.addWindowListener(closer);
         }
-        if (source == bCreaMappa) {
-            JFrame frameEditorMappe = EditorMappe.getIstance(windows);
-            frameEditorMappe.setVisible(true);
-        }
-        if (source == bCaricaMappa) {
-            JFrame frameSelectMappe = SelezionaMappa.getIstance(windows);
-            ((SelezionaMappa) frameSelectMappe).ricarica();
-            frameSelectMappe.setVisible(true);
-        }
-        if (source == bRecord) {
-            JFrame frameOpzioni = Record.getIstance(windows);
-            frameOpzioni.setVisible(true);
-        }
-        if (source == bStessoPc) {
-            JFrame snake = new GraficaMulti();
-            snake.setVisible(true);
-        }
-        if (source == bReteLocale) {
+            if (source == bCreaMappa) {
+                JFrame frameEditorMappe = EditorMappe.getIstance(windows);
+    
+                frameEditorMappe.setVisible(true);
+            }
+            if (source == bCaricaMappa) {
+                JFrame frameSelectMappe = SelezionaMappa.getIstance(windows);
+                ((SelezionaMappa) frameSelectMappe).ricarica();
+                frameSelectMappe.setVisible(true);
+            }
+            if (source == bRecord) {
+                JFrame frameOpzioni = Record.getIstance(windows);
+                frameOpzioni.setVisible(true);
+            }
+            if (source == bStessoPc) {
+                music.setLocation("multi.wav");
+                final JFrame snakePC = new GraficaMulti();
+                snakePC.setVisible(true);
+                snakePC.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                snakePC.addWindowListener(closer);
+            }
+            if (source == bReteLocale) {
 //            JFrame snake;
 //            try {
 //                snake = new GraficaMultiOn();
@@ -208,13 +225,88 @@ public class GraficMenu extends JPanel implements ActionListener {
 //            } catch (IOException ex) {
 //                Logger.getLogger(GraficMenu.class.getName()).log(Level.SEVERE, null, ex);
 //            }
-            JFrame frameRete = GraficaRete.getIstance(windows);
-            frameRete.setVisible(true);
-           
-        }
-        if (source == bOpzione) {
-            JFrame frameOpzioni = Opzioni.getIstance(windows);
-            frameOpzioni.setVisible(true);
+                music.setLocation("multi.wav");
+                JFrame frameRete = GraficaRete.getIstance(windows);
+                frameRete.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                frameRete.addWindowListener(closer);
+                frameRete.setVisible(true);
+
+            }
+            if (source == bOpzione) {
+                JFrame frameOpzioni = Opzioni.getIstance(windows);
+                frameOpzioni.setVisible(true);
+            }
         }
     }
-}
+
+    class MusicHandler implements Runnable {
+
+        private Thread th;
+        private boolean newMusic;
+        private String location;
+        private boolean play;
+
+        public MusicHandler() {
+            th = new Thread(this);
+            play = true;
+            location = "home.wav";
+            th.start();
+            newMusic = false;
+        }
+
+        @Override
+        public void run() {
+            SourceDataLine soundLine = null;
+            int BUFFER_SIZE = 64 * 1024;
+            while (true) {
+                try {
+
+                    File soundFile = new File(location);
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+                    AudioFormat audioFormat = audioInputStream.getFormat();
+                    DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+                    soundLine = (SourceDataLine) AudioSystem.getLine(info);
+                    soundLine.open(audioFormat);
+                    soundLine.start();
+                    int nBytesRead = 0;
+                    byte[] sampledData = new byte[BUFFER_SIZE];
+
+                    while (nBytesRead != -1 && play == true) {
+                        nBytesRead = audioInputStream.read(sampledData, 0, sampledData.length);
+                        if (newMusic) {
+                            newMusic = false;
+                            th.sleep(1000);
+                            break;
+                        }
+                        if (nBytesRead >= 0) {
+                            soundLine.write(sampledData, 0, nBytesRead);
+
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("Could not start music!");
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+            newMusic = true;
+        }
+    }
+    
+    class WindowAdapterInner extends WindowAdapter{
+
+        MusicHandler music;
+    
+        public WindowAdapterInner(MusicHandler music){
+            this.music=music;
+            
+        }
+        public void windowClosing(WindowEvent e){
+               music.setLocation("home.wav");
+               ((JFrame)e.getSource()).dispose();;
+        }
+    }

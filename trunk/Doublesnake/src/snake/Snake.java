@@ -37,11 +37,13 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     private Apple apples;
     public boolean giocatore, partita;
     private Snake other;
+    private boolean winner;
 
     public Snake(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener, Snake other) {
         giocatore = gioc;
         partita = part;
         this.other=other;
+        winner=true;
 //        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
 //        if (sel.restituisciCoordinateMappa() != null) {
 //            coordMap = sel.restituisciCoordinateMappa();
@@ -237,6 +239,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     public void gameOver(Graphics g) {
         String msg;
+        String winner;
         Font font = Names.caricaFont();
         FontMetrics metr = this.getFontMetrics(font);
         g.setColor(Color.RED);
@@ -244,11 +247,16 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         if (!partita) {
             msg = "Game Over";
         } else {
-            msg = "Hai Vinto: " + "Cazzo!"; //scrivere il nome del giocatore che ha vinto(bisogna capire come devo prendermelo)
+            if(giocatore){
+                winner="Giocatore 2!";
+            }
+            else winner="Giocatore 1!";
+            msg = "Hai Vinto: " + winner; //scrivere il nome del giocatore che ha vinto(bisogna capire come devo prendermelo)
         }
         g.drawString(msg, (Names.LARGHEZZA_PANNELLO - metr.stringWidth(msg)) / 2, Names.ALTEZZA_PANNELLO / 2);
         timer.stop();
         apples.stop();
+        
         synchronized (this.apples) {
             this.apples.notify();
         }
@@ -343,6 +351,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
            for(int i=0; i< dotx; i++){
                if ((x[0] == a[i]) && (y[0] == b[i])) {
                 inGame = false;
+                winner= false;
             }
        }
     }}
