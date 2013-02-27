@@ -61,7 +61,7 @@ public class GraficaSnake extends JFrame implements ActionListener {
         mela = new Apple(coordMap);
         mela.start();
         TAdapter listener = new TAdapter();
-        snake = new Snake(true, false, mela, coordMap, listener);
+        snake = new Snake(true, false, mela, coordMap, listener, null);
         snake.setOpaque(false);
         labelSfondoPanel.setLayout(new BorderLayout());
         labelSfondoPanel.add(snake, BorderLayout.CENTER);

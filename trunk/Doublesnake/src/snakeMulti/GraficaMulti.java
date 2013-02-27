@@ -71,8 +71,9 @@ public class GraficaMulti extends JFrame implements ActionListener {
         mela = new Apple(coordMap);
         mela.start();
         TAdapter listener = new TAdapter();
-        snake = new Snake(true, true, mela, coordMap, listener);
-        snake2 = new Snake(false, true, mela, coordMap, listener);
+        snake = new Snake(true, true, mela, coordMap, listener, null);
+        snake2 = new Snake(false, true, mela, coordMap, listener, snake);
+        snake.setOther(snake2);
         snake.setOpaque(false);
         snake2.setOpaque(false);
         JLayeredPane layeredPane = new JLayeredPane();
