@@ -218,6 +218,7 @@ public class GraficMenu extends JPanel implements ActionListener {
                 snakePC.addWindowListener(closer);
             }
             if (source == bReteLocale) {
+                
 //            JFrame snake;
 //            try {
 //                snake = new GraficaMultiOn();
@@ -225,6 +226,7 @@ public class GraficMenu extends JPanel implements ActionListener {
 //            } catch (IOException ex) {
 //                Logger.getLogger(GraficMenu.class.getName()).log(Level.SEVERE, null, ex);
 //            }
+                
                 music.setLocation("multi.wav");
                 JFrame frameRete = GraficaRete.getIstance(windows);
                 frameRete.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
