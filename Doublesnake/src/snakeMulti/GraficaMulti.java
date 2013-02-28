@@ -150,6 +150,7 @@ public class GraficaMulti extends JFrame implements ActionListener {
         }
         if (source == pauseButton) {
             snake.pauseGame();
+            snake2.pauseGame();
         }
     }
 

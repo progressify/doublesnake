@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -72,27 +74,44 @@ public class Record extends JFrame implements ActionListener {
         setResizable(false);
     }
 
-    public void aggiornaPunteggio(String nomeMappa, int punti) { //da rivedere, i record verranno assegnati per nome giocatore non per mappe
-        int tmp = punteggi.get(nomeMappa);
-        if (tmp < punti) {
-            punteggi.put(nomeMappa, tmp);
-
-            try {
-                serializzaRecord();
-            } catch (IOException ex) {
-                Logger.getLogger(Record.class.getName()).log(Level.SEVERE, null, ex);
+    public void aggiornaPunteggio(String nomeGiocatore, int punti) {
+        if (punteggi.isEmpty()) {
+            Set keys = punteggi.keySet();
+            Iterator keyIter = keys.iterator();
+            int min = -1;
+            String keyMin = "";
+            while (keyIter.hasNext()) {
+                String key = (String) keyIter.next();
+                int value = (int) punteggi.get(key);
+                if (value < min) {
+                    min = value;
+                    keyMin = key;
+                }
             }
+            if (punti > min) {
+                if (punteggi.size() > 5) {
+                    punteggi.remove(keyMin);
+                }
+                punteggi.put(keyMin, punti);
+            }
+        }
+        try {
+            serializzaRecord();
+        } catch (IOException ex) {
+            Logger.getLogger(Record.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private JPanel createCenterPanel() {
         JPanel panel = new JPanel();
-
         JLabel labelSpazio = new JLabel(new ImageIcon(Names.PATH_LABEL_SPAZIOVUOTO));
-        area = new JTextArea(12, 32);
+        area = new JTextArea(15, 30);
         area.setEditable(false);
         scroll = new JScrollPane(area);
-        panel.add(labelSpazio);
+        if (punteggi.isEmpty()) {
+            area.append("scemo");
+        }
+        panel.add(labelSpazio); //per non far uscire la text area attaccata al borso superiore
         panel.add(scroll);
         panel.setOpaque(false);
         return panel;
