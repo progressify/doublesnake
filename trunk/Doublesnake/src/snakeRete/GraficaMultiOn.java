@@ -96,7 +96,7 @@ public class GraficaMultiOn extends JFrame implements ActionListener {
        conServer= new ConnectionServer(snake2);   
        }
        else{
-        conClient= new  ConnectionClient(snake2, "127.0.0.1");
+        conClient= new  ConnectionClient(snake2, ip);
        }
         //fine host client}
 //        
