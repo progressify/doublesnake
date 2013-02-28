@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import menu.Opzioni;
+import menu.Record;
 
 public class Snake extends JPanel implements ActionListener, Runnable {
 
@@ -42,8 +43,8 @@ public class Snake extends JPanel implements ActionListener, Runnable {
     public Snake(boolean gioc, boolean part, Apple mela, ArrayList<Coordinate> coordMappa, KeyAdapter kListener, Snake other) {
         giocatore = gioc;
         partita = part;
-        this.other=other;
-        winner=true;
+        this.other = other;
+        winner = true;
 //        SelezionaMappa sel = (SelezionaMappa) SelezionaMappa.getIstance(new JFrame());
 //        if (sel.restituisciCoordinateMappa() != null) {
 //            coordMap = sel.restituisciCoordinateMappa();
@@ -91,10 +92,10 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         DELAY = opz.getLivello();
     }
 
-    public void setOther(Snake other){
-        this.other=other;
+    public void setOther(Snake other) {
+        this.other = other;
     }
-    
+
     public void initGame() {
         dots = 2;
         if (giocatore) {
@@ -163,7 +164,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                 } else {
                     //ANGOLI
                     String drawAngoli = "";
-                    if( ((x[z]==0 && x[z-1]==Names.LARGHEZZA_PANNELLO-25) || (x[z-1]==0 && x[z]==Names.LARGHEZZA_PANNELLO-25)) || (y[z]==0 && y[z-1]==Names.ALTEZZA_PANNELLO-25 || y[z]==0 && y[z-1]==Names.ALTEZZA_PANNELLO-25)){
+                    if (((x[z] == 0 && x[z - 1] == Names.LARGHEZZA_PANNELLO - 25) || (x[z - 1] == 0 && x[z] == Names.LARGHEZZA_PANNELLO - 25)) || (y[z] == 0 && y[z - 1] == Names.ALTEZZA_PANNELLO - 25 || y[z] == 0 && y[z - 1] == Names.ALTEZZA_PANNELLO - 25)) {
                         System.out.println("si è verificata la condizione");
                         if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
                             drawAngoli = "aas";
@@ -181,7 +182,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
                             drawAngoli = "abd";
                             flag = true;
                         }
-                    }else{
+                    } else {
                         if (((y[z + 1] == y[z]) && ((y[z] < y[z - 1])) && ((x[z + 1] < x[z])) && (x[z] == x[z - 1])) || (((y[z + 1] > y[z])) && (y[z] == y[z - 1]) && (x[z + 1] == x[z]) && ((x[z] > x[z - 1])))) {
                             drawAngoli = "aad";
                             flag = true;
@@ -219,7 +220,7 @@ public class Snake extends JPanel implements ActionListener, Runnable {
             }
             //CODA
             String drawCoda = "";
-            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.LARGHEZZA_PANNELLO-25)) {
+            if (x[z - 1] - x[z] == -Names.DOT_SIZE || (x[z] == 0 && x[z - 1] == Names.LARGHEZZA_PANNELLO - 25)) {
                 drawCoda = "cs";
             } else if (x[z] == (Names.LARGHEZZA_PANNELLO - Names.DOT_SIZE) && x[z - 1] == 0 || x[z] < x[z - 1]) {
                 drawCoda = "cd";
@@ -239,28 +240,34 @@ public class Snake extends JPanel implements ActionListener, Runnable {
 
     public void gameOver(Graphics g) {
         String msg;
-        String winner;
+        String winner = "";
+        Opzioni opz = (Opzioni) Opzioni.getIstance(new JFrame());
         Font font = Names.caricaFont();
         FontMetrics metr = this.getFontMetrics(font);
         g.setColor(Color.RED);
         g.setFont(font);
         if (!partita) {
             msg = "Game Over";
+            Record rec = (Record) Record.getIstance(new JFrame());
+            winner = opz.getNomePlayer1();
+            rec.aggiornaPunteggio(winner, punti.getPunti());
         } else {
-            if(giocatore){
-                winner="Giocatore 2!";
+            if (giocatore) {
+                winner = opz.getNomePlayer2();
+                other.pauseGame();
+            } else {
+                winner = opz.getNomePlayer1();
+                other.pauseGame();
             }
-            else winner="Giocatore 1!";
-            msg = "Hai Vinto: " + winner; //scrivere il nome del giocatore che ha vinto(bisogna capire come devo prendermelo)
+            msg = "Hai Vinto: " + winner;
         }
         g.drawString(msg, (Names.LARGHEZZA_PANNELLO - metr.stringWidth(msg)) / 2, Names.ALTEZZA_PANNELLO / 2);
         timer.stop();
         apples.stop();
-        
+
         synchronized (this.apples) {
             this.apples.notify();
         }
-        //qui si deve passare il punteggio al record!!
     }
 
     /**
@@ -328,39 +335,39 @@ public class Snake extends JPanel implements ActionListener, Runnable {
         }
     }
 
-    
-    public int getDots(){
+    public int getDots() {
         return dots;
     }
-    
+
     /**
      * Per controllare se il serpente si mangia da solo
      */
     public void checkCollision() {
 
-        
+
         for (int z = dots; z > 0; z--) {
             if ((x[0] == x[z]) && (y[0] == y[z])) {
                 inGame = false;
             }
         }
-       if(partita){
-           int a[]= other.getPositionsX();
-           int b[]= other.getPositionY();  
-           int dotx= other.getDots();
-           for(int i=0; i< dotx; i++){
-               if ((x[0] == a[i]) && (y[0] == b[i])) {
-                inGame = false;
-                winner= false;
+        if (partita) {
+            int a[] = other.getPositionsX();
+            int b[] = other.getPositionY();
+            int dotx = other.getDots();
+            for (int i = 0; i < dotx; i++) {
+                if ((x[0] == a[i]) && (y[0] == b[i])) {
+                    inGame = false;
+                    winner = false;
+                }
             }
-       }
-    }}
-    
-    
-    public int[] getPositionsX(){
+        }
+    }
+
+    public int[] getPositionsX() {
         return x;
     }
-    public int[] getPositionY(){
+
+    public int[] getPositionY() {
         return y;
     }
 

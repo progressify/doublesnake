@@ -59,8 +59,8 @@ public class Record extends JFrame implements ActionListener {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Record.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         this.mainWindow = mainWindow;
+        //area.setLineWrap(true);
         setName(Names.NOME_FRAME_RECORD);
         setTitle(Names.NOME_FRAME_RECORD);
         setSize(Names.LARGHEZZA_RECORD, Names.ALTEZZA_RECORD);
@@ -75,11 +75,12 @@ public class Record extends JFrame implements ActionListener {
     }
 
     public void aggiornaPunteggio(String nomeGiocatore, int punti) {
-        if (punteggi.isEmpty()) {
+        int min = -1;
+        String keyMin = "";
+        if (punteggi.size() > 5) {
+            min = 1000000000;
             Set keys = punteggi.keySet();
             Iterator keyIter = keys.iterator();
-            int min = -1;
-            String keyMin = "";
             while (keyIter.hasNext()) {
                 String key = (String) keyIter.next();
                 int value = (int) punteggi.get(key);
@@ -89,11 +90,17 @@ public class Record extends JFrame implements ActionListener {
                 }
             }
             if (punti > min) {
-                if (punteggi.size() > 5) {
-                    punteggi.remove(keyMin);
+                punteggi.remove(keyMin);
+                if (punteggi.containsKey(nomeGiocatore)) {
+                    punteggi.remove(nomeGiocatore);
                 }
-                punteggi.put(keyMin, punti);
+                punteggi.put(nomeGiocatore, punti);
             }
+        } else {
+            if (punteggi.containsKey(nomeGiocatore)) {
+                punteggi.remove(nomeGiocatore);
+            }
+            punteggi.put(nomeGiocatore, punti);
         }
         try {
             serializzaRecord();
@@ -109,9 +116,18 @@ public class Record extends JFrame implements ActionListener {
         area.setEditable(false);
         scroll = new JScrollPane(area);
         if (punteggi.isEmpty()) {
-            area.append("scemo");
+            area.append("Nessun Record");
+        } else {
+            Set keys = punteggi.keySet();
+            Iterator keyIter = keys.iterator();
+            while (keyIter.hasNext()) {
+                String key = (String) keyIter.next();
+                int value = (int) punteggi.get(key);
+                area.setCaretPosition(area.getDocument().getLength());
+                area.append(" " + key + " ... " + value + "\n");
+            }
         }
-        panel.add(labelSpazio); //per non far uscire la text area attaccata al borso superiore
+        panel.add(labelSpazio); //per non far uscire la text area attaccata al bordo superiore
         panel.add(scroll);
         panel.setOpaque(false);
         return panel;
@@ -140,7 +156,7 @@ public class Record extends JFrame implements ActionListener {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private Map<String, Integer> deserializzaRecord() throws IOException, ClassNotFoundException {
+    protected Map<String, Integer> deserializzaRecord() throws IOException, ClassNotFoundException {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(flrecord));
         Map<String, Integer> temp = (Map<String, Integer>) in.readObject();
         in.close();
