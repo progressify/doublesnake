@@ -7,6 +7,7 @@ package snakeMulti;
 import doublesnake.Names;
 import gestioneMappe.SelezionaMappa;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -30,6 +31,7 @@ import snake.Punteggio;
 import snake.Snake;
 import snake.Snake.Directions;
 import menu.WindowAdapterInner;
+
 public class GraficaMulti extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
@@ -47,7 +49,7 @@ public class GraficaMulti extends JFrame implements ActionListener {
         font = Names.caricaFont();
         setName(Names.NOME_FRAME_GIOCA);
         setTitle(Names.NOME_FRAME_GIOCA);
-        this.closer=closer;
+        this.closer = closer;
         setSize(Names.LARGHEZZA_FRAME, Names.ALTEZZA_FRAME);
         labelSfondo = new JLabel();
         labelSfondo.setIcon(new ImageIcon(Names.PATH_SFONDO));
@@ -91,15 +93,15 @@ public class GraficaMulti extends JFrame implements ActionListener {
     private JPanel createCenterPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         Opzioni opz = (Opzioni) Opzioni.getIstance(this);
-//Qui devono andare i nomi dei giocatori con i relativi punteggi!
-//        JLabel labelNomePlayer = new JLabel(opz.getNomePlayer1());
-//        labelNomePlayer.setForeground(Color.WHITE);
-//        labelNomePlayer.setFont(font);
-//        labelPunteggio = new JLabel("0");
-//        labelPunteggio.setForeground(Color.WHITE);
-//        labelPunteggio.setFont(font);
-//        panel.add(labelNomePlayer, BorderLayout.LINE_START);
-//        panel.add(labelPunteggio, BorderLayout.LINE_END);
+        JLabel labelNomePlayer1 = new JLabel(opz.getNomePlayer1());
+        labelNomePlayer1.setForeground(Color.WHITE);
+        labelNomePlayer1.setFont(font);
+        panel.add(createSouthPanel(), BorderLayout.SOUTH);
+        JLabel labelNomePlayer2 = new JLabel(opz.getNomePlayer2());
+        labelNomePlayer2.setForeground(Color.WHITE);
+        labelNomePlayer2.setFont(font);
+        panel.add(labelNomePlayer1, BorderLayout.LINE_START);
+        panel.add(labelNomePlayer2, BorderLayout.LINE_END);
         panel.add(createSouthPanel(), BorderLayout.SOUTH);
         panel.setOpaque(false);
         return panel;
